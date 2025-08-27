@@ -75,7 +75,7 @@ const NewsCard = ({
                 <span className="text-primary">{comments}</span>
               </div>
             </div>
-            <a href="#" className="text-primary font-medium hover:underline transition-all duration-200">查看详情</a>
+            <a href="#" className="text-primary font-medium hover:underline transition-all duration-200 ">查看详情</a>
           </div>
         </div>
       </div>

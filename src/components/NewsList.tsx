@@ -4,14 +4,14 @@ import DateFilter from "./DateFilter";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { Eye, MessageSquare, Clock, Flame, Loader2 } from "lucide-react";
 
-// 从外部JSON文件导入新闻数据
+// 从外部JSON文件导入新闻数据和分类数据
 import newsData from '../data/newsData.json';
+import categoryData from '../data/categories.json';
 
 const NewsList = () => {
-  // 从新闻数据中提取所有唯一的分类
+  // 从分类数据中获取所有分类名称
   const categories = useMemo(() => {
-    const uniqueCategories = new Set(newsData.map(news => news.category));
-    return Array.from(uniqueCategories);
+    return categoryData.newsCategories.map(cat => cat.name);
   }, []);
 
   // 状态来跟踪当前选中的分类
@@ -25,6 +25,7 @@ const NewsList = () => {
   // 状态来跟踪懒加载
   const [visibleCount, setVisibleCount] = useState(3); // 初始显示3条新闻
   const [isLoading, setIsLoading] = useState(false); // 加载状态
+  const [showBackToTop, setShowBackToTop] = useState(false); // 返回顶部按钮显示状态
   const loaderRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +35,13 @@ const NewsList = () => {
     
     // 按分类过滤
     if (activeCategory !== "全部") {
-      result = result.filter(news => news.category === activeCategory);
+      // 对于新的AI分类，显示相关新闻（如果分类存在于新闻数据中）
+      if (categories.includes(activeCategory)) {
+        result = result.filter(news => news.category === activeCategory);
+      } else {
+        // 对于新的分类，暂时显示空结果或所有新闻
+        result = [];
+      }
       if (process.env.NODE_ENV === 'development') {
         console.log(`[调试] 按分类"${activeCategory}"过滤后，新闻数量: ${result.length}`);
       }
@@ -197,8 +204,17 @@ const NewsList = () => {
     setDateRange({ start: validStartDate, end: validEndDate });
   };
 
-  // 热门新闻数据
-  const hotNews = newsData.filter(news => news.views > 800).slice(0, 5);
+  // 热门新闻数据 - 固定显示10条，按阅读量和更新时间排序
+  const hotNews = newsData
+    .sort((a, b) => {
+      // 首先按阅读量降序排序
+      if (b.views !== a.views) {
+        return b.views - a.views;
+      }
+      // 如果阅读量相同，按更新时间降序排序
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    })
+    .slice(0, 10);
   
   // 当分类或日期范围改变时，重置可见数量
   useEffect(() => {
@@ -221,7 +237,7 @@ const NewsList = () => {
     }, 1000);
   };
   
-  // 监听滚动事件，实现无限滚动
+  // 监听滚动事件，实现无限滚动和返回顶部按钮显示
   useEffect(() => {
     const handleScroll = () => {
       if (isLoading || showNoResultsMessage || visibleCount >= filteredNews.length) return;
@@ -236,6 +252,11 @@ const NewsList = () => {
       if (loaderRect.top < window.innerHeight + 300) {
         loadMoreNews();
       }
+      
+      // 当页面滑动到第二页屏幕时显示返回顶部按钮
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      setShowBackToTop(scrollPosition > windowHeight);
     };
     
     // 监听窗口滚动事件
@@ -247,7 +268,7 @@ const NewsList = () => {
   }, [isLoading, visibleCount, filteredNews.length, showNoResultsMessage, loadMoreNews]);
 
   return (
-    <section className="bg-news-background">
+    <section className="bg-news-background relative">
       {/* 分类标签切换组件 */}
       <CategoryTabs 
         categories={categories}
@@ -260,11 +281,27 @@ const NewsList = () => {
         <DateFilter onDateRangeChange={handleDateRangeChange} />
       </div>
       
+      {/* 返回顶部按钮 - 固定在热门新闻底部右侧，滚动到第二页时显示 */}
+      {showBackToTop && (
+        <button
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // 滚动完成后隐藏按钮
+            setTimeout(() => setShowBackToTop(false), 500);
+          }}
+          className="fixed right-20 top-1/10 transform -translate-y-1/10 z-50 px-2 py-2 bg-primary text-white rounded-md shadow-lg hover:bg-primary/90 transition-colors flex flex-col items-center justify-center"
+          aria-label="返回顶部"
+        >
+          <span>▲</span>
+          <span className="text-center leading-tight">返回<br />顶部</span>
+        </button>
+      )}
+      
       {/* 新闻列表内容 */}
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* 主新闻列表 - 70%宽度 */}
-          <div className="lg:w-9/12">
+          {/* 主新闻列表 - 移动端全宽，桌面端70%宽度 */}
+          <div className="w-full lg:w-9/12">
             {Object.entries(visibleNews).map(([date, newsItems]) => {
               const firstNews = newsItems[0];
               const monthDay = date.slice(5).replace('-', '月') + '日';
@@ -341,9 +378,9 @@ const NewsList = () => {
             )}
           </div>
 
-          {/* 热门新闻侧边栏 - 30%宽度 */}
-          <div className="lg:w-3/12">
-            <div className="bg-news-card rounded-none p-6 border border-border">
+          {/* 热门新闻侧边栏 - 移动端隐藏，桌面端25%宽度 */}
+          <div className="hidden lg:block lg:w-3/12 sticky top-20 self-start">
+            <div className="bg-news-card rounded-none py-3 px-5 border border-border">
               <h3 className="text-xl font-bold text-foreground mb-6 flex items-center">
                 <span className="w-6 h-6 rounded-full  flex items-center justify-center text-red-500 mr-3">
                     <Flame className="w-7 h-7" />

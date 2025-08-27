@@ -1,6 +1,9 @@
 import * as React from "react";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 
+// 导入分类数据
+import * as categoryData from '../data/categories.json';
+
 interface CategoryTabsProps {
   categories: string[];
   activeCategory: string;
@@ -12,19 +15,19 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
   activeCategory, 
   onCategoryChange 
 }) => {
-  // 添加一个"全部"选项在最前面
-  const allCategories = ["全部", ...categories];
+  // 使用分类数据
+  const allCategories = categoryData.newsCategories.map(cat => cat.name);
 
   return (
-    <div className="py-4  bg-white shadow-sm">
+    <div className=" bg-white shadow-sm">
       <Tabs 
         defaultValue="全部" 
         value={activeCategory} 
         onValueChange={onCategoryChange} 
         className="w-full"
       >
-        <div className="container mx-auto ">
-          <TabsList className="w-full justify-start py-2 px-1 rounded-none bg-transparent space-x-6 text-black">
+        <div className="container mx-auto px-4 py-4 flex items-center">
+          <TabsList className="w-full overflow-x-auto overflow-y-hidden whitespace-nowrap justify-start md:justify-center py-2 px-1 rounded-none bg-transparent space-x-4 md:space-x-6 text-black">
             {allCategories.map((category) => (
               <TabsTrigger 
                 key={category} 

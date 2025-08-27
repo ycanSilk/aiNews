@@ -4,9 +4,9 @@ const Footer = () => {
   return (
     <footer className="bg-foreground text-background py-12">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 text-center">
           {/* Logo and Description */}
-          <div className="space-y-4">
+          <div className="space-y-4 md:space-y-6 flex flex-col items-center md:items-start">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-sm">AI</span>
@@ -14,12 +14,12 @@ const Footer = () => {
               <h3 className="text-lg font-bold">AI新闻资讯</h3>
             </div>
             <p className="text-background/70 text-sm">
-              专注于人工智能领域的最新动态，为您带来最前沿的科技资讯和深度分析。
+              专注于人工智能领域的最新动态
             </p>
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className="flex flex-col items-center md:items-start">
             <h4 className="font-semibold mb-4">快速链接</h4>
             <ul className="space-y-2 text-sm">
               <li><a href="#" className="text-background/70 hover:text-background transition-colors">首页</a></li>
@@ -30,7 +30,7 @@ const Footer = () => {
           </div>
 
           {/* Categories */}
-          <div>
+          <div className="flex flex-col items-center md:items-start">
             <h4 className="font-semibold mb-4">分类</h4>
             <ul className="space-y-2 text-sm">
               <li><a href="#" className="text-background/70 hover:text-background transition-colors">大语言模型</a></li>
@@ -41,9 +41,9 @@ const Footer = () => {
           </div>
 
           {/* Social Links */}
-          <div>
+          <div className="flex flex-col items-center md:items-start">
             <h4 className="font-semibold mb-4">关注我们</h4>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 md:space-x-6 justify-center md:justify-start">
               <a href="#" className="text-background/70 hover:text-background transition-colors">
                 <Twitter className="w-5 h-5" />
               </a>
