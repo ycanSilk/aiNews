@@ -1,12 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronDown } from "lucide-react";
+import { useLanguageData } from '@/hooks/useLanguageData';
+import { useLanguage } from '@/contexts/LanguageContext';
+import CalendarCN from './CalendarCN';
+import CalendarEN from './CalendarEN';
 
 interface DateFilterProps {
   onDateRangeChange: (startDate: string | null, endDate: string | null) => void;
 }
 
 const DateFilter = ({ onDateRangeChange }: DateFilterProps) => {
+  // 使用语言数据钩子加载配置数据
+  const { data: indexData } = useLanguageData<any>('index.json');
+  const { currentLanguage } = useLanguage();
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
@@ -52,7 +59,7 @@ const DateFilter = ({ onDateRangeChange }: DateFilterProps) => {
       if (diffDays <= 90) {
         onDateRangeChange(startDate, endDate);
       } else {
-        alert('日期范围不能超过90天');
+        alert(indexData?.newsSection?.dateRangeError || '日期范围不能超过90天');
       }
     }
     setShowCalendar(false);
@@ -116,7 +123,7 @@ const DateFilter = ({ onDateRangeChange }: DateFilterProps) => {
   return (
     <div className="relative flex flex-col md:flex-row gap-4 items-start md:items-center mb-6">
       {/* 下拉菜单按钮 */}
-      <p className="text-2xl ">请选择显示新闻的日期：</p>
+      <p className="text-2xl ">{indexData?.newsSection?.dateFilterTitle || '请选择显示新闻的日期：'}</p>
       <div className="relative">
   
         <Button 
@@ -125,7 +132,7 @@ const DateFilter = ({ onDateRangeChange }: DateFilterProps) => {
           onClick={toggleDropDown}
           ref={buttonRef}
         >
-          日期范围
+          {indexData?.newsSection?.dateRangeText || '日期范围'}
           <ChevronDown className="w-4 h-4 transition-transform duration-200" style={{ transform: showDropDown ? 'rotate(180deg)' : 'rotate(0)' }} />
         </Button>
         
@@ -136,31 +143,31 @@ const DateFilter = ({ onDateRangeChange }: DateFilterProps) => {
               className="block w-full text-left px-4 py-2 hover:bg-muted transition-colors"
               onClick={() => handlePresetRange(null)}
             >
-              全部
+              {indexData?.newsSection?.allText || '全部'}
             </button>
             <button 
               className="block w-full text-left px-4 py-2 hover:bg-muted transition-colors"
               onClick={() => handlePresetRange(3)}
             >
-              最近三天
+              {indexData?.newsSection?.last3DaysText || '最近三天'}
             </button>
             <button 
               className="block w-full text-left px-4 py-2 hover:bg-muted transition-colors"
               onClick={() => handlePresetRange(7)}
             >
-              最近一周
+              {indexData?.newsSection?.lastWeekText || '最近一周'}
             </button>
             <button 
               className="block w-full text-left px-4 py-2 hover:bg-muted transition-colors"
               onClick={() => handlePresetRange(15)}
             >
-              最近半月
+              {indexData?.newsSection?.lastHalfMonthText || '最近半月'}
             </button>
             <button 
               className="block w-full text-left px-4 py-2 hover:bg-muted transition-colors"
               onClick={() => handlePresetRange(30)}
             >
-              最近一个月
+              {indexData?.newsSection?.lastMonthText || '最近一个月'}
             </button>
           </div>
         )}
@@ -175,40 +182,35 @@ const DateFilter = ({ onDateRangeChange }: DateFilterProps) => {
           ref={calendarButtonRef}
         >
           <Calendar className="w-4 h-4" />
-          选择日期范围
+          {indexData?.newsSection?.selectDateRangeText || '选择日期范围'}
         </Button>
         
         {/* 日历选择器 */}
         {showCalendar && (
-          <div ref={calendarRef} className="absolute top-full left-0 mt-1 p-4 bg-background border border-border shadow-lg z-10">
-            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="border border-border rounded-none p-2 text-sm w-full md:w-40"
-                placeholder="开始日期"
+          <div ref={calendarRef} className="absolute top-full left-0 mt-1 z-10">
+            {currentLanguage === 'en' ? (
+              <CalendarEN
+                startDate={startDate}
+                endDate={endDate}
+                onStartDateChange={setStartDate}
+                onEndDateChange={setEndDate}
+                onApply={handleCustomRange}
+                dateRangeNote={indexData?.newsSection?.dateRangeNote || 'Note: Maximum date range is 90 days'}
+                applyText={indexData?.common?.applyText || 'Apply'}
+                toText={indexData?.newsSection?.toText || 'to'}
               />
-              <span className="text-sm whitespace-nowrap">至</span>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="border border-border rounded-none p-2 text-sm w-full md:w-40"
-                placeholder="结束日期"
+            ) : (
+              <CalendarCN
+                startDate={startDate}
+                endDate={endDate}
+                onStartDateChange={setStartDate}
+                onEndDateChange={setEndDate}
+                onApply={handleCustomRange}
+                dateRangeNote={indexData?.newsSection?.dateRangeNote || '注：最大选择范围为90天'}
+                applyText={indexData?.common?.applyText || '应用'}
+                toText={indexData?.newsSection?.toText || '至'}
               />
-              <Button 
-                variant="default" 
-                size="sm" 
-                className="rounded-none bg-primary hover:bg-primary-hover h-9 px-3 w-full md:w-auto"
-                onClick={handleCustomRange}
-              >
-                应用
-              </Button>
-            </div>
-            <div className="mt-2 text-xs text-muted-foreground">
-              注：最大选择范围为90天
-            </div>
+            )}
           </div>
         )}
       </div>
@@ -216,12 +218,12 @@ const DateFilter = ({ onDateRangeChange }: DateFilterProps) => {
       {/* 当前筛选状态显示 */}
       {startDate && endDate && !showCalendar && !showDropDown && (
         <div className="text-sm text-muted-foreground mt-2 md:mt-0">
-          已筛选: {startDate} 至 {endDate}
+          {indexData?.newsSection?.filteredText || '已筛选'}: {startDate} {indexData?.newsSection?.toText || '至'} {endDate}
           <button 
             className="ml-2 text-primary hover:underline"
             onClick={handleClear}
           >
-            清除
+            {indexData?.common?.clearText || '清除'}
           </button>
         </div>
       )}

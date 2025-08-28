@@ -1,0 +1,8 @@
+{
+  "bright_data": {
+    "command": "node",
+    "args": [
+      "node_modules/@brightdata/mcp/dist/index.js"
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "header": {
+    "logoText": "AI News",
+    "navItems": [
+      {"label": "Home", "href": "/en"},
+      {"label": "Blog", "href": "/en/blog"},
+      {"label": "Timeline News", "href": "/en/timeline"},
+      {"label": "About Us", "href": "/en/about"}
+    ],
+    "searchPlaceholder": "Search AI news...",
+    "languageOptions": [
+      {"label": "简体中文", "value": "ch"},
+      {"label": "English", "value": "en"}
+    ]
+  },
+  "hero": {
+    "tagline": "Real-time AI News",
+    "title": "Latest AI Technology Updates",
+    "description": "Get the latest AI technology news, breakthroughs and industry insights. Stay informed about every important moment in AI development.",
+    "buttonText": "Subscribe"
+  },
+  "banner": {
+    "title": "Hot AI News",
+    "description": "Daily selection of the hottest AI technology articles and industry trends",
+    "ctaText": "View More"
+  },
+  "newsSection": {
+    "title": "Latest News",
+    "subtitle": "Explore the latest developments and breakthroughs in artificial intelligence",
+    "filterLabels": {
+      "all": "All",
+      "latest": "Latest",
+      "trending": "Trending",
+      "breaking": "Breaking"
+    },
+    "dateFilterTitle": "Select news display date:",
+    "dateRangeText": "Date Range",
+    "selectDateRangeText": "Select Date Range",
+    "allText": "All",
+    "last3DaysText": "Last 3 Days",
+    "lastWeekText": "Last Week",
+    "lastHalfMonthText": "Last Half Month",
+    "lastMonthText": "Last Month",
+    "applyText": "Apply",
+    "dateRangeNote": "Note: Maximum date range is 90 days",
+    "filteredText": "Filtered",
+    "toText": "to",
+    "dateRangeError": "Date range cannot exceed 90 days",
+    "dateFilterLabel": "Date Range",
+    "loadMoreText": "Load More",
+    "noResultsText": "No related news found",
+    "hotNewsTitle": "Hot News",
+    "allNewsText": "All news displayed"
+  },
+  "footer": {
+    "title": "AI News Hub",
+    "description": "Focusing on the latest developments in artificial intelligence",
+    "quickLinksTitle": "Quick Links",
+    "categoriesTitle": "Categories",
+    "socialTitle": "Follow Us",
+    "quickLinks": [
+      {"label": "Home", "href": "/en"},
+      {"label": "Tech News", "href": "/en/news"},
+      {"label": "Machine Learning", "href": "/en/machine-learning"},
+      {"label": "Deep Learning", "href": "/en/deep-learning"}
+    ],
+    "categories": [
+      {"label": "Large Language Models", "href": "/en/llm"},
+      {"label": "Computer Vision", "href": "/en/cv"},
+      {"label": "Autonomous Driving", "href": "/en/autonomous"},
+      {"label": "Medical AI", "href": "/en/medical-ai"}
+    ],
+    "socialLinks": [
+      {"platform": "Twitter", "icon": "twitter", "href": "#"},
+      {"platform": "GitHub", "icon": "github", "href": "#"},
+      {"platform": "Email", "icon": "mail", "href": "#"},
+      {"platform": "RSS", "icon": "rss", "href": "#"}
+    ],
+    "copyright": "© 2024 AI News Hub. All rights reserved."
+  },
+  "common": {
+    "readMoreText": "Read More",
+    "viewsText": "views",
+    "commentsText": "comments",
+    "readTimeText": "min read",
+    "breakingNewsText": "Breaking News",
+    "publishedText": "Published",
+    "newsUnitText": "",
+    "dateFormat": "{month}/{day}·{weekday}",
+    "loadingText": "Loading...",
+    "backToTopText": "Back to Top"
+  }
+}
