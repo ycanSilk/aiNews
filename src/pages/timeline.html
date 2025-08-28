@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAI 时间轴新闻</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #10a37f;
+            --secondary-color: #343541;
+            --accent-color: #19c37d;
+            --light-color: #f8f9fa;
+            --dark-color: #202123;
+            --highlight-color: #ffd700;
+            --text-color: #333;
+            --light-text: #6e6e80;
+            --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: white;
+            color: var(--dark-color);
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 25px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .search-box input {
+            padding: 14px 20px;
+            width: 100%;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+        
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.1);
+        }
+        
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            bottom: 5px;
+            padding: 0 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .search-box button:hover {
+            background-color: var(--accent-color);
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+        }
+        
+        .timeline-item {
+            display: flex;
+            position: relative;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .timeline-content {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            margin-left: 60px;
+            width: calc(100% - 60px);
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .timeline-content:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .date {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .timeline-content h2 {
+            margin-bottom: 12px;
+            color: var(--dark-color);
+            font-size: 1.3rem;
+        }
+        
+        .timeline-content p {
+            color: var(--light-text);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .read-more:hover {
+            gap: 10px;
+            color: var(--primary-color);
+        }
+        
+        .important .timeline-content {
+            border-left: 4px solid var(--highlight-color);
+        }
+        
+        .important .date {
+            color: var(--highlight-color);
+        }
+        
+        .timeline-circle {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--primary-color);
+            background: white;
+            border-radius: 50%;
+            z-index: 2;
+        }
+        
+        .important .timeline-circle {
+            border-color: var(--highlight-color);
+            width: 24px;
+            height: 24px;
+            left: 18px;
+        }
+        
+        .timeline-circle::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .timeline-item:hover .timeline-circle::after {
+            opacity: 1;
+        }
+        
+        .important .timeline-circle::after {
+            background: var(--highlight-color);
+        }
+        
+        .tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: #f1f3f5;
+            color: var(--light-text);
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .tag:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--light-text);
+            display: none;
+        }
+        
+        .news-count {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--light-text);
+            font-size: 1rem;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--light-text);
+            font-size: 0.85rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-content {
+                margin-left: 50px;
+                width: calc(100% - 50px);
+            }
+            
+            .timeline-circle {
+                left: 10px;
+            }
+            
+            .important .timeline-circle {
+                left: 8px;
+            }
+            
+            .filters {
+                gap: 8px;
+            }
+            
+            .filter-btn {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .timeline::before {
+                left: 15px;
+            }
+            
+            .timeline-content {
+                margin-left: 40px;
+                width: calc(100% - 40px);
+                padding: 15px;
+            }
+            
+            .timeline-circle {
+                left: 5px;
+                width: 18px;
+                height: 18px;
+            }
+            
+            .important .timeline-circle {
+                left: 3px;
+                width: 20px;
+                height: 20px;
+            }
+            
+            .timeline-content h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-newspaper"></i> 时间轴新闻</h1>
+            <p class="subtitle">探索 OpenAI 发展历程中的重要里程碑</p>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="输入关键词搜索..." value="OpenAI">
+                <button onclick="performSearch()"><i class="fas fa-search"></i> 搜索</button>
+            </div>
+        </header>
+        
+        <div class="news-count" id="news-count">显示 20 条新闻</div>
+        
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all"><i class="fas fa-layer-group"></i> 全部</button>
+            <button class="filter-btn" data-filter="important"><i class="fas fa-star"></i> 重点新闻</button>
+            <button class="filter-btn" data-filter="AI"><i class="fas fa-robot"></i> AI相关</button>
+            <button class="filter-btn" data-filter="product"><i class="fas fa-cube"></i> 产品发布</button>
+            <button class="filter-btn" data-filter="research"><i class="fas fa-flask"></i> 研究突破</button>
+        </div>
+        
+        <div class="timeline">
+            <!-- 新闻项目将在这里动态生成 -->
+        </div>
+        
+        <div class="loading" id="loading">
+            <i class="fas fa-spinner fa-spin"></i> 加载更多新闻...
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 时间轴新闻 - 为您呈现科技发展的重要时刻</p>
+        </div>
+    </div>
+
+    <script>
+        // 新闻数据 - 实际应用中会从服务器获取
+        const newsItems = [
+            {
+                date: "2025-08-28",
+                title: "OpenAI宣布与微软深化合作，共同开发企业级AI解决方案",
+                content: "OpenAI与微软宣布扩大战略合作伙伴关系，将共同开发新一代企业级AI解决方案。此次合作将结合OpenAI的先进AI技术和微软的云计算基础设施，为企业客户提供更强大的AI能力。",
+                important: true,
+                tags: ["合作", "企业AI", "微软"],
+                url: "#"
+            },
+            {
+                date: "2025-08-25",
+                title: "ChatGPT推出团队协作功能，支持实时多人编辑",
+                content: "OpenAI为ChatGPT推出了全新的团队协作功能，允许用户共享对话、共同编辑提示词和协作创建内容。这一功能旨在提高团队生产力，使多人能够共同利用AI助手完成复杂任务。",
+                important: false,
+                tags: ["产品更新", "协作", "ChatGPT"],
+                url: "#"
+            },
+            {
+                date: "2025-08-22",
+                title: "研究显示：GPT-5在医学诊断辅助方面达到专家水平",
+                content: "一项独立研究显示，OpenAI的GPT-5在医学诊断辅助方面表现出色，在多个医学专科的诊断准确率上达到了人类专家水平。该研究测试了GPT-5在放射学、病理学和临床诊断等多个领域的表现。",
+                important: true,
+                tags: ["研究", "医疗AI", "GPT-5"],
+                url: "#"
+            },
+            {
+                date: "2025-08-18",
+                title: "OpenAI开源多模态模型训练框架",
+                content: "OpenAI宣布开源其多模态模型训练框架，允许研究人员和开发者更轻松地训练能够同时处理文本、图像和音频的AI模型。这一举措旨在促进AI社区的发展，加速多模态AI研究的进步。",
+                important: false,
+                tags: ["开源", "多模态", "研究"],
+                url: "#"
+            },
+            {
+                date: "2025-08-15",
+                title: "ChatGPT企业版用户突破10万，成增长最快企业产品之一",
+                content: "OpenAI宣布ChatGPT企业版用户数量已突破10万，使其成为企业软件市场中增长最快的产品之一。该产品自推出以来，受到了各行各业的广泛欢迎，特别是在金融、医疗和技术领域。",
+                important: false,
+                tags: ["企业版", "增长", "ChatGPT"],
+                url: "#"
+            },
+            {
+                date: "2025-08-12",
+                title: "OpenAI发布AI安全白皮书，提出新型安全框架",
+                content: "OpenAI发布了最新的AI安全白皮书，详细介绍了其在AI安全方面的研究成果和新型安全框架。该白皮书提出了多项创新方法，旨在确保先进AI系统的安全性和对齐性。",
+                important: true,
+                tags: ["安全", "研究", "伦理"],
+                url: "#"
+            },
+            {
+                date: "2025-08-07",
+                title: "OpenAI正式发布GPT-5，推理能力显著提升",
+                content: "OpenAI推出了新一代旗舰AI模型GPT-5，在编码、数学、写作、健康、视觉感知等领域均拥有卓越性能。该模型首次为免费版ChatGPT搭载推理模型，能针对复杂问题进行更深入的思考，并减少'幻觉'现象。",
+                important: true,
+                tags: ["AI", "GPT-5", "发布"],
+                url: "https://iknow.stpi.narl.org.tw/post/Read.aspx?PostID=22133"
+            },
+            {
+                date: "2025-08-05",
+                title: "OpenAI与多家出版社达成内容授权协议",
+                content: "OpenAI宣布与多家主流出版社达成内容授权协议，为其AI模型训练获得高质量内容资源。这些协议将帮助OpenAI改善模型质量，同时为内容创作者提供新的收入来源。",
+                important: false,
+                tags: ["合作", "内容授权", "出版"],
+                url: "#"
+            },
+            {
+                date: "2025-07-30",
+                title: "ChatGPT新增语音对话功能，支持更自然交互",
+                content: "OpenAI为ChatGPT推出了增强版语音对话功能，支持更自然、流畅的语音交互。新功能采用了改进的语音合成技术，使AI助手的语音更加自然且富有表现力。",
+                important: false,
+                tags: ["产品更新", "语音交互", "ChatGPT"],
+                url: "#"
+            },
+            {
+                date: "2025-07-25",
+                title: "研究：AI助手提高程序员生产力40%以上",
+                content: "一项由OpenAI支持的研究显示，使用AI编程助手的程序员在生产效率上提高了40%以上。研究跟踪了数百名开发人员在使用AI编码助手前后的工作效率变化。",
+                important: false,
+                tags: ["研究", "编程", "生产力"],
+                url: "#"
+            },
+            {
+                date: "2025-07-17",
+                title: "Invideo AI基于GPT-4.1等模型革新视频制作",
+                content: "Invideo AI基于GPT-4.1、API中的图像生成和文本转语音模型，将OpenAI模型转化为完整的视频制作团队，使任何人都能轻松制作高质量视频。",
+                important: false,
+                tags: ["AI应用", "视频制作", "GPT-4.1"],
+                url: "https://openai.com/zh-Hans-CN/index/invideo-ai/"
+            },
+            {
+                date: "2025-07-10",
+                title: "OpenAI启动AI教育计划，培养下一代AI人才",
+                content: "OpenAI宣布启动一项全面的AI教育计划，旨在培养下一代AI人才。该计划包括在线课程、实践项目和奖学金机会，重点关注AI安全和伦理教育。",
+                important: true,
+                tags: ["教育", "人才培养", "伦理"],
+                url: "#"
+            },
+            {
+                date: "2025-07-05",
+                title: "ChatGPT新增实时网络搜索功能",
+                content: "OpenAI为ChatGPT推出了实时网络搜索功能，使AI助手能够获取最新信息并回答关于当前事件的问题。该功能首先向Plus和企业用户推出，后续将逐步扩大访问范围。",
+                important: false,
+                tags: ["产品更新", "搜索", "ChatGPT"],
+                url: "#"
+            },
+            {
+                date: "2025-06-28",
+                title: "OpenAI发表多模态学习研究突破论文",
+                content: "OpenAI的研究团队在顶级学术会议上发表了关于多模态学习的研究论文，介绍了一种新的方法，使AI模型能够更好地理解和关联文本、图像和音频信息。",
+                important: false,
+                tags: ["研究", "多模态", "学术"],
+                url: "#"
+            },
+            {
+                date: "2025-06-20",
+                title: "OpenAI在亚洲设立首个研发中心",
+                content: "OpenAI宣布在新加坡设立亚洲首个研发中心，专注于开发适合亚洲市场的AI技术和应用。该中心将招聘数百名研究人员和工程师，推动AI技术在亚洲的发展。",
+                important: true,
+                tags: ["扩张", "研发", "亚洲市场"],
+                url: "#"
+            },
+            {
+                date: "2024-09-14",
+                title: "OpenAI推出具有推理能力的o1预览模型",
+                content: "OpenAI开始向订阅用户推送o1预览模型，该模型对于复杂推理任务代表着AI能力的崭新水平，能够像人类一样在回答前进行思考。",
+                important: true,
+                tags: ["推理模型", "o1", "AI突破"],
+                url: "https://home.wuhan.gov.cn/mtbd/202409/t20240914_2455572.shtml"
+            },
+            {
+                date: "2024-05-13",
+                title: "GPT-4o发布，多模态能力大幅提升",
+                content: "OpenAI发布GPT-4o旗舰级多模态模型，具备原生处理文本、语音和图像的能力，实现了不同模态间的深度融合，大幅降低响应延迟。",
+                important: true,
+                tags: ["多模态", "GPT-4o", "AI"],
+                url: "https://www.ibm.com/cn-zh/think/topics/gpt-4o"
+            },
+            {
+                date: "2023-12-05",
+                title: "ChatGPT周活跃用户突破3亿",
+                content: "OpenAI首席执行官山姆·奥特曼宣布，ChatGPT的周活跃用户已突破3亿，距离达到2亿用户仅数月之遥。",
+                important: false,
+                tags: ["ChatGPT", "用户增长", "里程碑"],
+                url: "https://news.qq.com/rain/a/20241205A038W000"
+            },
+            {
+                date: "2023-06-15",
+                title: "微软将AI技术全面融入产品生态",
+                content: "微软宣布将AI技术全面融入产品和服务生态，从提供AI工具到构筑AI平台和生态，帮助开发者应对技术革命。",
+                important: false,
+                tags: ["微软", "AI生态", "合作"],
+                url: "https://news.microsoft.com/source/asia/2023/06/15/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E9%BB%84%E9%87%91%E6%97%B6%E4%BB%A3%E5%BC%80%E5%90%AF%EF%BC%8C%E5%BE%AE%E8%BD%AF%E9%87%8D%E6%9E%84%E5%AF%B9%E6%9C%AA%E6%9D%A5%E5%92%8C%E5%B7%A5%E4%BD%9C%E7%9A%84/?lang=zh-hans"
+            },
+            {
+                date: "2022-11-30",
+                title: "OpenAI发布ChatGPT",
+                content: "OpenAI公布了通过GPT-3.5系列大型语言模型微调而成的全新对话式AI模型ChatGPT，能够进行自然的多轮对话、高效的精准问答，还能生成各类文本。",
+                important: true,
+                tags: ["ChatGPT", "发布", "AI历史"],
+                url: "https://www.thepaper.cn/newsDetail_forward_21909720"
+            }
+        ];
+
+        // 渲染新闻功能
+        function renderNews(items) {
+            const timeline = document.querySelector('.timeline');
+            timeline.innerHTML = '';
+            
+            // 按日期降序排序
+            items.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // 更新新闻计数
+            document.getElementById('news-count').textContent = `显示 ${items.length} 条新闻`;
+            
+            items.forEach((item, index) => {
+                const newsElement = document.createElement('div');
+                newsElement.className = `timeline-item ${item.important ? 'important' : ''}`;
+                
+                newsElement.innerHTML = `
+                    <div class="timeline-circle"></div>
+                    <div class="timeline-content">
+                        <div class="date"><i class="far fa-calendar-alt"></i> ${formatDate(item.date)}</div>
+                        <h2>${item.title}</h2>
+                        <p>${item.content}</p>
+                        <div class="tags">
+                            ${item.tags.map(tag => `<span class="tag" data-tag="${tag}">${tag}</span>`).join('')}
+                        </div>
+                        <a href="${item.url}" class="read-more" target="_blank">阅读全文 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                `;
+                
+                timeline.appendChild(newsElement);
+                
+                // 添加延迟动画
+                setTimeout(() => {
+                    newsElement.classList.add('visible');
+                }, 100 + index * 100);
+            });
+            
+            // 添加标签点击事件
+            document.querySelectorAll('.tag').forEach(tag => {
+                tag.addEventListener('click', (e) => {
+                    const tagName = e.target.getAttribute('data-tag');
+                    filterByTag(tagName);
+                });
+            });
+        }
+        
+        // 日期格式化函数
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('zh-CN', options);
+        }
+        
+        // 搜索功能
+        function performSearch() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            if (searchTerm.trim() === '') {
+                renderNews(newsItems);
+                return;
+            }
+            
+            const filteredNews = newsItems.filter(item => 
+                item.title.toLowerCase().includes(searchTerm) || 
+                item.content.toLowerCase().includes(searchTerm) ||
+                item.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+            );
+            
+            renderNews(filteredNews);
+        }
+        
+        // 按标签过滤
+        function filterByTag(tagName) {
+            document.getElementById('search-input').value = tagName;
+            performSearch();
+        }
+        
+        // 过滤器功能
+        function setupFilters() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // 移除所有按钮的active类
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    // 给当前点击的按钮添加active类
+                    btn.classList.add('active');
+                    
+                    const filter = btn.getAttribute('data-filter');
+                    
+                    if (filter === 'all') {
+                        renderNews(newsItems);
+                    } else if (filter === 'important') {
+                        const filteredNews = newsItems.filter(item => item.important);
+                        renderNews(filteredNews);
+                    } else {
+                        const filteredNews = newsItems.filter(item => 
+                            item.tags.some(tag => tag.toLowerCase() === filter.toLowerCase())
+                        );
+                        renderNews(filteredNews);
+                    }
+                });
+            });
+        }
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            renderNews(newsItems);
+            setupFilters();
+            
+            // 添加输入框回车键搜索功能
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            // 模拟加载更多功能
+            window.addEventListener('scroll', () => {
+                const loadingElement = document.getElementById('loading');
+                if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+                    loadingElement.style.display = 'block';
+                    setTimeout(() => {
+                        loadingElement.style.display = 'none';
+                        // 这里可以添加实际加载更多数据的代码
+                    }, 1500);
+                }
+            });
+            
+            // 初始动画
+            setTimeout(() => {
+                document.querySelectorAll('.timeline-item').forEach(item => {
+                    item.classList.add('visible');
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>

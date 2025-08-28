@@ -10,7 +10,9 @@
     "weekday": "周三",
     "views": 1250,
     "comments": 45,
-    "isBreaking": true
+    "isBreaking": true,
+    "tags": ["OpenAI", "GPT-5", "大语言模型"],
+    "important": true
   },
   {
     "id": 2,
@@ -22,7 +24,9 @@
     "date": "2025-08-27",
     "weekday": "周三",
     "views": 890,
-    "comments": 32
+    "comments": 32,
+    "tags": ["谷歌", "Gemini", "医疗AI"],
+    "important": false
   },
   {
     "id": 3,
@@ -34,19 +38,23 @@
     "date": "2025-08-27",
     "weekday": "周三",
     "views": 756,
-    "comments": 28
+    "comments": 28,
+    "tags": ["特斯拉", "自动驾驶", "FSD"],
+    "important": true
   },
   {
     "id": 4,
     "title": "AI芯片市场预计2025年增长40%",
-    "summary": "根据最新市场报告，全球AI芯片市场预计在2025年将达到650亿美元，同比增长极速。NVIDIA、AMD和英特尔等公司正在加大投资力度。",
+    "summary": "根据最新市场报告，全球AI芯片市场预计在2025年将达到650亿美元，同比增长40%。NVIDIA、AMD和英特尔等公司正在加大投资力度。",
     "category": "硬件",
     "readTime": "3分钟阅读",
     "publishTime": "8小时前",
     "date": "2025-08-26",
     "weekday": "周二",
     "views": 623,
-    "comments": 19
+    "comments": 19,
+    "tags": ["AI芯片", "NVIDIA", "硬件"],
+    "important": false
   },
   {
     "id": 5,
@@ -66,11 +74,13 @@
     "summary": "OpenAI宣布ChatGPT企业版用户数量已突破100万大关，企业客户对AI工具的需求持续增长。该平台帮助企业提高了平均30%的工作效率。",
     "category": "商业应用",
     "readTime": "2分钟阅读",
-    "publishTime": "1天前",
+    "publishTime": "1极速前",
     "date": "2025-08-25",
     "weekday": "周一",
     "views": 1120,
-    "comments": 67
+    "comments": 67,
+    "tags": ["ChatGPT", "OpenAI", "企业应用"],
+    "important": true
   },
   {
     "id": 7,
@@ -106,7 +116,9 @@
     "date": "2025-08-24",
     "weekday": "周日",
     "views": 1340,
-    "comments": 78
+    "comments": 78,
+    "tags": ["Meta", "Llama", "开源模型"],
+    "important": true
   },
   {
     "id": 10,
@@ -135,7 +147,7 @@
   {
     "id": 12,
     "title": "AI助手在软件工程领域的应用率达到68%",
-    "summary": "最新调查显示，全球软件工程师中已有68%的人在日常工作中使用AI辅助编程工具，其中85%的受访者表示AI提高了他们的工作效率。",
+    "summary": "最新调查显示，全球软件工程师中已有68%的人在使用AI辅助编程工具，其中85%的受访者表示AI提高了他们的工作效率。",
     "category": "商业应用",
     "readTime": "2分钟阅读",
     "publishTime": "3天前",
@@ -158,7 +170,7 @@
   },
   {
     "id": 14,
-    "title": "AI诊断系统在新冠检测中准确率达99.2%",
+    "title": "AI诊断系统在新冠检测中准确率达到99.2%",
     "summary": "一款基于深度学习的AI诊断系统在新冠病毒检测中表现出色，准确率达到99.2%，比传统检测方法快5倍。",
     "category": "医疗AI",
     "readTime": "5分钟阅读",
@@ -207,14 +219,14 @@
   {
     "id": 18,
     "title": "AI在金融欺诈检测中的应用减少损失30亿美元",
-    "summary": "金融行业采用AI欺诈检测系统后，在过去一年中减少了约30亿美元的欺诈损失，检测准确率达到97%。",
+    "summary": "金融行业采用AI欺诈检测系统后，在过去一年中减少了约30亿美元欺诈损失，检测准确率达到97%。",
     "category": "商业应用",
     "readTime": "4分钟阅读",
     "publishTime": "6天前",
-    "date": "2025-08-20",
-    "weekday": "周三",
-    "views": 890,
-    "comments": 35
+    "date": "2025-08-21",
+    "weekday": "周四",
+    "views": 670,
+    "comments": 29
   },
   {
     "id": 19,
@@ -326,7 +338,7 @@
   },
   {
     "id": 28,
-    "title": "AI翻译技术突破语言障碍，准确率达99.5%",
+    "title": "AI翻译技术突破语言障碍，准确率达到99.5%",
     "summary": "最新的AI翻译技术在常用语言对的翻译中准确率已达99.5%，接近人类专业翻译水平。",
     "category": "大语言模型",
     "readTime": "3分钟阅读",
@@ -338,7 +350,7 @@
   },
   {
     "id": 29,
-    "title": "AI预测模型成功预测3次地震，准确率达85%",
+    "title": "AI预测模型成功预测3次地震，准确率达到85%",
     "summary": "基于机器学习的地震预测模型在过去一个月中成功预测了3次中等强度地震，准确率达到85%。",
     "category": "科学研究",
     "readTime": "5分钟阅读",

@@ -13,6 +13,7 @@ interface NewsCardProps {
   comments: number;
   imageUrl?: string;
   isBreaking?: boolean;
+  tags?: string[];
 }
 
 const NewsCard = ({
@@ -24,7 +25,8 @@ const NewsCard = ({
   views,
   comments,
   imageUrl,
-  isBreaking = false
+  isBreaking = false,
+  tags = []
 }: NewsCardProps) => {
   // 使用语言数据钩子加载通用文本配置
   const { data: indexData } = useLanguageData<any>('index.json');
@@ -48,6 +50,22 @@ const NewsCard = ({
               </li>
             ))}
           </ul>
+
+          {/* 标签显示 */}
+          {tags.length > 0 && (
+            <div className="flex flex-wrap gap-1 mb-3">
+              {tags.slice(0, 3).map((tag, index) => (
+                <Badge key={index} variant="secondary" className="text-xs">
+                  {tag}
+                </Badge>
+              ))}
+              {tags.length > 3 && (
+                <Badge variant="outline" className="text-xs">
+                  +{tags.length - 3}
+                </Badge>
+              )}
+            </div>
+          )}
 
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <div className="flex items-center space-x-4">

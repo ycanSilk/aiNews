@@ -10,7 +10,8 @@
     "weekday": "周三",
     "views": 1250,
     "comments": 45,
-    "isBreaking": true
+    "isBreaking": true,
+    "tags": ["OpenAI", "GPT-5", "大语言模型", "产品发布"]
   },
   {
     "id": 2,
@@ -22,7 +23,8 @@
     "date": "2025-08-27",
     "weekday": "周三",
     "views": 890,
-    "comments": 32
+    "comments": 32,
+    "tags": ["谷歌", "Gemini", "医疗AI", "研究突破"]
   },
   {
     "id": 3,
@@ -34,19 +36,21 @@
     "date": "2025-08-27",
     "weekday": "周三",
     "views": 756,
-    "comments": 28
+    "comments": 28,
+    "tags": ["特斯拉", "FSD", "自动驾驶", "城市测试"]
   },
   {
     "id": 4,
     "title": "AI芯片市场预计2025年增长40%",
-    "summary": "根据最新市场报告，全球AI芯片市场预计在2025年将达到650亿美元，同比增长极速。NVIDIA、AMD和英特尔等公司正在加大投资力度。",
+    "summary": "根据最新市场报告，全球AI芯片市场预计在2025年将达到650亿美元，同比增长40%。NVIDIA、AMD和英特尔等公司正在加大投资力度。",
     "category": "硬件",
     "readTime": "3分钟阅读",
     "publishTime": "8小时前",
     "date": "2025-08-26",
     "weekday": "周二",
     "views": 623,
-    "comments": 19
+    "comments": 19,
+    "tags": ["机器学习", "气候预测", "深度学习", "科学研究"]
   },
   {
     "id": 5,
@@ -58,7 +62,8 @@
     "date": "2025-08-26",
     "weekday": "周二",
     "views": 445,
-    "comments": 15
+    "comments": 15,
+    "tags": ["ChatGPT", "企业版", "OpenAI", "商业应用"]
   },
   {
     "id": 6,
@@ -70,7 +75,8 @@
     "date": "2025-08-25",
     "weekday": "周一",
     "views": 1120,
-    "comments": 67
+    "comments": 67,
+    "tags": ["微软", "Copilot", "GPT-5", "商业应用"]
   },
   {
     "id": 7,
@@ -82,7 +88,8 @@
     "date": "2025-08-25",
     "weekday": "周一",
     "views": 980,
-    "comments": 45
+    "comments": 45,
+    "tags": ["AI版权", "法律争议", "生成内容", "法律伦理"]
   },
   {
     "id": 8,
@@ -94,7 +101,8 @@
     "date": "2025-08-25",
     "weekday": "周一",
     "views": 870,
-    "comments": 52
+    "comments": 52,
+    "tags": ["Meta", "Llama", "开源模型", "大语言模型"]
   },
   {
     "id": 9,
@@ -106,7 +114,8 @@
     "date": "2025-08-24",
     "weekday": "周日",
     "views": 1340,
-    "comments": 78
+    "comments": 78,
+    "tags": ["Midjourney", "AI绘画", "创意生成", "图像生成"]
   },
   {
     "id": 10,
@@ -118,7 +127,8 @@
     "date": "2025-08-24",
     "weekday": "周日",
     "views": 920,
-    "comments": 41
+    "comments": 41,
+    "tags": ["英伟达", "H200", "AI芯片", "硬件"]
   },
   {
     "id": 11,
@@ -142,7 +152,8 @@
     "date": "2025-08-23",
     "weekday": "周六",
     "views": 890,
-    "comments": 36
+    "comments": 36,
+    "tags": ["AI编程", "软件工程", "开发工具", "商业应用"]
   },
   {
     "id": 13,
@@ -154,7 +165,8 @@
     "date": "2025-08-22",
     "weekday": "周五",
     "views": 1230,
-    "comments": 67
+    "comments": 67,
+    "tags": ["清华大学", "THUDM", "中文大模型", "大语言模型"]
   },
   {
     "id": 14,
@@ -166,7 +178,8 @@
     "date": "2025-08-22",
     "weekday": "周五",
     "views": 950,
-    "comments": 42
+    "comments": 42,
+    "tags": ["AI诊断", "医疗AI", "新冠检测", "深度学习"]
   },
   {
     "id": 15,
@@ -178,7 +191,8 @@
     "date": "2025-08-21",
     "weekday": "周四",
     "views": 780,
-    "comments": 53
+    "comments": 53,
+    "tags": ["AI伦理", "行业标准", "科技巨头", "法律伦理"]
   },
   {
     "id": 16,
@@ -190,7 +204,8 @@
     "date": "2025-08-21",
     "weekday": "周四",
     "views": 1780,
-    "comments": 124
+    "comments": 124,
+    "tags": ["苹果", "iOS", "生成式AI", "商业应用"]
   },
   {
     "id": 17,
@@ -202,7 +217,8 @@
     "date": "2025-08-20",
     "weekday": "周三",
     "views": 650,
-    "comments": 28
+    "comments": 28,
+    "tags": ["开源AI", "社区贡献", "大语言模型", "开源"]
   },
   {
     "id": 18,
@@ -214,7 +230,8 @@
     "date": "2025-08-20",
     "weekday": "周三",
     "views": 890,
-    "comments": 35
+    "comments": 35,
+    "tags": ["金融AI", "欺诈检测", "商业应用", "安全"]
   },
   {
     "id": 19,
@@ -226,7 +243,8 @@
     "date": "2025-08-19",
     "weekday": "周二",
     "views": 1120,
-    "comments": 76
+    "comments": 76,
+    "tags": ["自动驾驶", "卡车运输", "商用领域", "技术进展"]
   },
   {
     "id": 20,
@@ -238,7 +256,8 @@
     "date": "2025-08-19",
     "weekday": "周二",
     "views": 1450,
-    "comments": 98
+    "comments": 98,
+    "tags": ["AI音乐", "格莱美奖", "创意生成", "艺术AI"]
   },
   {
     "id": 21,
@@ -250,7 +269,8 @@
     "date": "2025-08-18",
     "weekday": "周一",
     "views": 780,
-    "comments": 43
+    "comments": 43,
+    "tags": ["量子计算", "机器学习", "科学研究", "技术突破"]
   },
   {
     "id": 22,
@@ -262,7 +282,8 @@
     "date": "2025-08-18",
     "weekday": "周一",
     "views": 920,
-    "comments": 51
+    "comments": 51,
+    "tags": ["AI人才", "就业市场", "商业应用", "薪资"]
   },
   {
     "id": 23,
@@ -274,7 +295,8 @@
     "date": "2025-08-17",
     "weekday": "周日",
     "views": 650,
-    "comments": 29
+    "comments": 29,
+    "tags": ["AI教育", "在线学习", "商业应用", "教育科技"]
   },
   {
     "id": 24,
@@ -286,7 +308,8 @@
     "date": "2025-08-17",
     "weekday": "周日",
     "views": 580,
-    "comments": 24
+    "comments": 24,
+    "tags": ["AI材料科学", "新材料研发", "科学研究", "技术加速"]
   },
   {
     "id": 25,
@@ -298,7 +321,8 @@
     "date": "2025-08-16",
     "weekday": "周六",
     "views": 1340,
-    "comments": 95
+    "comments": 95,
+    "tags": ["欧盟", "AI法案", "法律伦理", "行业法规"]
   },
   {
     "id": 26,
@@ -310,7 +334,8 @@
     "date": "2025-08-16",
     "weekday": "周六",
     "views": 1650,
-    "comments": 112
+    "comments": 112,
+    "tags": ["AI视频生成", "创意生成", "专业视频", "技术突破"]
   },
   {
     "id": 27,
@@ -321,8 +346,9 @@
     "publishTime": "11天前",
     "date": "2025-08-15",
     "weekday": "周五",
-    "views": 1280,
-    "comments": 87
+"views": 1280,
+    "comments": 87,
+    "tags": ["脑机接口", "医疗AI", "瘫痪治疗", "技术突破"]
   },
   {
     "id": 28,
@@ -334,7 +360,8 @@
     "date": "2025-08-15",
     "weekday": "周五",
     "views": 890,
-    "comments": 45
+    "comments": 45,
+    "tags": ["AI翻译", "语言技术", "大语言模型", "技术突破"]
   },
   {
     "id": 29,
@@ -346,7 +373,8 @@
     "date": "2025-08-14",
     "weekday": "周四",
     "views": 1560,
-    "comments": 103
+    "comments": 103,
+    "tags": ["地震预测", "机器学习", "科学研究", "安全技术"]
   },
   {
     "id": 30,
@@ -358,6 +386,8 @@
     "date": "2025-08-14",
     "weekday": "周四",
     "views": 1120,
-    "comments": 76
+    "comments": 76,
+    "tags": ["AI计算中心", "贵州", "硬件", "超级计算"]
   }
+]
 ]
