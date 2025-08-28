@@ -54,7 +54,7 @@ const Header = () => {
               <a 
                 key={index}
                 href={item.href}
-                className="text-muted-foreground hover:text-primary transition-colors"
+                className="hover:text-blue-500 transition-colors hover:border-b-2 hover:border-blue-500"
               >
                 {item.label}
               </a>
@@ -74,7 +74,7 @@ const Header = () => {
               <Input
                 type="search"
                 placeholder={indexData?.header?.searchPlaceholder || "搜索AI新闻..."}
-                className="pl-10 w-64 bg-news-background border-border focus:border-primary"
+                className="pl-10 w-64 hover:border-blue-500"
               />
             </div>
             
@@ -141,12 +141,12 @@ const Header = () => {
                   className="xl:hidden bg-news-card border-t border-border fixed top-16 left-0 right-0 z-30" 
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <nav className="container mx-auto px-4 py-4 flex flex-col space-y-4">
+                  <nav className="container mx-auto flex flex-col ">
                     {indexData?.header?.navItems?.map((item: any, index: number) => (
                       <a 
                         key={index}
                         href={item.href}
-                        className="text-muted-foreground hover:text-primary transition-colors border-b border-border/50 pb-2"
+                        className="text-muted-foreground hover:text-black transition-colors border-b border-border/50 py-2 px-3 hover:bg-blue-400"
                       >
                         {item.label}
                       </a>

@@ -7,6 +7,8 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import Index from "./pages/Index";
 import IndexEn from "./pages/Index.en";
 import Timeline from "./pages/Timeline";
+import ChineseTimeline from "./pages/ch/Timeline";
+import EnglishTimeline from "./pages/en/Timeline";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,8 +23,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/en" element={<IndexEn />} />
-            <Route path="/timeline" element={<Timeline />} />
-            <Route path="/en/timeline" element={<Timeline />} />
+            <Route path="/timeline" element={<ChineseTimeline />} />
+            <Route path="/en/timeline" element={<EnglishTimeline />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

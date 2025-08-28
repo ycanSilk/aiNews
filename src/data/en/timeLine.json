@@ -1,0 +1,34 @@
+{
+  "defaultConfig": {
+    "title": "Timeline News",
+    "subtitle": "Explore important milestones in OpenAI's development journey",
+    "defaultSearchTerm": "OpenAI",
+    "hotSearchTags": ["AI", "GPT", "DALL-E", "ChatGPT", "Sora"],
+    "uiTexts": {
+      "searchPlaceholder": "Enter keywords to search...",
+      "hotSearchLabel": "Hot searches:",
+      "filters": {
+        "all": "All",
+        "important": "Key Milestones",
+        "product": "Product Launches",
+        "research": "Research Breakthroughs"
+      },
+      "newsCount": "Showing {count} news items",
+      "loading": "Loading...",
+      "loadMore": "Load more news",
+      "readMore": "Read more"
+    },
+    "filterIcons": {
+      "all": "fas fa-layer-group",
+      "important": "fas fa-star",
+      "product": "fas fa-cube",
+      "research": "fas fa-flask"
+    },
+    "searchIcon": "fas fa-search",
+    "calendarIcon": "fas fa-calendar-alt",
+    "arrowIcon": "fas fa-arrow-right",
+    "spinnerIcon": "fas fa-spinner fa-spin",
+    "plusIcon": "fas fa-plus",
+    "newspaperIcon": "fas fa-newspaper"
+  }
+}
