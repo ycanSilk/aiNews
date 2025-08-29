@@ -1,19 +1,27 @@
 import React from 'react';
 import './Timeline.css';
+import { useLanguageData } from '@/hooks/useLanguageData';
 
 interface SearchBoxProps {
   searchTerm: string;
   onSearchChange: (term: string) => void;
   onSearch: () => void;
-  hotSearchTags: string[];
 }
 
 const SearchBox: React.FC<SearchBoxProps> = ({
   searchTerm,
   onSearchChange,
-  onSearch,
-  hotSearchTags
+  onSearch
 }) => {
+  const { data: config, loading, error } = useLanguageData('timeLine.json');
+
+  if (loading) return <div className="search-box">Loading search...</div>;
+  if (error) return <div className="search-box">Error loading search</div>;
+
+  const uiTexts = config?.defaultConfig?.uiTexts;
+  const hotSearchTags = config?.defaultConfig?.hotSearchTags || [];
+  const searchIcon = config?.defaultConfig?.searchIcon || "fas fa-search";
+
   return (
     <div className="search-box">
       <div className="search-input-group">
@@ -22,15 +30,15 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && onSearch()}
-          placeholder="输入关键词搜索..."
+          placeholder={uiTexts?.searchPlaceholder || "Enter keywords to search..."}
           className="search-input"
         />
         <button onClick={onSearch} className="search-btn">
-          <i className="fas fa-search"></i>
+          <i className={searchIcon}></i>
         </button>
       </div>
       <div className="hot-search-tags">
-        <span>热门搜索：</span>
+        <span>{uiTexts?.hotSearchLabel || "Hot searches:"}</span>
         {hotSearchTags.map((tag, index) => (
           <span 
             key={index} 

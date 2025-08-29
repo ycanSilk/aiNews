@@ -96,27 +96,15 @@ const Footer = () => {
           {/* Social Links */}
           <div className="flex flex-col items-center">
             <h4 className="font-semibold mb-4">{footerConfig.socialTitle || '关注我们'}</h4>
-            <div className="flex space-x-4 md:space-x-6 justify-center md:justify-start">
+            <div className="flex justify-center md:justify-start">
               {footerConfig.socialLinks?.map((social: any, index: number) => (
                 <a key={index} href={social.href} className="text-background/70 hover:text-background transition-colors">
-                  {social.platform === 'Twitter' && <Twitter className="w-5 h-5" />}
-                  {social.platform === 'GitHub' && <Github className="w-5 h-5" />}
-                  {social.platform === 'Email' && <Mail className="w-5 h-5" />}
-                  {social.platform === 'RSS' && <Rss className="w-5 h-5" />}
+                 <span>{social.platform === 'Email' && <Mail className="w-5 h-5" />} {social.platform === 'Email' && 'gg2235676091@gmail.com'}</span> 
                 </a>
               )) || (
                 <>
                   <a href="#" className="text-background/70 hover:text-background transition-colors">
-                    <Twitter className="w-5 h-5" />
-                  </a>
-                  <a href="#" className="text-background/ 70 hover:text-background transition-colors">
-                    <Github className="w-5 h-5" />
-                  </a>
-                  <a href="#" className="text-background/70 hover:text-background transition-colors">
                     <Mail className="w-5 h-5" />
-                  </a>
-                  <a href="#" className="text-background/70 hover:text-background transition-colors">
-                    <Rss className="w-5 h-5" />
                   </a>
                 </>
               )}

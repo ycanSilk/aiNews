@@ -2,10 +2,10 @@
   "header": {
     "logoText": "AI新闻",
     "navItems": [
-      {"label": "首页", "href": "/"},
-      {"label": "博客", "href": "/blog"},
-      {"label": "时间线新闻", "href": "/timeline"},
-      {"label": "关于我们", "href": "/about"}
+      {"label": "首页", "href": "/ch/index"},
+      {"label": "文章", "href": "/ch/article"},
+      {"label": "时间线新闻", "href": "/ch/timeline"},
+      {"label": "关于我们", "href": "/ch/aboutme"}
     ],
     "searchPlaceholder": "搜索AI资讯...",
     "languageOptions": [
@@ -71,10 +71,7 @@
       {"label": "医疗AI", "href": "/medical-ai"}
     ],
     "socialLinks": [
-      {"platform": "Twitter", "icon": "twitter", "href": "#"},
-      {"platform": "GitHub", "icon": "github", "href": "#"},
-      {"platform": "Email", "icon": "mail", "href": "#"},
-      {"platform": "RSS", "icon": "rss", "href": "#"}
+      {"platform": "Email", "icon": "mail", "href": "#"}
     ],
     "copyright": "© 极客AI. 保留所有权利."
   },

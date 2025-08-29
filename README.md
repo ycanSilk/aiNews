@@ -1,73 +1,53 @@
-# Welcome to your Lovable project
+# AI新闻资讯平台
 
-## Project info
+## 🚀 项目概述
 
-**URL**: https://lovable.dev/projects/17b7bb54-efec-4929-bb81-0e798e30afb3
+AI新闻资讯平台是一个专注于人工智能领域的现代化信息聚合与分发平台。我们致力于为开发者、研究人员、企业家和AI爱好者提供最新、最全面的人工智能技术动态、行业洞察和市场趋势分析。
 
-## How can I edit this code?
+## ✨ 核心特色
 
-There are several ways of editing your application.
+### 🎯 专业AI领域深度覆盖
+- 24小时不间断采集全球AI领域最新动态
+- 确保信息及时性和准确性
+- 专注于大语言模型、智能体、计算机视觉等前沿技术
 
-**Use Lovable**
+### 🌍 多语言国际化支持
+- 完整的中英文双语界面
+- 满足全球用户的语言需求
+- 促进国际技术交流与合作
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/17b7bb54-efec-4929-bb81-0e798e30afb3) and start prompting.
+### 📊 智能时间轴分析
+- 可视化展示AI技术发展历程
+- 帮助用户理解技术演进脉络和关键节点
+- 支持按时间、重要性、产品类型等多维度筛选
 
-Changes made via Lovable will be committed automatically to this repo.
+### 🤝 技术社区互动
+- 构建AI爱好者交流平台
+- 分享见解、讨论趋势、建立专业人脉网络
+- 实时评论和互动功能
 
-**Use your preferred IDE**
+### 🔒 内容质量保障
+- 严格的内容审核机制
+- 确保信息来源可靠、内容专业、观点客观
+- 专业的分类和标签系统
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 🎯 个性化推荐系统
+- 基于用户兴趣和行为模式的智能推荐
+- 提供精准的内容匹配和个性化体验
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-Follow these steps:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## 🆚 与传统资讯平台对比优势
 
-# Step 3: Install the necessary dependencies.
-npm i
+| 特性 | AI新闻资讯平台 | 传统资讯平台 |
+|------|----------------|-------------|
+| 内容覆盖 | 专业AI领域深度覆盖 | 泛领域内容覆盖 |
+| 技术深度 | 技术内容准确专业 | 技术深度有限 |
+| 语言支持 | 实时多语言支持 | 单语言为主 |
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
 
-**Edit a file directly in GitHub**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
 
-**Use GitHub Codespaces**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/17b7bb54-efec-4929-bb81-0e798e30afb3) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)

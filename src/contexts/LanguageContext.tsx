@@ -37,12 +37,31 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
   const setLanguage = (lang: string) => {
     setCurrentLanguage(lang);
-    // 根据语言跳转到对应路由
+    // 根据当前路径智能切换到对应语言版本的相同页面
+    const currentPath = location.pathname;
+    let targetPath = currentPath;
+    
     if (lang === 'en') {
-      navigate('/en');
+      // 切换到英文版
+      if (currentPath.startsWith('/ch/')) {
+        targetPath = currentPath.replace('/ch/', '/en/');
+      } else if (currentPath === '/ch') {
+        targetPath = '/en';
+      } else if (!currentPath.startsWith('/en/') && currentPath !== '/en') {
+        targetPath = '/en';
+      }
     } else {
-      navigate('/');
+      // 切换到中文版
+      if (currentPath.startsWith('/en/')) {
+        targetPath = currentPath.replace('/en/', '/ch/');
+      } else if (currentPath === '/en') {
+        targetPath = '/ch';
+      } else if (!currentPath.startsWith('/ch/') && currentPath !== '/ch') {
+        targetPath = '/ch';
+      }
     }
+    
+    navigate(targetPath);
   };
 
   const getDataPath = (fileName: string): string => {

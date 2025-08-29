@@ -1,0 +1,78 @@
+{
+  "pageTitle": {
+    "title": "AI News Platform",
+    "description": "A modern information aggregation and distribution platform focused on the artificial intelligence field"
+  },
+  "coreFeatures": {
+    "title": "✨ Core Features",
+    "features": [
+      {
+        "title": "🎯 Professional AI Field Coverage",
+        "items": [
+          "24/7 collection of the latest AI developments worldwide",
+          "Ensuring information timeliness and accuracy",
+          "Focus on cutting-edge technologies like large language models, intelligent agents, computer vision, etc."
+        ]
+      },
+      {
+        "title": "🌍 Multilingual International Support",
+        "items": [
+          "Complete bilingual interface in Chinese and English",
+          "Meeting the language needs of global users",
+          "Promoting international technical exchange and cooperation"
+        ]
+      },
+      {
+        "title": "📊 Intelligent Timeline Analysis",
+        "items": [
+          "Visual display of AI technology development history",
+          "Helping users understand technology evolution and key milestones",
+          "Support for multi-dimensional filtering by time, importance, product type, etc."
+        ]
+      },
+      {
+        "title": "🤝 Technical Community Interaction",
+        "items": [
+          "Building a communication platform for AI enthusiasts",
+          "Sharing insights, discussing trends, establishing professional networks",
+          "Real-time comments and interaction features"
+        ]
+      },
+      {
+        "title": "🔒 Content Quality Assurance",
+        "items": [
+          "Strict content review mechanism",
+          "Ensuring reliable information sources, professional content, and objective perspectives",
+          "Professional classification and tagging system"
+        ]
+      },
+      {
+        "title": "🎯 Personalized Recommendation System",
+        "items": [
+          "Intelligent recommendations based on user interests and behavior patterns",
+          "Providing accurate content matching and personalized experiences"
+        ]
+      }
+    ]
+  },
+  "comparisonAdvantages": {
+    "title": "🆚 Advantages Compared to Traditional Information Platforms",
+    "table": [
+      {
+        "feature": "Content Coverage",
+        "aiPlatform": "Professional AI field depth coverage",
+        "traditionalPlatform": "General content coverage"
+      },
+      {
+        "feature": "Technical Depth",
+        "aiPlatform": "Accurate and professional technical content",
+        "traditionalPlatform": "Limited technical depth"
+      },
+      {
+        "feature": "Language Support",
+        "aiPlatform": "Real-time multilingual support",
+        "traditionalPlatform": "Primarily single language"
+      }
+    ]
+  }
+}

@@ -2,10 +2,10 @@
   "header": {
     "logoText": "AI News",
     "navItems": [
-      {"label": "Home", "href": "/en"},
-      {"label": "Blog", "href": "/en/blog"},
+      {"label": "Home", "href": "/en/index"},
+      {"label": "Aticle", "href": "/en/article"},
       {"label": "Timeline News", "href": "/en/timeline"},
-      {"label": "About Us", "href": "/en/about"}
+      {"label": "About Us", "href": "/en/aboutme"}
     ],
     "searchPlaceholder": "Search AI news...",
     "languageOptions": [
@@ -71,10 +71,7 @@
       {"label": "Medical AI", "href": "/en/medical-ai"}
     ],
     "socialLinks": [
-      {"platform": "Twitter", "icon": "twitter", "href": "#"},
-      {"platform": "GitHub", "icon": "github", "href": "#"},
-      {"platform": "Email", "icon": "mail", "href": "#"},
-      {"platform": "RSS", "icon": "rss", "href": "#"}
+      {"platform": "Email", "icon": "mail", "href": "#"}
     ],
     "copyright": "© 2024 AI News Hub. All rights reserved."
   },
