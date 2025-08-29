@@ -28,10 +28,10 @@ const App = () => (
         <LanguageProvider>
           <Routes>
             <Route path="/" element={<Navigate to="/en/index" replace />} />
-            <Route path="/ch/index" element={<Index />} />
-            <Route path="/ch/article" element={<ArticlePageCh />} />
-            <Route path="/ch/timeline" element={<ChineseTimeline />} />
-            <Route path="/ch/aboutme" element={<AboutMeCh />} />
+            <Route path="/cn/index" element={<Index />} />
+            <Route path="/cn/article" element={<ArticlePageCh />} />
+            <Route path="/cn/timeline" element={<ChineseTimeline />} />
+            <Route path="/cn/aboutme" element={<AboutMeCh />} />
             
             <Route path="/en/index" element={<IndexEn />} />            
             <Route path="/en/article" element={<ArticlePageEn />} />            

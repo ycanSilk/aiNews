@@ -1,0 +1,55 @@
+{
+  "version": "1.0",
+  "supportedLanguages": ["en", "zh"],
+  "defaultLanguage": "en",
+  "languageNames": {
+    "en": "English",
+    "zh": "中文"
+  },
+  "uiTexts": {
+    "searchPlaceholder": {
+      "en": "Search AI news...",
+      "zh": "搜索AI新闻..."
+    },
+    "filterAll": {
+      "en": "All",
+      "zh": "全部"
+    },
+    "filterBreaking": {
+      "en": "Breaking News",
+      "zh": "突发新闻"
+    },
+    "filterImportant": {
+      "en": "Important",
+      "zh": "重要"
+    },
+    "readMore": {
+      "en": "Read More",
+      "zh": "阅读更多"
+    },
+    "views": {
+      "en": "views",
+      "zh": "浏览"
+    },
+    "comments": {
+      "en": "comments",
+      "zh": "评论"
+    },
+    "published": {
+      "en": "Published",
+      "zh": "发布于"
+    },
+    "by": {
+      "en": "by",
+      "zh": "作者"
+    }
+  },
+  "dateFormats": {
+    "en": "MMMM D, YYYY",
+    "zh": "YYYY年M月D日"
+  },
+  "timeFormats": {
+    "en": "h:mm A",
+    "zh": "HH:mm"
+  }
+}

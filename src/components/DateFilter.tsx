@@ -1,23 +1,26 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronDown } from "lucide-react";
-import { useLanguageData } from '@/hooks/useLanguageData';
+import { useMongoDBData } from '@/hooks/useMongoDBData';
 import { useLanguage } from '@/contexts/LanguageContext';
 import CalendarCN from './CalendarCN';
 import CalendarEN from './CalendarEN';
 
 interface DateFilterProps {
   onDateRangeChange: (startDate: string | null, endDate: string | null) => void;
+  onRangeTextChange?: (rangeText: string) => void;
 }
 
-const DateFilter = ({ onDateRangeChange }: DateFilterProps) => {
-  // 使用语言数据钩子加载配置数据
-  const { data: indexData } = useLanguageData<any>('index.json');
+const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) => {
+  // 使用MongoDB API获取配置数据
+  const { data: indexData } = useMongoDBData<any>('index');
   const { currentLanguage } = useLanguage();
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-  const [showDropDown, setShowDropDown] = useState<boolean>(false);
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
+
+  const [showDropDown, setShowDropDown] = useState<boolean>(false);
+  const [selectedRange, setSelectedRange] = useState<string>("最近一周");
   
   // 创建ref用于检测点击外部
   const dropDownRef = useRef<HTMLDivElement>(null);
@@ -31,20 +34,34 @@ const DateFilter = ({ onDateRangeChange }: DateFilterProps) => {
       // 全部
       setStartDate("");
       setEndDate("");
+      const allText = indexData?.newsSection?.allText || '全部';
+      setSelectedRange(allText);
+ 
       onDateRangeChange(null, null);
     } else {
       const end = new Date();
       const start = new Date();
-      start.setDate(end.getDate() - days);
+      start.setDate(end.getDate() - days + 1); // +1 确保包含起始日期
       
       const startDateStr = start.toISOString().split('T')[0];
       const endDateStr = end.toISOString().split('T')[0];
       
       setStartDate(startDateStr);
       setEndDate(endDateStr);
+      
+      // 设置选中的范围文本
+      let rangeText = '';
+      if (days === 3) rangeText = indexData?.newsSection?.last3DaysText || '最近三天';
+      else if (days === 7) rangeText = indexData?.newsSection?.lastWeekText || '最近一周';
+      else if (days === 15) rangeText = indexData?.newsSection?.lastHalfMonthText || '最近半月';
+      else if (days === 30) rangeText = indexData?.newsSection?.lastMonthText || '最近一个月';
+      setSelectedRange(rangeText);
+      
       onDateRangeChange(startDateStr, endDateStr);
     }
     setShowDropDown(false);
+    // 确保焦点回到日期范围按钮，提供更好的用户体验
+    buttonRef.current?.focus();
   };
 
   // 处理自定义日期范围选择
@@ -57,21 +74,28 @@ const DateFilter = ({ onDateRangeChange }: DateFilterProps) => {
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       
       if (diffDays <= 90) {
+        const customRangeText = `${startDate} ${indexData?.newsSection?.toText || '至'} ${endDate}`;
         onDateRangeChange(startDate, endDate);
       } else {
         alert(indexData?.newsSection?.dateRangeError || '日期范围不能超过90天');
       }
     }
     setShowCalendar(false);
+    // 确保焦点回到日期范围按钮，提供更好的用户体验
+    buttonRef.current?.focus();
   };
 
   // 清除日期筛选
   const handleClear = () => {
     setStartDate("");
     setEndDate("");
+    const lastWeekText = indexData?.newsSection?.lastWeekText || '最近一周';
+      setSelectedRange(lastWeekText);
     onDateRangeChange(null, null);
     setShowCalendar(false);
   };
+
+
 
   // 切换下拉菜单显示
   const toggleDropDown = () => {
@@ -128,11 +152,15 @@ const DateFilter = ({ onDateRangeChange }: DateFilterProps) => {
   
         <Button 
           variant="default" 
-          className="rounded-none bg-primary hover:bg-primary-hover flex items-center gap-2"
+          className={`rounded-none flex items-center gap-2 transition-all duration-200 ${
+            selectedRange !== '最近一周' 
+              ? 'bg-primary/90 ring-2 ring-primary/50' 
+              : 'bg-primary hover:bg-primary-hover'
+          }`}
           onClick={toggleDropDown}
           ref={buttonRef}
         >
-          {indexData?.newsSection?.dateRangeText || '日期范围'}
+          {selectedRange}
           <ChevronDown className="w-4 h-4 transition-transform duration-200" style={{ transform: showDropDown ? 'rotate(180deg)' : 'rotate(0)' }} />
         </Button>
         
@@ -182,7 +210,7 @@ const DateFilter = ({ onDateRangeChange }: DateFilterProps) => {
           ref={calendarButtonRef}
         >
           <Calendar className="w-4 h-4" />
-          {indexData?.newsSection?.selectDateRangeText || '选择日期范围'}
+          {startDate && endDate ? `${startDate} ${indexData?.newsSection?.toText || '至'} ${endDate}` : (indexData?.newsSection?.selectDateRangeText || '选择日期范围')}
         </Button>
         
         {/* 日历选择器 */}
@@ -217,10 +245,9 @@ const DateFilter = ({ onDateRangeChange }: DateFilterProps) => {
       
       {/* 当前筛选状态显示 */}
       {startDate && endDate && !showCalendar && !showDropDown && (
-        <div className="text-sm text-muted-foreground mt-2 md:mt-0">
-          {indexData?.newsSection?.filteredText || '已筛选'}: {startDate} {indexData?.newsSection?.toText || '至'} {endDate}
+        <div className="text-sm text-muted-foreground mt-2 md:mt-0">    
           <button 
-            className="ml-2 text-primary hover:underline"
+            className="ml-2 text-white hover:underline border border-primary p-2 bg-primary"
             onClick={handleClear}
           >
             {indexData?.common?.clearText || '清除'}

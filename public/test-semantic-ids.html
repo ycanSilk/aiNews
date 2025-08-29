@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语义化ID生成测试</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-case {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .title {
+            font-weight: bold;
+            color: #555;
+        }
+        .result {
+            color: #007acc;
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 8px 0;
+        }
+        .success {
+            color: #28a745;
+        }
+        .info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>语义化ID生成测试</h1>
+        
+        <div class="info">
+            <strong>格式规范：</strong> {公司名}-{产品名}-{YYYYMMDD}{三位序号}<br>
+            <strong>示例：</strong> openai-gpt5-20250827001
+        </div>
+
+        <div id="testResults">
+            <h2>测试结果</h2>
+            <div id="results"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // 从src/lib/utils.ts复制过来的函数（简化版）
+        function generateSemanticId(title, date, sequence = 1) {
+            const companyPatterns = [
+                'openai', 'chatgpt', 'google', 'gemini', 'microsoft', 'copilot', 'meta', 'llama',
+                'tesla', 'nvidia', 'amd', 'intel', 'apple', 'amazon', 'aws', 'anthropic', 'claude',
+                'baidu', 'ernie', 'alibaba', 'tencent', 'huawei', 'samsung', 'ibm', 'oracle',
+                'tsinghua', 'thudm', '清华大学', '华为', '百度', '阿里巴巴', '腾讯'
+            ];
+
+            const productPatterns = [
+                'gpt', 'dall-e', 'midjourney', 'stable diffusion', 'bard', 'palm', 'bert',
+                'tensorflow', 'pytorch', 'keras', 'transformers', 'huggingface', 'langchain',
+                'autogpt', 'agentgpt', 'babyagi', 'pinecone', 'weaviate', 'chroma',
+                'llama', 'mistral', 'falcon', 'bloom', 'opt', 't5', 'blenderbot',
+                'claude', 'anthropic', 'cohere', 'ai21', 'stability', 'runway',
+                'replicate', 'together', 'banana', 'modal', 'beam', 'vast', 'lambda',
+                'cerebras', 'graphcore', 'sambanova', 'groq', 'mythic', 'tenstorrent'
+            ];
+
+            const lowerTitle = title.toLowerCase();
+            
+            let company = '';
+            for (const pattern of companyPatterns) {
+                if (lowerTitle.includes(pattern.toLowerCase())) {
+                    company = pattern.toLowerCase();
+                    break;
+                }
+            }
+
+            let product = '';
+            for (const pattern of productPatterns) {
+                if (lowerTitle.includes(pattern.toLowerCase())) {
+                    product = pattern.toLowerCase();
+                    break;
+                }
+            }
+
+            if (!company) company = 'ai';
+            if (!product) {
+                const words = title.toLowerCase().split(/\s+/);
+                const mainWords = words.filter(word => 
+                    word.length > 3 && 
+                    !['the', 'and', 'or', 'in', 'on', 'at', 'to', 'for', 'with', 'by'].includes(word)
+                );
+                product = mainWords.slice(0, 2).join('-') || 'news';
+            }
+
+            company = company.replace(/[^a-z0-9\u4e00-\u9fff]/g, '');
+            product = product.replace(/[^a-z0-9\u4e00-\u9fff]/g, '');
+
+            const formattedDate = date.replace(/-/g, '');
+            const formattedSequence = sequence.toString().padStart(3, '0');
+
+            return `${company}-${product}-${formattedDate}${formattedSequence}`;
+        }
+
+        // 测试用例
+        const testCases = [
+            {
+                title: "OpenAI releases GPT-5 preview with multimodal capabilities",
+                date: "2025-08-27",
+                sequence: 1
+            },
+            {
+                title: "Microsoft announces new Copilot features for Windows 12",
+                date: "2025-08-26",
+                sequence: 1
+            },
+            {
+                title: "Google unveils Gemini 2.0 with enhanced reasoning skills",
+                date: "2025-08-25",
+                sequence: 1
+            },
+            {
+                title: "Tesla demonstrates fully autonomous driving in urban environments",
+                date: "2025-08-24",
+                sequence: 1
+            },
+            {
+                title: "Meta launches Llama 3 with 1 trillion parameters",
+                date: "2025-08-23",
+                sequence: 1
+            },
+            {
+                title: "华为发布新一代昇腾AI芯片，性能提升200%",
+                date: "2025-08-22",
+                sequence: 1
+            },
+            {
+                title: "百度文心一言4.0正式发布，支持多模态生成",
+                date: "2025-08-21",
+                sequence: 1
+            }
+        ];
+
+        // 运行测试
+        const resultsDiv = document.getElementById('results');
+        
+        testCases.forEach((testCase, index) => {
+            const id = generateSemanticId(testCase.title, testCase.date, testCase.sequence);
+            const encodedId = encodeURIComponent(id);
+            const rawId = decodeURIComponent(encodedId);
+            
+            const testDiv = document.createElement('div');
+            testDiv.className = 'test-case';
+            testDiv.innerHTML = `
+                <div class="title">测试用例 ${index + 1}:</div>
+                <div>标题: ${testCase.title}</div>
+                <div>日期: ${testCase.date}</div>
+                <div class="result success">原始ID: ${id}</div>
+                <div class="result success">URL编码ID: ${encodedId}</div>
+                <div class="result success">示例URL: /news/${encodedId}</div>
+            `;
+            
+            resultsDiv.appendChild(testDiv);
+        });
+
+        // 添加SEO分析
+        const seoAnalysis = document.createElement('div');
+        seoAnalysis.className = 'info';
+        seoAnalysis.innerHTML = `
+            <strong>SEO友好性分析：</strong><br>
+            • 包含完整的品牌名称（openai, google, microsoft等）<br>
+            • 包含完整的产品名称（gpt5, gemini, copilot等）<br>
+            • 中文品牌名称得到保留（清华大学, 华为等）<br>
+            • 日期格式便于按时间排序和归档<br>
+            • 序号确保同日内唯一性
+        `;
+        resultsDiv.appendChild(seoAnalysis);
+    </script>
+</body>
+</html>

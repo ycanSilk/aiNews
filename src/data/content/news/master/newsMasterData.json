@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2024-01-15T10:00:00Z",
+  "news": [
+    {
+      "id": 1,
+      "semanticId": "openai-gpt5-20250827001",
+      "category": "大语言模型",
+      "source": "OpenAI",
+      "author": "OpenAI Team",
+      "publishTime": "2025-08-27T09:00:00Z",
+      "isBreaking": true,
+      "isImportant": true,
+      "views": 15200,
+      "comments": 324,
+      "locales": {
+        "en": {
+          "title": "OpenAI Announces GPT-5 Launch Date Set for August 2025",
+          "summary": "OpenAI officially confirms GPT-5 will be released in August 2025, featuring breakthrough multimodal capabilities and significantly improved reasoning abilities.",
+          "tags": ["GPT-5", "OpenAI", "AI", "Multimodal", "2025"]
+        },
+        "zh": {
+          "title": "OpenAI宣布GPT-5将于2025年8月正式发布",
+          "summary": "OpenAI官方确认GPT-5将于2025年8月发布，具备突破性多模态能力和显著提升的推理能力。",
+          "tags": ["GPT-5", "OpenAI", "人工智能", "多模态", "2025"]
+        }
+      }
+    },
+    {
+      "id": 2,
+      "semanticId": "google-gemini-20250827002",
+      "category": "大语言模型",
+      "source": "Google",
+      "author": "Google AI Team",
+      "publishTime": "2025-08-27T08:30:00Z",
+      "isBreaking": false,
+      "isImportant": false,
+      "views": 8900,
+      "comments": 156,
+      "locales": {
+        "en": {
+          "title": "Google Gemini 2.0 Achieves New Breakthrough in Mathematical Reasoning",
+          "summary": "Google's Gemini 2.0 model demonstrates unprecedented performance in complex mathematical problem solving, surpassing human expert level.",
+          "tags": ["Gemini", "Google", "AI", "Mathematics", "Reasoning"]
+        },
+        "zh": {
+          "title": "谷歌Gemini 2.0在数学推理领域取得新突破",
+          "summary": "谷歌Gemini 2.0模型在复杂数学问题解决方面展现出前所未有的性能，超越人类专家水平。",
+          "tags": ["Gemini", "谷歌", "人工智能", "数学", "推理"]
+        }
+      }
+    }
+  ]
+}

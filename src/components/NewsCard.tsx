@@ -1,7 +1,9 @@
-import { Clock, Eye, MessageSquare } from "lucide-react";
+import { Clock, Eye } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguageData } from '@/hooks/useLanguageData';
+// 导入工具函数
+import { formatDateToChinese, generateIncrementedViews } from '@/lib/utils';
 
 interface NewsCardProps {
   title: string;
@@ -10,7 +12,6 @@ interface NewsCardProps {
   readTime: string;
   publishTime: string;
   views: number;
-  comments: number;
   imageUrl?: string;
   isBreaking?: boolean;
   tags?: string[];
@@ -23,7 +24,6 @@ const NewsCard = ({
   readTime,
   publishTime,
   views,
-  comments,
   imageUrl,
   isBreaking = false,
   tags = []
@@ -71,20 +71,15 @@ const NewsCard = ({
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-1">
                 <Clock className="w-3 h-3" />
-                <span>{publishTime}</span>
+                <span>{formatDateToChinese(publishTime)}</span>
               </div>
               <div className="flex items-center space-x-1">
                 <Eye className="w-3 h-3 text-primary" />
                 <span className="text-primary">
-                  {views} {indexData?.common?.viewsText || '次阅读'}
+                  {generateIncrementedViews(views || 0)} {indexData?.common?.viewsText || '次阅读'}
                 </span>
               </div>
-              <div className="flex items-center space-x-1">
-                <MessageSquare className="w-3 h-3 text-primary" />
-                <span className="text-primary">
-                  {comments} {indexData?.common?.commentsText || '条评论'}
-                </span>
-              </div>
+
             </div>
             <a href="#" className="text-primary font-medium hover:underline transition-all duration-200 ">
               {indexData?.common?.readMoreText || '查看详情'}

@@ -12,8 +12,8 @@ const Header = () => {
   const languageRef = useRef<HTMLDivElement>(null);
   const { setLanguage } = useLanguage();
   
-  // 使用语言数据钩子加载header配置数据
-  const { data: indexData, loading, error } = useLanguageData<any>('index.json');
+  // 使用本地JSON文件获取header配置数据
+  const { data: indexData, loading, error } = useLanguageData('index.json');
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

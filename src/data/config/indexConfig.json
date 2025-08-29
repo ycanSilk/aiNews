@@ -1,0 +1,126 @@
+{
+  "version": "1.0",
+  "indexes": [
+    {
+      "name": "bySemanticId",
+      "description": "Index news items by semantic ID for fast lookup",
+      "keyPath": "semanticId",
+      "unique": true
+    },
+    {
+      "name": "byPublishDate",
+      "description": "Index news items by publish date for chronological sorting",
+      "keyPath": "publishTime",
+      "unique": false
+    },
+    {
+      "name": "byCategory",
+      "description": "Index news items by category for filtering",
+      "keyPath": "category",
+      "unique": false
+    },
+    {
+      "name": "bySource",
+      "description": "Index news items by source company",
+      "keyPath": "source",
+      "unique": false
+    },
+    {
+      "name": "breakingNews",
+      "description": "Index breaking news items",
+      "keyPath": "isBreaking",
+      "unique": false,
+      "filter": "isBreaking === true"
+    },
+    {
+      "name": "importantNews",
+      "description": "Index important news items",
+      "keyPath": "isImportant",
+      "unique": false,
+      "filter": "isImportant === true"
+    },
+    {
+      "name": "byViews",
+      "description": "Index news items by view count for popularity sorting",
+      "keyPath": "views",
+      "unique": false
+    },
+    {
+      "name": "byComments",
+      "description": "Index news items by comment count for engagement sorting",
+      "keyPath": "comments",
+      "unique": false
+    }
+  ],
+  "searchConfig": {
+    "fullTextSearchFields": [
+      {
+        "field": "title",
+        "weight": 2.0,
+        "analyzer": "standard"
+      },
+      {
+        "field": "summary",
+        "weight": 1.5,
+        "analyzer": "standard"
+      },
+      {
+        "field": "tags",
+        "weight": 1.0,
+        "analyzer": "keyword"
+      }
+    ],
+    "fuzzyMatching": {
+      "enabled": true,
+      "maxEdits": 2,
+      "prefixLength": 3
+    },
+    "highlighting": {
+      "enabled": true,
+      "maxFragments": 3,
+      "fragmentSize": 100
+    }
+  },
+  "sortingOptions": [
+    {
+      "name": "newestFirst",
+      "description": "Sort by publish date descending",
+      "field": "publishTime",
+      "direction": "desc"
+    },
+    {
+      "name": "oldestFirst",
+      "description": "Sort by publish date ascending",
+      "field": "publishTime",
+      "direction": "asc"
+    },
+    {
+      "name": "mostViewed",
+      "description": "Sort by view count descending",
+      "field": "views",
+      "direction": "desc"
+    },
+    {
+      "name": "mostCommented",
+      "description": "Sort by comment count descending",
+      "field": "comments",
+      "direction": "desc"
+    },
+    {
+      "name": "alphabetical",
+      "description": "Sort by title alphabetically",
+      "field": "title",
+      "direction": "asc"
+    }
+  ],
+  "pagination": {
+    "defaultPageSize": 20,
+    "maxPageSize": 100,
+    "pageSizeOptions": [10, 20, 50, 100]
+  },
+  "cacheConfig": {
+    "enabled": true,
+    "maxAge": 300000,
+    "maxItems": 1000
+  }
+}

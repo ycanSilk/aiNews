@@ -23,6 +23,14 @@ const CalendarEN: React.FC<CalendarProps> = ({
 }) => {
   return (
     <div className="p-4 bg-background border border-border shadow-lg">
+      {/* 显示当前选中的日期范围 */}
+      {(startDate || endDate) && (
+        <div className="mb-3 p-2 bg-muted rounded-sm text-sm">
+          <span className="font-medium">Selected: </span>
+          {startDate && endDate ? `${startDate} ${toText} ${endDate}` : 'Please select both start and end dates'}
+        </div>
+      )}
+      
       <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
         <input
           type="date"

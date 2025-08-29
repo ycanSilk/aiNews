@@ -4,19 +4,22 @@ import DateFilter from "./DateFilter";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { Eye, MessageSquare, Clock, Flame, Loader2 } from "lucide-react";
 
-// 从外部JSON文件导入新闻数据和分类数据
-import { useLanguageData } from '@/hooks/useLanguageData';
+// 使用MongoDB API获取数据
+import { useMongoDBData } from '@/hooks/useMongoDBData';
+// 导入工具函数
+import { formatDateToChinese, generateIncrementedViews } from '@/lib/utils';
 
 const NewsList = () => {
-  // 使用语言数据钩子加载新闻数据和分类数据
-  const { data: newsData, loading: newsLoading, error: newsError } = useLanguageData<any[]>('newsData.json');
-  const { data: categoryData, loading: categoryLoading, error: categoryError } = useLanguageData<any>('categories.json');
-  const { data: indexData } = useLanguageData<any>('index.json');
+  // 使用MongoDB API获取新闻数据和分类数据
+  const { data: newsData, loading: newsLoading, error: newsError } = useMongoDBData<any[]>('news');
+  const { data: categoryData, loading: categoryLoading, error: categoryError } = useMongoDBData<any>('categories');
+  const { data: indexData } = useMongoDBData<any>('index');
   
   // 从分类数据中获取所有分类名称
   const categories = useMemo(() => {
-    if (!categoryData || !categoryData.newsCategories) return [];
-    return categoryData.newsCategories.map((cat: any) => cat.name);
+    if (!categoryData) return [];
+    // categories API直接返回分类数组，而不是包含newsCategories字段的对象
+    return Array.isArray(categoryData) ? categoryData : [];
   }, [categoryData]);
 
   // 状态来跟踪当前选中的分类
@@ -26,6 +29,8 @@ const NewsList = () => {
     start: null,
     end: null
   });
+  // 状态来跟踪日期范围按钮的显示文本
+  const [dateRangeText, setDateRangeText] = useState<string>('最近一周');
   
   // 状态来跟踪懒加载
   const [visibleCount, setVisibleCount] = useState(3); // 初始显示3条新闻
@@ -34,106 +39,65 @@ const NewsList = () => {
   const loaderRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // 根据选中的分类和日期范围过滤新闻数据
+  // 过滤和排序新闻数据
   const filteredNews = useMemo(() => {
-    if (!newsData) {
-      return [];
-    }
+    if (!newsData) return [];
     
     let result = [...newsData];
     
-    // 按分类过滤
-    if (activeCategory !== "全部") {
-      // 对于新的AI分类，显示相关新闻（如果分类存在于新闻数据中）
-      if (categories.includes(activeCategory)) {
-        result = result.filter(news => news.category === activeCategory);
-      } else {
-        // 对于新的分类，暂时显示空结果或所有新闻
-        result = [];
-      }
-
+    // 按分类筛选
+    if (activeCategory && activeCategory !== '全部') {
+      result = result.filter(news => news.category?.cn === activeCategory);
     }
     
-    // 按日期范围过滤
-    if (dateRange.start && dateRange.end) {
-      const originalLength = result.length;
+    // 按日期范围筛选
+    if (dateRange.start || dateRange.end) {
+      const startDate = dateRange.start ? new Date(dateRange.start).getTime() : null;
+      const endDate = dateRange.end ? new Date(dateRange.end).getTime() + 86399999 : null; // 包含当天最后一刻
       
-      // 确保日期比较的正确性
       result = result.filter(news => {
-        // 规范化日期格式，确保正确比较
-        const newsDate = new Date(news.date);
-        const startDate = new Date(dateRange.start!);
-        const endDate = new Date(dateRange.end!);
+        const newsTime = new Date(news.publishTime).getTime();
         
-        // 重置时间部分，仅比较日期
-        newsDate.setHours(0, 0, 0, 0);
-        startDate.setHours(0, 0, 0, 0);
-        endDate.setHours(23, 59, 59, 999);
+        // 处理开始日期筛选
+        if (startDate && newsTime < startDate) {
+          return false;
+        }
         
-        return newsDate >= startDate && newsDate <= endDate;
+        // 处理结束日期筛选（包含当天）
+        if (endDate && newsTime > endDate) {
+          return false;
+        }
+        
+        return true;
       });
-      
-
     }
     
     // 确保新闻按日期降序排列
-    result.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-    
-
+    result.sort((a, b) => new Date(b.publishTime).getTime() - new Date(a.publishTime).getTime());
     
     return result;
-  }, [activeCategory, dateRange]);
+  }, [newsData, activeCategory, dateRange.start, dateRange.end]);
   
   // 处理懒加载的可见新闻
   const visibleNews = useMemo(() => {
-
+    if (filteredNews.length === 0) return {};
     
-    // 如果没有过滤后的新闻，返回空对象
-    if (filteredNews.length === 0) {
-
-      return {};
-    }
-    
-    // 先按日期分组
-    const grouped = filteredNews.reduce((acc, news) => {
-      if (!acc[news.date]) {
-        acc[news.date] = [];
-      }
-      acc[news.date].push(news);
-      return acc;
-    }, {} as Record<string, typeof filteredNews>);
-    
-
-    
-    // 获取所有日期并排序（确保降序）
-    const sortedDates = Object.keys(grouped).sort((a, b) => {
-      const dateA = new Date(a);
-      const dateB = new Date(b);
-      return dateB.getTime() - dateA.getTime();
-    });
-    
-    // 按日期分组并限制显示数量
     const result: Record<string, typeof filteredNews> = {};
     let count = 0;
     
-    for (const date of sortedDates) {
+    // 直接遍历已排序的新闻，按日期分组直到达到可见数量
+    for (const news of filteredNews) {
       if (count >= visibleCount) break;
       
-      const dateNews = grouped[date];
-      const remainingSlots = visibleCount - count;
+      const newsDate = new Date(news.publishTime).toISOString().split('T')[0];
       
-      if (remainingSlots >= dateNews.length) {
-        // 全部显示
-        result[date] = dateNews;
-        count += dateNews.length;
-      } else {
-        // 部分显示
-        result[date] = dateNews.slice(0, remainingSlots);
-        count += remainingSlots;
+      if (!result[newsDate]) {
+        result[newsDate] = [];
       }
+      
+      result[newsDate].push(news);
+      count++;
     }
-    
-
     
     return result;
   }, [filteredNews, visibleCount]);
@@ -159,44 +123,37 @@ const NewsList = () => {
   
   // 处理日期范围变化
   const handleDateRangeChange = (startDate: string | null, endDate: string | null) => {
-    
     // 验证日期范围有效性
     let validStartDate = startDate;
     let validEndDate = endDate;
     
     // 获取当前日期
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const todayStr = today.toISOString().split('T')[0];
+    // 使用北京时间时区 (UTC+8)
+    const now = new Date();
+    const beijingOffset = 8 * 60; // 北京时间 UTC+8
+    const localOffset = now.getTimezoneOffset(); // 本地时区偏移（分钟）
+    const beijingTime = new Date(now.getTime() + (beijingOffset + localOffset) * 60 * 1000);
     
-    // 检查是否选择了未来日期
+    const today = beijingTime;
+    today.setHours(0, 0, 0, 0);
+    
+    // 检查是否选择了未来日期（不再自动调整，允许显示未来日期的新闻）
     if (endDate && new Date(endDate) > today) {
-      validEndDate = todayStr;
-
+      // 不再自动调整结束日期，允许用户选择未来日期
     }
     
     // 确保开始日期不晚于结束日期
     if (validStartDate && validEndDate && new Date(validStartDate) > new Date(validEndDate)) {
       validStartDate = validEndDate;
-
     }
     
     setDateRange({ start: validStartDate, end: validEndDate });
   };
 
-  // 热门新闻数据 - 固定显示10条，按阅读量和更新时间排序
+  // 热门新闻数据 - 从API获取热门新闻
   const hotNews = useMemo(() => {
     if (!newsData) return [];
-    return newsData
-      .sort((a: any, b: any) => {
-        // 首先按阅读量降序排序
-        if (b.views !== a.views) {
-          return b.views - a.views;
-        }
-        // 如果阅读量相同，按更新时间降序排序
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      })
-      .slice(0, 10);
+    return newsData.slice(0, 10); // API已经按热度排序
   }, [newsData]);
   
   // 当分类或日期范围改变时，重置可见数量
@@ -204,29 +161,27 @@ const NewsList = () => {
     setVisibleCount(3);
   }, [activeCategory, dateRange]);
 
-  // 组件挂载时，自动设置日期范围为新闻数据中的实际日期范围
+  // 当新闻数据加载完成时，设置默认日期范围为最近一周
   useEffect(() => {
-    if (!newsData || newsData.length === 0) return;
-    
-    // 获取新闻数据中的所有日期
-    const newsDates = newsData.map(news => new Date(news.date));
-    const minDate = new Date(Math.min(...newsDates.map(d => d.getTime())));
-    const maxDate = new Date(Math.max(...newsDates.map(d => d.getTime())));
-    
-    const formatDate = (date: Date) => {
-      return date.toISOString().split('T')[0];
-    };
-    
-    const startDate = formatDate(minDate);
-    const endDate = formatDate(maxDate);
-    
-
-    
-    setDateRange({
-      start: startDate,
-      end: endDate
-    });
-  }, [newsData]);
+    if (newsData && newsData.length > 0 && !dateRange.start && !dateRange.end) {
+      // 使用北京时间时区 (UTC+8)
+      const now = new Date();
+      const beijingOffset = 8 * 60; // 北京时间 UTC+8
+      const localOffset = now.getTimezoneOffset(); // 本地时区偏移（分钟）
+      const beijingTime = new Date(now.getTime() + (beijingOffset + localOffset) * 60 * 1000);
+      
+      const today = beijingTime;
+      const oneWeekAgo = new Date(beijingTime);
+      oneWeekAgo.setDate(today.getDate() - 6); // -6 确保包含7天（包括今天）
+      
+      const formatDate = (date: Date) => date.toISOString().split('T')[0];
+      
+      setDateRange({
+        start: formatDate(oneWeekAgo),
+        end: formatDate(today)
+      });
+    }
+  }, [newsData, dateRange.start, dateRange.end]);
   
   // 加载更多新闻
   const loadMoreNews = () => {
@@ -311,7 +266,10 @@ const NewsList = () => {
       
       {/* 日期筛选组件 */}
       <div className="container mx-auto px-4 pt-6">
-        <DateFilter onDateRangeChange={handleDateRangeChange} />
+        <DateFilter 
+          onDateRangeChange={handleDateRangeChange} 
+          onRangeTextChange={setDateRangeText}
+        />
       </div>
       
       {/* 返回顶部按钮 - 固定在页面右下角，滚动超过300px时显示 */}
@@ -335,15 +293,14 @@ const NewsList = () => {
           {/* 主新闻列表 - 移动端全宽，桌面端70%宽度 */}
           <div className="w-full lg:w-9/12">
             {Object.entries(visibleNews).map(([date, newsItems]) => {
-              const firstNews = newsItems[0];
               const [year, month, day] = date.split('-');
               const monthDay = indexData?.common?.dateFormat
-                ?.replace('{month}', month)
-                ?.replace('{day}', day)
-                ?.replace('{weekday}', firstNews.weekday) || `${month}月${day}日·${firstNews.weekday}`;
+                ?.replace('{month}', month || '')
+                ?.replace('{day}', day || '')
+                ?.replace('{weekday}', '') || `${month || ''}月${day || ''}日`;
               
-              // 使用日期和新闻项数量的组合作为key，确保唯一性
-              const uniqueKey = `${date}-${newsItems.length}`;
+              // 使用日期作为key，确保唯一性
+              const uniqueKey = date;
               
               return (
                 <div key={uniqueKey} className="mb-8">
@@ -362,14 +319,13 @@ const NewsList = () => {
                     {newsItems.map((news) => (
                       <div key={news.id} className="w-full">
                         <NewsCard
-                          title={news.title}
-                          summary={news.summary}
-                          category={news.category}
-                          readTime={news.readTime}
+                          title={news.title?.cn || ''}
+                          summary={news.summary?.cn || ''}
+                          category={news.category?.cn || ''}
                           publishTime={news.publishTime}
                           views={news.views}
-                          comments={news.comments}
                           isBreaking={news.isBreaking}
+                          tags={news.tags?.cn || []}
                         />
                       </div>
                     ))}
@@ -426,7 +382,7 @@ const NewsList = () => {
               
               <div className="space-y-6">
                 {hotNews.map((news, index) => (
-                  <div key={news.id} className="flex space-x-3 items-start">
+                  <div key={`hot-news-${news.id}-${index}`} className="flex space-x-3 items-start">
                     {/* 火焰图标和排名数字 */}
                     <div className="flex flex-col items-center space-y-1">
                       <span className="text-xs font-bold text-gray-500 bg-red-500 w-5 h-5 flex text-white items-center justify-center">{index + 1}</span>
@@ -434,12 +390,12 @@ const NewsList = () => {
                     {/* 新闻内容 */}
                     <div className="flex-1">
                       <h4 className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-                        {news.title}
+                        {news.title?.cn || ''}
                       </h4>
                       <div className="flex items-center mt-1 text-xs text-gray-500 space-x-2">
-                        <span>{news.publishTime}</span>
+                        <span>{formatDateToChinese(news.publishTime || '')}</span>
                         <span>•</span>
-                        <span>{news.views} {indexData?.common?.viewsText || '浏览'}</span>
+                        <span>{generateIncrementedViews(news.views || 0)} {indexData?.common?.viewsText || '浏览'}</span>
                       </div>
                     </div>
                   </div>

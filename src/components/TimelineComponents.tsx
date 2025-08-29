@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import LanguageContext from "@/contexts/LanguageContext";
-import timelineConfig from "@/data/ch/timeLine.json";
+import { useMongoDBData } from '@/hooks/useMongoDBData';
 import './Timeline.css';
 
 export interface NewsItem {
@@ -158,29 +158,20 @@ const Timeline: React.FC<TimelineProps> = ({
   const languageContext = useContext(LanguageContext);
   const currentLanguage = languageContext?.currentLanguage || 'ch';
   
-  // 根据语言加载对应的配置文件
-  const [timelineConfig, setTimelineConfig] = useState<any>(null);
-  
-  useEffect(() => {
-    const loadConfig = async () => {
-      const config = currentLanguage === 'en' 
-        ? await import('@/data/en/timeLine.json')
-        : await import('@/data/ch/timeLine.json');
-      setTimelineConfig(config);
-    };
-    loadConfig();
-  }, [currentLanguage]);
+  // 使用MongoDB API获取时间轴配置和新闻数据
+  const { data: timelineConfig, loading: configLoading } = useMongoDBData<any>('timeline-config');
+  const { data: newsData, loading: newsLoading } = useMongoDBData<any[]>('timeline-news');
   
   // 设置默认值
-  if (!timelineConfig) {
+  if (configLoading || newsLoading) {
     return <div>Loading...</div>;
   }
   
-  const finalInitialNewsItems = initialNewsItems || timelineConfig.defaultConfig.initialNewsItems || [];
-  const finalDefaultSearchTerm = defaultSearchTerm || timelineConfig.defaultConfig.defaultSearchTerm || "OpenAI";
-  const finalHotSearchTags = hotSearchTags || timelineConfig.defaultConfig.hotSearchTags || [];
-  const finalTitle = title || timelineConfig.defaultConfig.title || "时间轴新闻";
-  const finalSubtitle = subtitle || timelineConfig.defaultConfig.subtitle || "探索OpenAI发展历程中的重要里程碑";
+  const finalInitialNewsItems = initialNewsItems || newsData || [];
+  const finalDefaultSearchTerm = defaultSearchTerm || timelineConfig?.defaultConfig?.defaultSearchTerm || "OpenAI";
+  const finalHotSearchTags = hotSearchTags || timelineConfig?.defaultConfig?.hotSearchTags || [];
+  const finalTitle = title || timelineConfig?.defaultConfig?.title || "时间轴新闻";
+  const finalSubtitle = subtitle || timelineConfig?.defaultConfig?.subtitle || "探索OpenAI发展历程中的重要里程碑";
   const [newsItems, setNewsItems] = useState<NewsItem[]>(finalInitialNewsItems); 
 
   const [searchTerm, setSearchTerm] = useState(finalDefaultSearchTerm);

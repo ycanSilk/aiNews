@@ -1,9 +1,9 @@
 import { Github, Twitter, Mail, Rss } from "lucide-react";
-import { useLanguageData } from '@/hooks/useLanguageData';
+import { useMongoDBData } from '@/hooks/useMongoDBData';
 
 const Footer = () => {
-  // 使用语言数据钩子加载页脚配置数据
-  const { data: indexData, loading, error } = useLanguageData<any>('index.json');
+  // 使用MongoDB API获取页脚配置数据
+  const { data: indexData, loading, error } = useMongoDBData<any>('index');
   // 加载状态显示
   if (loading) {
     return (

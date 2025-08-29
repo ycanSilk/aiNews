@@ -1,0 +1,121 @@
+{
+  "version": "1.0",
+  "metrics": [
+    {
+      "name": "totalNewsCount",
+      "description": "Total number of news items",
+      "type": "count",
+      "field": "id"
+    },
+    {
+      "name": "breakingNewsCount",
+      "description": "Number of breaking news items",
+      "type": "count",
+      "filter": "isBreaking === true"
+    },
+    {
+      "name": "importantNewsCount",
+      "description": "Number of important news items",
+      "type": "count",
+      "filter": "isImportant === true"
+    },
+    {
+      "name": "averageViews",
+      "description": "Average view count per news item",
+      "type": "average",
+      "field": "views"
+    },
+    {
+      "name": "averageComments",
+      "description": "Average comment count per news item",
+      "type": "average",
+      "field": "comments"
+    },
+    {
+      "name": "totalViews",
+      "description": "Total views across all news items",
+      "type": "sum",
+      "field": "views"
+    },
+    {
+      "name": "totalComments",
+      "description": "Total comments across all news items",
+      "type": "sum",
+      "field": "comments"
+    },
+    {
+      "name": "maxViews",
+      "description": "Maximum view count",
+      "type": "max",
+      "field": "views"
+    },
+    {
+      "name": "maxComments",
+      "description": "Maximum comment count",
+      "type": "max",
+      "field": "comments"
+    }
+  ],
+  "categoryStats": {
+    "enabled": true,
+    "groupBy": "category",
+    "metrics": ["count", "sumViews", "sumComments", "avgViews", "avgComments"]
+  },
+  "sourceStats": {
+    "enabled": true,
+    "groupBy": "source",
+    "metrics": ["count", "sumViews", "sumComments", "avgViews", "avgComments"]
+  },
+  "timeSeries": {
+    "enabled": true,
+    "timeField": "publishTime",
+    "intervals": ["daily", "weekly", "monthly"],
+    "metrics": ["count", "sumViews", "sumComments"]
+  },
+  "trendAnalysis": {
+    "enabled": true,
+    "windowSize": 7,
+    "metrics": ["views", "comments"],
+    "methods": ["movingAverage", "growthRate"]
+  },
+  "popularityThresholds": {
+    "highViews": 10000,
+    "highComments": 200,
+    "viral": {
+      "views": 50000,
+      "comments": 500,
+      "growthRate": 2.0
+    }
+  },
+  "engagementMetrics": {
+    "viewsPerItem": true,
+    "commentsPerItem": true,
+    "engagementRate": {
+      "enabled": true,
+      "formula": "comments / views"
+    },
+    "viralityScore": {
+      "enabled": true,
+      "formula": "(views * 0.6) + (comments * 0.4)"
+    }
+  },
+  "reporting": {
+    "dailyReport": {
+      "enabled": true,
+      "metrics": ["totalNewsCount", "breakingNewsCount", "totalViews", "totalComments"]
+    },
+    "weeklyReport": {
+      "enabled": true,
+      "metrics": ["totalNewsCount", "averageViews", "averageComments", "maxViews", "maxComments"]
+    },
+    "monthlyReport": {
+      "enabled": true,
+      "metrics": ["totalNewsCount", "categoryStats", "sourceStats", "timeSeries"]
+    }
+  },
+  "cacheConfig": {
+    "enabled": true,
+    "ttl": 3600000,
+    "maxSize": 100
+  }
+}
