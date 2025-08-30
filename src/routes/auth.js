@@ -1,6 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const router = express.Router();
 
@@ -65,8 +66,9 @@ router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    // 查找用户
-    const user = await User.findOne({ 
+    // 查找用户 - 使用adminuser集合
+    const db = mongoose.connection.db;
+    const user = await db.collection('adminuser').findOne({ 
       $or: [{ username }, { email: username }],
       isActive: true 
     });
@@ -78,8 +80,8 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // 验证密码
-    const isPasswordValid = await user.comparePassword(password);
+    // 验证密码 - 使用bcrypt直接比较
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
@@ -87,9 +89,11 @@ router.post('/login', async (req, res) => {
       });
     }
 
-    // 更新最后登录时间
-    user.lastLogin = new Date();
-    await user.save();
+    // 更新最后登录时间 - 使用MongoDB原生操作
+    await db.collection('adminuser').updateOne(
+      { _id: user._id },
+      { $set: { lastLogin: new Date() } }
+    );
 
     // 生成JWT token
     const token = jwt.sign(
