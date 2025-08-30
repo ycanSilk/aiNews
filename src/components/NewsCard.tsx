@@ -2,14 +2,15 @@ import { Clock, Eye } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useLanguageData } from '@/hooks/useLanguageData';
+import { useLanguage } from '@/contexts/LanguageContext';
 // 导入工具函数
-import { formatDateToChinese, generateIncrementedViews } from '@/lib/utils';
+import { formatDateByLanguage, generateIncrementedViews } from '@/lib/utils';
 
 interface NewsCardProps {
   title: string;
   summary: string;
   category: string;
-  readTime: string;
+  readTime?: string;
   publishTime: string;
   views: number;
   imageUrl?: string;
@@ -21,7 +22,7 @@ const NewsCard = ({
   title,
   summary,
   category,
-  readTime,
+  readTime = '3分钟',
   publishTime,
   views,
   imageUrl,
@@ -30,6 +31,7 @@ const NewsCard = ({
 }: NewsCardProps) => {
   // 使用语言数据钩子加载通用文本配置
   const { data: indexData } = useLanguageData<any>('index.json');
+  const { currentLanguage } = useLanguage();
   // 将摘要分割成列表项
   const summaryItems = summary.split('。').filter(item => item.trim());
 
@@ -71,7 +73,7 @@ const NewsCard = ({
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-1">
                 <Clock className="w-3 h-3" />
-                <span>{formatDateToChinese(publishTime)}</span>
+                <span>{formatDateByLanguage(publishTime, currentLanguage)}</span>
               </div>
               <div className="flex items-center space-x-1">
                 <Eye className="w-3 h-3 text-primary" />

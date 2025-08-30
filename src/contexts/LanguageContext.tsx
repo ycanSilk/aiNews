@@ -65,10 +65,10 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   };
 
   const getDataPath = (fileName: string): string => {
-    // 映射语言代码到实际目录名：'ch' -> 'cn', 'en' -> 'en'
+    // 映射语言代码到实际目录名：'cn' -> 'cn', 'en' -> 'en'
     const languageDir = currentLanguage === 'cn' ? 'cn' : currentLanguage;
     // 使用相对路径，Vite会自动处理src目录下的文件
-    return `../../data/locales/${languageDir}/${fileName}`;
+    return `../../data/local/${languageDir}/${fileName}`;
   };
 
   return (

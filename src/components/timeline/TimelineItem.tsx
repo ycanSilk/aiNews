@@ -1,6 +1,5 @@
 import React from 'react';
 import './Timeline.css';
-import { useLanguageData } from '@/hooks/useLanguageData';
 
 interface NewsItem {
   date: string;
@@ -14,17 +13,18 @@ interface NewsItem {
 interface TimelineItemProps {
   item: NewsItem;
   index: number;
+  calendarIcon?: string;
+  arrowIcon?: string;
+  readMoreText?: string;
 }
 
-const TimelineItem: React.FC<TimelineItemProps> = ({ item, index }) => {
-  const { data: config, loading, error } = useLanguageData('timeLine.json');
-
-  if (loading) return <div className="timeline-item">Loading...</div>;
-  if (error) return <div className="timeline-item">Error</div>;
-
-  const uiTexts = config?.defaultConfig?.uiTexts;
-  const calendarIcon = config?.defaultConfig?.calendarIcon || "fas fa-calendar-alt";
-  const arrowIcon = config?.defaultConfig?.arrowIcon || "fas fa-arrow-right";
+const TimelineItem: React.FC<TimelineItemProps> = ({ 
+  item, 
+  index,
+  calendarIcon = "fas fa-calendar-alt",
+  arrowIcon = "fas fa-arrow-right",
+  readMoreText = "Read more"
+}) => {
 
   return (
     <div 
@@ -47,7 +47,7 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ item, index }) => {
           ))}
         </div>
         <a href={item.url} className="read-more mt-5">
-          {uiTexts?.readMore || "Read more"} <i className={arrowIcon}></i>
+          {readMoreText} <i className={arrowIcon}></i>
         </a>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronDown } from "lucide-react";
-import { useMongoDBData } from '@/hooks/useMongoDBData';
+import { useLanguageData } from '@/hooks/useLanguageData';
 import { useLanguage } from '@/contexts/LanguageContext';
 import CalendarCN from './CalendarCN';
 import CalendarEN from './CalendarEN';
@@ -12,15 +12,23 @@ interface DateFilterProps {
 }
 
 const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) => {
-  // 使用MongoDB API获取配置数据
-  const { data: indexData } = useMongoDBData<any>('index');
+  // 使用语言数据钩子获取配置数据
+  const { data: indexData } = useLanguageData<any>('index.json');
   const { currentLanguage } = useLanguage();
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
 
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
-  const [selectedRange, setSelectedRange] = useState<string>("最近一周");
+  const [selectedRange, setSelectedRange] = useState<string>('');
+
+  // 当语言数据加载完成后设置默认选中范围
+  useEffect(() => {
+    if (indexData?.newsSection?.lastWeekText) {
+      setSelectedRange(indexData.newsSection.lastWeekText);
+    }
+  }, [indexData?.newsSection?.lastWeekText]);
+
   
   // 创建ref用于检测点击外部
   const dropDownRef = useRef<HTMLDivElement>(null);
@@ -34,7 +42,7 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
       // 全部
       setStartDate("");
       setEndDate("");
-      const allText = indexData?.newsSection?.allText || '全部';
+      const allText = indexData?.newsSection?.allText || 'All';
       setSelectedRange(allText);
  
       onDateRangeChange(null, null);
@@ -51,10 +59,10 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
       
       // 设置选中的范围文本
       let rangeText = '';
-      if (days === 3) rangeText = indexData?.newsSection?.last3DaysText || '最近三天';
-      else if (days === 7) rangeText = indexData?.newsSection?.lastWeekText || '最近一周';
-      else if (days === 15) rangeText = indexData?.newsSection?.lastHalfMonthText || '最近半月';
-      else if (days === 30) rangeText = indexData?.newsSection?.lastMonthText || '最近一个月';
+      if (days === 3) rangeText = indexData?.newsSection?.last3DaysText || 'Last 3 Days';
+      else if (days === 7) rangeText = indexData?.newsSection?.lastWeekText || 'Last Week';
+      else if (days === 15) rangeText = indexData?.newsSection?.lastHalfMonthText || 'Last Half Month';
+      else if (days === 30) rangeText = indexData?.newsSection?.lastMonthText || 'Last Month';
       setSelectedRange(rangeText);
       
       onDateRangeChange(startDateStr, endDateStr);
@@ -74,10 +82,10 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       
       if (diffDays <= 90) {
-        const customRangeText = `${startDate} ${indexData?.newsSection?.toText || '至'} ${endDate}`;
+        const customRangeText = `${startDate} ${indexData?.newsSection?.toText || 'to'} ${endDate}`;
         onDateRangeChange(startDate, endDate);
       } else {
-        alert(indexData?.newsSection?.dateRangeError || '日期范围不能超过90天');
+        alert(indexData?.newsSection?.dateRangeError || 'Date range cannot exceed 90 days');
       }
     }
     setShowCalendar(false);
@@ -89,8 +97,8 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
   const handleClear = () => {
     setStartDate("");
     setEndDate("");
-    const lastWeekText = indexData?.newsSection?.lastWeekText || '最近一周';
-      setSelectedRange(lastWeekText);
+    const lastWeekText = indexData?.newsSection?.lastWeekText || 'Last Week';
+    setSelectedRange(lastWeekText);
     onDateRangeChange(null, null);
     setShowCalendar(false);
   };
@@ -147,13 +155,13 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
   return (
     <div className="relative flex flex-col md:flex-row gap-4 items-start md:items-center mb-6">
       {/* 下拉菜单按钮 */}
-      <p className="text-2xl ">{indexData?.newsSection?.dateFilterTitle || '请选择显示新闻的日期：'}</p>
+      <p className="text-2xl ">{indexData?.newsSection?.dateFilterTitle || 'Please select the date to display news:'}</p>
       <div className="relative">
   
         <Button 
           variant="default" 
           className={`rounded-none flex items-center gap-2 transition-all duration-200 ${
-            selectedRange !== '最近一周' 
+            selectedRange !== (indexData?.newsSection?.lastWeekText || 'Last Week') 
               ? 'bg-primary/90 ring-2 ring-primary/50' 
               : 'bg-primary hover:bg-primary-hover'
           }`}
@@ -171,31 +179,31 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
               className="block w-full text-left px-4 py-2 hover:bg-muted transition-colors"
               onClick={() => handlePresetRange(null)}
             >
-              {indexData?.newsSection?.allText || '全部'}
+              {indexData?.newsSection?.allText || 'All'}
             </button>
             <button 
               className="block w-full text-left px-4 py-2 hover:bg-muted transition-colors"
               onClick={() => handlePresetRange(3)}
             >
-              {indexData?.newsSection?.last3DaysText || '最近三天'}
+              {indexData?.newsSection?.last3DaysText || 'Last 3 Days'}
             </button>
             <button 
               className="block w-full text-left px-4 py-2 hover:bg-muted transition-colors"
               onClick={() => handlePresetRange(7)}
             >
-              {indexData?.newsSection?.lastWeekText || '最近一周'}
+              {indexData?.newsSection?.lastWeekText || 'Last Week'}
             </button>
             <button 
               className="block w-full text-left px-4 py-2 hover:bg-muted transition-colors"
               onClick={() => handlePresetRange(15)}
             >
-              {indexData?.newsSection?.lastHalfMonthText || '最近半月'}
+              {indexData?.newsSection?.lastHalfMonthText || 'Last Half Month'}
             </button>
             <button 
               className="block w-full text-left px-4 py-2 hover:bg-muted transition-colors"
               onClick={() => handlePresetRange(30)}
             >
-              {indexData?.newsSection?.lastMonthText || '最近一个月'}
+              {indexData?.newsSection?.lastMonthText || 'Last Month'}
             </button>
           </div>
         )}
@@ -210,7 +218,7 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
           ref={calendarButtonRef}
         >
           <Calendar className="w-4 h-4" />
-          {startDate && endDate ? `${startDate} ${indexData?.newsSection?.toText || '至'} ${endDate}` : (indexData?.newsSection?.selectDateRangeText || '选择日期范围')}
+          {startDate && endDate ? `${startDate} ${indexData?.newsSection?.toText || 'to'} ${endDate}` : (indexData?.newsSection?.selectDateRangeText || 'Select news display date')}
         </Button>
         
         {/* 日历选择器 */}
@@ -234,9 +242,9 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
                 onStartDateChange={setStartDate}
                 onEndDateChange={setEndDate}
                 onApply={handleCustomRange}
-                dateRangeNote={indexData?.newsSection?.dateRangeNote || '注：最大选择范围为90天'}
-                applyText={indexData?.common?.applyText || '应用'}
-                toText={indexData?.newsSection?.toText || '至'}
+                dateRangeNote={indexData?.newsSection?.dateRangeNote || 'Note: Maximum date range is 90 days'}
+                applyText={indexData?.common?.applyText || 'Apply'}
+                toText={indexData?.newsSection?.toText || 'to'}
               />
             )}
           </div>
@@ -250,7 +258,7 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
             className="ml-2 text-white hover:underline border border-primary p-2 bg-primary"
             onClick={handleClear}
           >
-            {indexData?.common?.clearText || '清除'}
+            {indexData?.common?.clearText || 'clear'}
           </button>
         </div>
       )}

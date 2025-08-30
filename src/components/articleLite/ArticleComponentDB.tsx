@@ -1,31 +1,14 @@
 import React from 'react';
+import { useArticleData } from '../../hooks/useArticleData';
+import { ArticleData } from './ArticleComponent';
 import './ArticleComponent.css';
 
-export interface Article {
-  id: number;
-  coverImage: string;
-  title: string;
-  author: string;
-  date: string;
-  content: string[];
-  highlight: string;
-  tags: string[];
+interface ArticleComponentDBProps {
+  lang?: string;
 }
 
-export interface ArticleData {
-  pageTitle: string;
-  subtitle: string;
-  articles: Article[];
-  footerText: string;
-}
-
-interface ArticleComponentProps {
-  config: ArticleData;
-  loading?: boolean;
-  error?: string;
-}
-
-const ArticleComponent: React.FC<ArticleComponentProps> = ({ config, loading = false, error }) => {
+const ArticleComponentDB: React.FC<ArticleComponentDBProps> = ({ lang = 'zh' }) => {
+  const { data, loading, error } = useArticleData(lang);
 
   if (loading) {
     return <div className="loading">Loading...</div>;
@@ -35,19 +18,19 @@ const ArticleComponent: React.FC<ArticleComponentProps> = ({ config, loading = f
     return <div className="error">{error}</div>;
   }
 
-  if (!config) {
+  if (!data) {
     return <div className="error">No data available</div>;
   }
 
   return (
     <div className="article-container my-10">
       <header className="article-header">
-        <h1>{config.pageTitle}</h1>
-        <p className="subtitle">{config.subtitle}</p>
+        <h1>{data.pageTitle}</h1>
+        <p className="subtitle">{data.subtitle}</p>
       </header>
 
       <div className="blog-container">
-        {config.articles.map((article) => (
+        {data.articles.map((article) => (
           <div key={article.id} className="blog-post">
             <div className="post-header">
               <div 
@@ -83,4 +66,4 @@ const ArticleComponent: React.FC<ArticleComponentProps> = ({ config, loading = f
   );
 };
 
-export default ArticleComponent;
+export default ArticleComponentDB;

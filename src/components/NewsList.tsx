@@ -4,16 +4,23 @@ import DateFilter from "./DateFilter";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { Eye, MessageSquare, Clock, Flame, Loader2 } from "lucide-react";
 
-// 使用MongoDB API获取数据
+// 使用MongoDB API获取新闻数据
 import { useMongoDBData } from '@/hooks/useMongoDBData';
+// 使用本地JSON数据获取界面文本
+import { useLanguageData } from '@/hooks/useLanguageData';
 // 导入工具函数
-import { formatDateToChinese, generateIncrementedViews } from '@/lib/utils';
+import { formatDateToChinese, formatDateByLanguage, generateIncrementedViews } from '@/lib/utils';
+// 导入语言上下文
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const NewsList = () => {
   // 使用MongoDB API获取新闻数据和分类数据
   const { data: newsData, loading: newsLoading, error: newsError } = useMongoDBData<any[]>('news');
   const { data: categoryData, loading: categoryLoading, error: categoryError } = useMongoDBData<any>('categories');
-  const { data: indexData } = useMongoDBData<any>('index');
+  // 使用本地JSON数据获取界面文本
+  const { data: indexData } = useLanguageData<any>('index.json');
+  // 获取当前语言
+  const { currentLanguage } = useLanguage();
   
   // 从分类数据中获取所有分类名称
   const categories = useMemo(() => {
@@ -30,7 +37,7 @@ const NewsList = () => {
     end: null
   });
   // 状态来跟踪日期范围按钮的显示文本
-  const [dateRangeText, setDateRangeText] = useState<string>('最近一周');
+  const [dateRangeText, setDateRangeText] = useState<string>('Last Week');
   
   // 状态来跟踪懒加载
   const [visibleCount, setVisibleCount] = useState(3); // 初始显示3条新闻
@@ -150,10 +157,18 @@ const NewsList = () => {
     setDateRange({ start: validStartDate, end: validEndDate });
   };
 
-  // 热门新闻数据 - 从API获取热门新闻
+  // 热门新闻数据 - 按浏览量降序排列取前10条
   const hotNews = useMemo(() => {
     if (!newsData) return [];
-    return newsData.slice(0, 10); // API已经按热度排序
+    
+    // 按浏览量降序排序
+    const sortedByViews = [...newsData].sort((a, b) => {
+      const viewsA = a.views || 0;
+      const viewsB = b.views || 0;
+      return viewsB - viewsA; // 降序排列
+    });
+    
+    return sortedByViews.slice(0, 10); // 取前10条最热门的新闻
   }, [newsData]);
   
   // 当分类或日期范围改变时，重置可见数量
@@ -319,13 +334,13 @@ const NewsList = () => {
                     {newsItems.map((news) => (
                       <div key={news.id} className="w-full">
                         <NewsCard
-                          title={news.title?.cn || ''}
-                          summary={news.summary?.cn || ''}
-                          category={news.category?.cn || ''}
+                          title={news.title?.[currentLanguage] || news.title?.cn || ''}
+                          summary={news.summary?.[currentLanguage] || news.summary?.cn || ''}
+                          category={news.category?.[currentLanguage] || news.category?.cn || ''}
                           publishTime={news.publishTime}
                           views={news.views}
                           isBreaking={news.isBreaking}
-                          tags={news.tags?.cn || []}
+                          tags={news.tags?.[currentLanguage] || news.tags?.cn || []}
                         />
                       </div>
                     ))}
@@ -342,9 +357,7 @@ const NewsList = () => {
                   <p className="text-sm text-muted-foreground">{indexData?.common?.loadingText || '加载中...'}</p>
                 </div>
               ) : hasFutureDateSelection ? (
-                <p className="text-sm text-amber-500">
-                  系统已自动调整日期范围至今天，当前暂无未来日期的新闻
-                </p>
+                  <p className="text-sm text-muted-foreground">{indexData?.newsSection?.futureDateText || ''}</p>
               ) : showNoResultsMessage ? (
                 <p className="text-sm text-muted-foreground">
                   在所选日期范围内没有找到相关新闻
@@ -390,10 +403,10 @@ const NewsList = () => {
                     {/* 新闻内容 */}
                     <div className="flex-1">
                       <h4 className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-                        {news.title?.cn || ''}
+                        {news.title?.[currentLanguage] || news.title?.cn || ''}
                       </h4>
                       <div className="flex items-center mt-1 text-xs text-gray-500 space-x-2">
-                        <span>{formatDateToChinese(news.publishTime || '')}</span>
+                        <span>{formatDateByLanguage(news.publishTime || '', currentLanguage)}</span>
                         <span>•</span>
                         <span>{generateIncrementedViews(news.views || 0)} {indexData?.common?.viewsText || '浏览'}</span>
                       </div>

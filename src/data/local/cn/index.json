@@ -2,10 +2,10 @@
   "header": {
     "logoText": "AI新闻",
     "navItems": [
-      {"label": "首页", "href": "/ch/index"},
-      {"label": "文章", "href": "/ch/article"},
-      {"label": "时间线新闻", "href": "/ch/timeline"},
-      {"label": "关于我们", "href": "/ch/aboutme"}
+      {"label": "首页", "href": "/cn/index"},
+      {"label": "文章", "href": "/cn/article"},
+      {"label": "时间线新闻", "href": "/cn/timeline"},
+      {"label": "关于我们", "href": "/cn/aboutme"}
     ],
     "searchPlaceholder": "搜索AI资讯...",
     "languageOptions": [
@@ -83,7 +83,7 @@
     "breakingNewsText": "突发新闻",
     "publishedText": "发布于",
     "newsUnitText": "条",
-    "dateFormat": "{month}月{day}日·{weekday}",
+    "dateFormat": "{month}月{day}日",
     "loadingText": "加载中...",
     "backToTopText": "返回顶部"
   }

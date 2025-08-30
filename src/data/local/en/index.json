@@ -83,7 +83,7 @@
     "breakingNewsText": "Breaking News",
     "publishedText": "Published",
     "newsUnitText": "",
-    "dateFormat": "{month}/{day}·{weekday}",
+    "dateFormat": "{month}/{day}",
     "loadingText": "Loading...",
     "backToTopText": "Back to Top"
   }

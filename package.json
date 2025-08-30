@@ -16,7 +16,9 @@
     "data:validate": "node scripts/validateData.js",
     "data:sync": "node scripts/syncLanguageData.js sync",
     "data:check": "node scripts/syncLanguageData.js check",
-    "data:backup": "node scripts/syncLanguageData.js backup"
+    "data:backup": "node scripts/syncLanguageData.js backup",
+    "db:init": "node scripts/initDatabase.js",
+    "db:reset": "node scripts/initDatabase.js"
   },
   "dependencies": {
     "@brightdata/mcp": "^2.4.3",
@@ -49,6 +51,7 @@
     "@radix-ui/react-toggle-group": "^1.1.10",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@tanstack/react-query": "^5.83.0",
+    "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -58,6 +61,7 @@
     "embla-carousel-react": "^8.6.0",
     "express": "^5.1.0",
     "input-otp": "^1.4.2",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.462.0",
     "mongoose": "^8.18.0",
     "next-themes": "^0.3.0",

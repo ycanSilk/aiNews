@@ -1,26 +1,25 @@
 import React from 'react';
 import './Timeline.css';
-import { useLanguageData } from '@/hooks/useLanguageData';
 
 interface SearchBoxProps {
   searchTerm: string;
   onSearchChange: (term: string) => void;
   onSearch: () => void;
+  placeholder?: string;
+  hotSearchTags?: string[];
+  hotSearchLabel?: string;
+  searchIcon?: string;
 }
 
 const SearchBox: React.FC<SearchBoxProps> = ({
   searchTerm,
   onSearchChange,
-  onSearch
+  onSearch,
+  placeholder = "Enter keywords to search...",
+  hotSearchTags = [],
+  hotSearchLabel = "Hot searches:",
+  searchIcon = "fas fa-search"
 }) => {
-  const { data: config, loading, error } = useLanguageData('timeLine.json');
-
-  if (loading) return <div className="search-box">Loading search...</div>;
-  if (error) return <div className="search-box">Error loading search</div>;
-
-  const uiTexts = config?.defaultConfig?.uiTexts;
-  const hotSearchTags = config?.defaultConfig?.hotSearchTags || [];
-  const searchIcon = config?.defaultConfig?.searchIcon || "fas fa-search";
 
   return (
     <div className="search-box">
@@ -30,7 +29,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && onSearch()}
-          placeholder={uiTexts?.searchPlaceholder || "Enter keywords to search..."}
+          placeholder={placeholder}
           className="search-input"
         />
         <button onClick={onSearch} className="search-btn">
@@ -38,7 +37,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
         </button>
       </div>
       <div className="hot-search-tags">
-        <span>{uiTexts?.hotSearchLabel || "Hot searches:"}</span>
+        <span>{hotSearchLabel}</span>
         {hotSearchTags.map((tag, index) => (
           <span 
             key={index} 

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const NewsSchema = new mongoose.Schema({
+const ArticleSchema = new mongoose.Schema({
   // 核心标识字段
   semanticId: { type: String, required: true, unique: true },
   
@@ -9,12 +9,12 @@ const NewsSchema = new mongoose.Schema({
     zh: { type: String, required: true },
     en: { type: String }
   },
-  summary: {
-    zh: { type: String },
-    en: { type: String }
-  },
   content: {
     zh: { type: String, required: true },
+    en: { type: String }
+  },
+  highlight: {
+    zh: { type: String },
     en: { type: String }
   },
   
@@ -36,7 +36,7 @@ const NewsSchema = new mongoose.Schema({
   isPublished: { type: Boolean, default: true }, // 发布状态
   
   // 媒体资源
-  coverImage: { type: String },                   // 封面图片
+  coverImage: { type: String, required: true },   // 封面图片
   images: [{ type: String }],                     // 内容图片
   
   // 时间统计
@@ -49,7 +49,7 @@ const NewsSchema = new mongoose.Schema({
 });
 
 // 自动更新updatedAt时间戳
-NewsSchema.pre('save', function(next) {
+ArticleSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
   
   // 自动热门标记逻辑：浏览量超过1000自动标记为热门
@@ -63,10 +63,10 @@ NewsSchema.pre('save', function(next) {
 });
 
 // 索引优化
-NewsSchema.index({ category: 1 });
-NewsSchema.index({ isPublished: 1, publishTime: -1 });
-NewsSchema.index({ isHot: 1, publishTime: -1 });
-NewsSchema.index({ isRecommended: 1, publishTime: -1 });
-NewsSchema.index({ viewCount: -1 });
+ArticleSchema.index({ category: 1 });
+ArticleSchema.index({ isPublished: 1, publishTime: -1 });
+ArticleSchema.index({ isHot: 1, publishTime: -1 });
+ArticleSchema.index({ isRecommended: 1, publishTime: -1 });
+ArticleSchema.index({ viewCount: -1 });
 
-export default mongoose.model('News', NewsSchema);
+export default mongoose.model('Article', ArticleSchema);

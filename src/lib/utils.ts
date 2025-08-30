@@ -212,6 +212,38 @@ export function formatDateToChinese(dateString: string): string {
 }
 
 /**
+ * 格式化ISO日期字符串为英文格式
+ * 输入格式: 2025-08-29T08:13:25.329Z
+ * 输出格式: August 29, 2025
+ */
+export function formatDateToEnglish(dateString: string): string {
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  } catch (error) {
+    console.error('日期格式化错误:', error);
+    return dateString; // 如果格式化失败，返回原始字符串
+  }
+}
+
+/**
+ * 根据当前语言格式化日期
+ * 输入格式: 2025-08-29T08:13:25.329Z
+ * 输出格式: 中文 -> 2025年8月29日, 英文 -> August 29, 2025
+ */
+export function formatDateByLanguage(dateString: string, language: string): string {
+  if (language === 'en') {
+    return formatDateToEnglish(dateString);
+  } else {
+    return formatDateToChinese(dateString);
+  }
+}
+
+/**
  * 生成递增的浏览量（基于原始浏览量和随机因子）
  * 算法：原始浏览量 + 随机数(0-50) + 时间因子(0-20)
  */

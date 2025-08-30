@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap } from "lucide-react";
 import heroImage from "@/assets/hero-ai-news.jpg";
-import { useMongoDBData } from '@/hooks/useMongoDBData';
+import { useLanguageData } from '@/hooks/useLanguageData';
 
 const HeroSection = () => {
-  // 使用MongoDB API获取首页配置数据
-  const { data: indexData, loading, error } = useMongoDBData<any>('index');
+  // 使用本地JSON数据获取首页配置数据
+  const { data: indexData, loading, error } = useLanguageData<any>('index.json');
   // 加载状态显示
   if (loading) {
     return (

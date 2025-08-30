@@ -1,12 +1,12 @@
 {
-  "defaultConfig": {
+  "en": {
     "title": "Timeline News",
     "subtitle": "Explore important milestones in OpenAI's development journey",
     "defaultSearchTerm": "OpenAI",
     "hotSearchTags": ["AI", "GPT", "DALL-E", "ChatGPT", "Sora"],
     "uiTexts": {
       "searchPlaceholder": "Enter keywords to search...",
-      "hotSearchLabel": "Hot searches:",
+      "hotSearchLabel": "Hot Searches:",
       "filters": {
         "all": "All",
         "important": "Key Milestones",
@@ -17,38 +17,7 @@
       "loading": "Loading...",
       "loadMore": "Load more news",
       "readMore": "Read more"
-    },
-    "filterIcons": {
-      "all": "fas fa-layer-group",
-      "important": "fas fa-star",
-      "product": "fas fa-cube",
-      "research": "fas fa-flask"
-    },
-    "searchIcon": "fas fa-search",
-    "calendarIcon": "fas fa-calendar-alt",
-    "arrowIcon": "fas fa-arrow-right",
-    "spinnerIcon": "fas fa-spinner fa-spin",
-    "plusIcon": "fas fa-plus",
-    "newspaperIcon": "fas fa-newspaper"
-  }
-    "defaultConfig": {
-    "title": "时间轴新闻",
-    "subtitle": "探索OpenAI发展历程中的重要里程碑",
-    "defaultSearchTerm": "OpenAI",
-    "hotSearchTags": ["AI", "GPT", "DALL-E", "ChatGPT", "Sora"],
-    "uiTexts": {
-      "searchPlaceholder": "输入关键词搜索...",
-      "hotSearchLabel": "热门搜索：",
-      "filters": {
-        "all": "全部",
-        "important": "关键节点",
-        "product": "产品发布",
-        "research": "研究突破"
-      },
-      "newsCount": "显示 {count} 条新闻",
-      "loading": "加载中...",
-      "loadMore": "加载更多新闻",
-      "readMore": "阅读更多"
     }
   }
 }
+  
