@@ -74,7 +74,8 @@ const NewsSchema: Schema = new Schema({
     trim: true
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  strict: false
 })
 
 // 创建索引

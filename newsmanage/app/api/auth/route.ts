@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/database/mongodb'
-import User from '@/lib/models/User'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import mongoose from 'mongoose'
@@ -22,8 +21,16 @@ export async function POST(request: NextRequest) {
     }
     
     console.log('🔍 查找用户:', username)
-    // 查找用户 - 使用User模型
-    const user = await User.findOne({ 
+    // 查找用户 - 使用adminuser集合
+    const db = mongoose.connection.db
+    if (!db) {
+      console.log('❌ 数据库连接未建立')
+      return NextResponse.json(
+        { success: false, error: '数据库连接失败' },
+        { status: 500 }
+      )
+    }
+    const user = await db.collection('adminuser').findOne({ 
       $or: [{ username }, { email: username }],
       isActive: true 
     })
@@ -62,8 +69,8 @@ export async function POST(request: NextRequest) {
     
     // 更新最后登录时间
     console.log('⏰ 更新最后登录时间')
-    await User.findByIdAndUpdate(
-      user._id,
+    await db.collection('adminuser').updateOne(
+      { _id: user._id },
       { $set: { lastLogin: new Date() } }
     )
     
