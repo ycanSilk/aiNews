@@ -2,21 +2,35 @@ import { NextResponse } from 'next/server'
 import connectDB from '@/lib/database/mongodb'
 import mongoose from 'mongoose'
 import { ObjectId } from 'mongodb'
+import CategoryModel from '@/lib/models/Category'
 
 export async function GET() {
   try {
+    console.log('=== GET CATEGORIES API CALL ===')
+    console.log('Connecting to database...')
     await connectDB()
+    console.log('Database connected successfully')
     
-    // 使用统一的Category模型查询categories
-    const CategoryModel = mongoose.models.Category
+    // 使用导入的Category模型查询categories
+    console.log('Category model available:', !!CategoryModel)
+    
     if (!CategoryModel) {
+      console.log('Category model not found, returning empty array')
       return NextResponse.json([])
     }
+    
+    console.log('Querying categories collection...')
     const categories = await CategoryModel.find({})
+    console.log('Categories found:', categories.length)
+    
+    if (categories.length > 0) {
+      console.log('First category sample:', JSON.stringify(categories[0].toObject()))
+    }
     
     // 转换为普通对象
     const formattedCategories = categories.map(cat => cat.toObject())
     
+    console.log('=== GET CATEGORIES API COMPLETE ===')
     return NextResponse.json(formattedCategories)
   } catch (error) {
     console.error('Error fetching categories:', error)
@@ -193,6 +207,8 @@ export async function DELETE(request: Request) {
     
     console.log('Extracted ID from URL:', id)
     console.log('Full path parts:', JSON.stringify(pathParts))
+    console.log('Request method:', request.method)
+    console.log('Request headers:', Object.fromEntries(request.headers.entries()))
     
     if (!id || id === 'categories') {
       console.log('Invalid ID received:', id)

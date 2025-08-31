@@ -479,6 +479,44 @@ export default function NewsPage() {
     setFieldOperations(fieldOperations.filter((_, i) => i !== index))
   }
 
+  // 新闻删除功能
+  const handleDeleteNews = async (newsId: string, title: string) => {
+    if (!confirm(`确定要删除新闻"${title}"吗？此操作不可撤销。`)) return
+    
+    try {
+      const response = await fetch(`/api/news?id=${newsId}`, {
+        method: 'DELETE'
+      })
+      
+      const result = await response.json()
+      
+      if (response.ok) {
+        alert('新闻删除成功！')
+        await loadNews()
+      } else {
+        alert(`删除失败: ${result.error}`)
+      }
+    } catch (error) {
+      console.error('删除新闻失败:', error)
+      alert('删除新闻时发生错误')
+    }
+  }
+
+  // 新闻编辑功能
+  const handleEditNews = async (newsId: string) => {
+    const newsToEdit = news.find(item => item._id === newsId)
+    if (!newsToEdit) return
+    
+    // 这里可以打开模态框进行编辑
+    alert(`编辑新闻: ${newsToEdit.title.zh}`)
+  }
+
+  // 内容截断函数
+  const truncateContent = (content: string, maxLength: number = 100) => {
+    if (!content || content.length <= maxLength) return content
+    return content.substring(0, maxLength) + '...'
+  }
+
   if (loading) {
     return (
       <AdminLayout>
@@ -490,170 +528,226 @@ export default function NewsPage() {
   }
 
   return (
-    <div>
-      <div className='container p-10'>
-      <h1 className="text-2xl font-bold mb-6">新闻数据管理</h1>
-        
-        {/* 字段管理表单 */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-xl font-semibold mb-4">字段管理</h2>
-          <div className=" md:grid-cols-3 gap-4 mb-4">
-            <div className='py-2'>
-              <label className="block text-sm font-medium mb-1">字段名</label>
-              <input
-                type="text"
-                value={newFieldName}
-                onChange={(e) => setNewFieldName(e.target.value)}
-                className="w-64 p-2 border border-gray-300 rounded-md"
-                placeholder="输入字段名"
-              />
-            </div>
-            
-            <div className='py-2'>
-              <label className="block text-sm font-medium mb-1">字段类型</label>
-              <select
-                value={newFieldType}
-                onChange={(e) => setNewFieldType(e.target.value)}
-                className="w-64 p-2 border border-gray-300 rounded-md"
-              >
-                <option value="string">字符串</option>
-                <option value="number">数字</option>
-                <option value="boolean">布尔值</option>
-                <option value="object">对象</option>
-                <option value="array">数组</option>
-              </select>
-            </div>
-            
-            <div className='py-2'>
-              <label className="block text-sm font-medium mb-1">字段值</label>
-              <input
-                type="text"
-                value={newFieldValue}
-                onChange={(e) => setNewFieldValue(e.target.value)}
-                className="w-64 p-2 border border-gray-300 rounded-md"
-                placeholder="输入字段值"
-              />
-            </div>
-          </div>
-          
-          <button
-            onClick={handleAddField}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-          >
-            添加字段
-          </button>
+
+      <div className="p-6">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">新闻列表管理</h1>
+          <p className="text-gray-600 mt-2">管理系统新闻数据列表</p>
         </div>
-
-        {/* 待执行操作列表 */}
-        {fieldOperations.length > 0 && (
-          <div className="bg-yellow-50 p-6 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-semibold mb-4">待执行操作</h2>
-            
-            <div className="space-y-2 mb-4">
-              {fieldOperations.map((operation, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-yellow-100 rounded">
-                  <div>
-                    <span className="font-medium">{operation.type}:</span> {operation.fieldName}
-                    {operation.newFieldName && ` → ${operation.newFieldName}`}
-                    {operation.fieldValue && ` = ${JSON.stringify(operation.fieldValue)}`}
-                  </div>
-                  <button
-                    onClick={() => removeOperation(index)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    移除
-                  </button>
-                </div>
-              ))}
-            </div>
-            
-            <button
-              onClick={applyFieldOperations}
-              disabled={fieldOperations.length === 0}
-              className={`px-4 py-2 rounded-md ${
-                fieldOperations.length === 0
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-green-500 hover:bg-green-600'
-              } text-white`}
+        
+        {/* 新闻列表表格 */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold text-gray-800">
+              新闻列表 ({news.length})
+            </h2>
+            <button 
+              onClick={() => window.location.href = 'http://localhost:8899/admin/database/news/add'}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
             >
-              应用操作
-            </button>
-          </div>
-        )}
-
-        {/* 字段数据表格 */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">字段管理 ({fields.length} 个字段)</h2>
-            <button
-              onClick={loadNews}
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
-            >
-              查询刷新
+              添加新闻
             </button>
           </div>
           
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="border border-gray-300 p-2 text-left">字段名称</th>
-                  <th className="border border-gray-300 p-2 text-left">类型</th>
-                  <th className="border border-gray-300 p-2 text-left">作用注释</th>
-                  <th className="border border-gray-300 p-2 text-left">统计信息</th>
-                  <th className="border border-gray-300 p-2 text-left">操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                {fields.map((fieldName) => {
-                  const fieldType = fieldConfig[fieldName] || 'string' // 默认字符串类型
-                  return (
-                    <tr key={fieldName} className="hover:bg-gray-50">
-                      <td className="border border-gray-300 p-2 font-medium">
-                        {fieldName}
+          {news.length === 0 ? (
+            <div className="text-center py-12 text-gray-500">
+              暂无新闻数据
+            </div>
+          ) : (
+            <div className="border rounded-lg overflow-hidden">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">新闻标题</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">摘要</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">内容预览</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">分类</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {news.map((newsItem) => (
+                    <tr key={newsItem._id}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {newsItem.title.zh}
+                        {newsItem.title.en && (
+                          <div className="text-xs text-gray-400">{newsItem.title.en}</div>
+                        )}
                       </td>
-                      <td className="border border-gray-300 p-2 text-gray-600">
-                        {fieldType === 'string' && '字符串类型'}
-                        {fieldType === 'number' && '数字类型'}
-                        {fieldType === 'boolean' && '布尔类型'}
-                        {fieldType === 'object' && '对象类型'}
-                        {fieldType === 'array' && '数组类型'}
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {newsItem.summary.zh}
+                        {newsItem.summary.en && (
+                          <div className="text-xs text-gray-400">{newsItem.summary.en}</div>
+                        )}
                       </td>
-                      <td className="border border-gray-300 p-2 text-gray-600">
-                        {fieldComments[fieldName] || '暂无注释'}
-                      </td>
-                      <td className="border border-gray-300 p-2 text-sm text-gray-600">
-                        {getFieldStats(fieldName, fieldType)}
-                      </td>
-                      <td className="border border-gray-300 p-2">
-                        <div className="flex space-x-2">
-                          <button
-                            onClick={() => handleEditField(fieldName)}
-                            className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors"
-                          >
-                            修改字段名
-                          </button>
-                          <button
-                            onClick={() => handleEditComment(fieldName)}
-                            className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 transition-colors"
-                          >
-                            修改注释
-                          </button>
-                          <button
-                            onClick={() => handleDeleteField(fieldName)}
-                            className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors"
-                          >
-                            删除
-                          </button>
+                      <td className="px-6 py-4 text-sm text-gray-500 max-w-xs">
+                        <div className="truncate">
+                          {truncateContent(newsItem.content)}
                         </div>
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {newsItem.category}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span className={`px-2 py-1 rounded-full text-xs ${
+                          newsItem.status === 'published' ? 'bg-green-100 text-green-800' :
+                          newsItem.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {newsItem.status === 'published' ? '已发布' :
+                           newsItem.status === 'draft' ? '草稿' : '已归档'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button 
+                          className="text-blue-600 hover:text-blue-900 mr-3"
+                          onClick={() => handleEditNews(newsItem._id)}
+                        >
+                          编辑
+                        </button>
+                        <button 
+                          className="text-red-600 hover:text-red-900"
+                          onClick={() => handleDeleteNews(newsItem._id, newsItem.title.zh || newsItem.title.en || '未命名新闻')}
+                        >
+                          删除
+                        </button>
+                      </td>
                     </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
+
+        {/* 字段管理部分（保留原有功能） */}
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4">字段管理</h2>
+          
+          {/* 字段管理表单 */}
+          <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h3 className="text-lg font-semibold mb-4">添加新字段</h3>
+            <div className="md:grid md:grid-cols-3 gap-4 mb-4">
+              <div className='py-2'>
+                <label className="block text-sm font-medium mb-1">字段名</label>
+                <input
+                  type="text"
+                  value={newFieldName}
+                  onChange={(e) => setNewFieldName(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  placeholder="输入字段名"
+                />
+              </div>
+              
+              <div className='py-2'>
+                <label className="block text-sm font-medium mb-1">字段类型</label>
+                <select
+                  value={newFieldType}
+                  onChange={(e) => setNewFieldType(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                >
+                  <option value="string">字符串</option>
+                  <option value="number">数字</option>
+                  <option value="boolean">布尔值</option>
+                  <option value="object">对象</option>
+                  <option value="array">数组</option>
+                </select>
+              </div>
+              
+              <div className='py-2'>
+                <label className="block text-sm font-medium mb-1">字段值</label>
+                <input
+                  type="text"
+                  value={newFieldValue}
+                  onChange={(e) => setNewFieldValue(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  placeholder="输入字段值"
+                />
+              </div>
+            </div>
+            
+            <button
+              onClick={handleAddField}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            >
+              添加字段
+            </button>
+          </div>
+
+          {/* 字段数据表格 */}
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">字段管理 ({fields.length} 个字段)</h3>
+              <button
+                onClick={loadNews}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+              >
+                查询刷新
+              </button>
+            </div>
+            
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-gray-300">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="border border-gray-300 p-2 text-left">字段名称</th>
+                    <th className="border border-gray-300 p-2 text-left">类型</th>
+                    <th className="border border-gray-300 p-2 text-left">作用注释</th>
+                    <th className="border border-gray-300 p-2 text-left">统计信息</th>
+                    <th className="border border-gray-300 p-2 text-left">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {fields.map((fieldName) => {
+                    const fieldType = fieldConfig[fieldName] || 'string'
+                    return (
+                      <tr key={fieldName} className="hover:bg-gray-50">
+                        <td className="border border-gray-300 p-2 font-medium">
+                          {fieldName}
+                        </td>
+                        <td className="border border-gray-300 p-2 text-gray-600">
+                          {fieldType === 'string' && '字符串类型'}
+                          {fieldType === 'number' && '数字类型'}
+                          {fieldType === 'boolean' && '布尔类型'}
+                          {fieldType === 'object' && '对象类型'}
+                          {fieldType === 'array' && '数组类型'}
+                        </td>
+                        <td className="border border-gray-300 p-2 text-gray-600">
+                          {fieldComments[fieldName] || '暂无注释'}
+                        </td>
+                        <td className="border border-gray-300 p-2 text-sm text-gray-600">
+                          {getFieldStats(fieldName, fieldType)}
+                        </td>
+                        <td className="border border-gray-300 p-2">
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => handleEditField(fieldName)}
+                              className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors"
+                            >
+                              修改字段名
+                            </button>
+                            <button
+                              onClick={() => handleEditComment(fieldName)}
+                              className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 transition-colors"
+                            >
+                              修改注释
+                            </button>
+                            <button
+                              onClick={() => handleDeleteField(fieldName)}
+                              className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors"
+                            >
+                              删除
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
 

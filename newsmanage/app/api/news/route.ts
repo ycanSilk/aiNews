@@ -57,16 +57,79 @@ export async function GET() {
   }
 }
 
+// 生成slug的辅助函数
+function generateSlug(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\u4e00-\u9fa5]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .substring(0, 100)
+}
+
+// 生成semanticId的辅助函数
+function generateSemanticId(title: any): string {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  const day = String(now.getDate()).padStart(2, '0')
+  
+  // 获取标题的主要部分用于语义化ID
+  const titleText = typeof title === 'object' 
+    ? title.zh || title.en || 'untitled'
+    : title || 'untitled'
+  
+  // 生成基础语义化ID
+  const baseId = titleText
+    .toLowerCase()
+    .replace(/[^\w\u4e00-\u9fa5]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .substring(0, 30)
+  
+  // 添加时间戳和随机后缀确保唯一性
+  const timestamp = now.getTime().toString(36)
+  const randomSuffix = Math.random().toString(36).substring(2, 6)
+  
+  return `ai-news-${year}${month}${day}-${baseId}-${timestamp}${randomSuffix}`
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { title, content, category, status } = body
+    const { 
+      title, 
+      content, 
+      summary, 
+      category, 
+      tags, 
+      status, 
+      author, 
+      featured, 
+      imageUrl, 
+      slug 
+    } = body
     
+    // 验证必填字段
     if (!title || !content) {
       return NextResponse.json(
         { success: false, error: '标题和内容不能为空' },
         { status: 400 }
       )
+    }
+    
+    // 处理多语言字段
+    const processMultilingualField = (field: any) => {
+      if (typeof field === 'object') {
+        return field
+      }
+      if (typeof field === 'string') {
+        try {
+          return JSON.parse(field)
+        } catch {
+          // 如果解析失败，创建默认的多语言结构
+          return { zh: field || '', en: '' }
+        }
+      }
+      return { zh: '', en: '' }
     }
     
     await connectDB()
@@ -79,10 +142,19 @@ export async function POST(request: NextRequest) {
     }
     
     const newNews = {
-      title,
-      content,
+      title: processMultilingualField(title),
+      content: content,
+      summary: processMultilingualField(summary || ''),
       category: category || '未分类',
+      tags: Array.isArray(tags) ? tags : [],
       status: status || 'draft',
+      author: author || 'unknown',
+      featured: featured || false,
+      imageUrl: imageUrl || '',
+      slug: slug || generateSlug(processMultilingualField(title).zh || processMultilingualField(title).en || 'untitled'),
+      semanticId: generateSemanticId(title),
+      views: 0,
+      comments: 0,
       createdAt: new Date(),
       updatedAt: new Date()
     }

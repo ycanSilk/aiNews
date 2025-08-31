@@ -1,24 +1,37 @@
 import { NextResponse } from 'next/server'
 import connectDB from '@/lib/database/mongodb'
+import TagModel from '@/lib/models/Tag'
 
 export async function GET() {
   try {
-    const db = await connectDB()
+    console.log('=== GET TAGS API CALL ===')
+    console.log('Connecting to database...')
+    await connectDB()
+    console.log('Database connected successfully')
     
-    // 检查集合是否存在，如果不存在则返回空数组
-    const collections = await db.listCollections().toArray()
-    const collectionExists = collections.some((col: { name: string }) => col.name === 'tags')
+    console.log('Tag model available:', !!TagModel)
     
-    if (!collectionExists) {
+    if (!TagModel) {
+      console.log('Tag model not found, returning empty array')
       return NextResponse.json([])
     }
     
-    const tags = await db.collection('tags').find({}).toArray()
+    console.log('Querying tags collection...')
+    const tags = await TagModel.find({ isActive: true }).sort({ createdAt: -1 })
+    console.log('Tags found:', tags.length)
     
-    return NextResponse.json(tags)
+    if (tags.length > 0) {
+      console.log('First tag sample:', JSON.stringify(tags[0].toObject()))
+    }
+    
+    // 转换为普通对象
+    const formattedTags = tags.map(tag => tag.toObject())
+    
+    console.log('=== GET TAGS API COMPLETE ===')
+    return NextResponse.json(formattedTags)
   } catch (error) {
     console.error('Error fetching tags:', error)
-    // 如果连接失败，返回空数组而不是错误
+    // 如果集合不存在或其他错误，返回空数组
     return NextResponse.json([])
   }
 }
@@ -26,19 +39,26 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { name, description } = body
+    const { name, description, color } = body
 
-    if (!name) {
+    // 检查至少一个语言版本的名称不为空
+    if (!name || (!name.zh && !name.en)) {
       return NextResponse.json(
-        { error: 'Tag name is required' },
+        { error: 'Tag name is required in at least one language' },
         { status: 400 }
       )
     }
 
-    const db = await connectDB()
+    await connectDB()
     
     // 检查标签是否已存在
-    const existingTag = await db.collection('tags').findOne({ name })
+    const existingTag = await TagModel.findOne({ 
+      $or: [
+        { 'name.zh': name.zh || '' },
+        { 'name.en': name.en || '' }
+      ]
+    })
+    
     if (existingTag) {
       return NextResponse.json(
         { error: 'Tag already exists' },
@@ -46,21 +66,31 @@ export async function POST(request: Request) {
       )
     }
 
-    const newTag = {
-      name,
-      description: description || '',
-      usageCount: 0,
+    // 生成value字段，优先使用中文名称，如果没有则使用英文名称
+    const valueName = name.zh || name.en
+    if (!valueName) {
+      return NextResponse.json(
+        { error: 'Tag name is required to generate value field' },
+        { status: 400 }
+      )
+    }
+    
+    // 创建新标签
+    const newTag = new TagModel({
+      name: { zh: name.zh || '', en: name.en || '' },
+      value: valueName.toLowerCase().replace(/\\s+/g, '-'),
+      description: { zh: description?.zh || '', en: description?.en || '' },
+      color: color || '#3B82F6',
+      isActive: true,
+      articleCount: 0,
       createdAt: new Date(),
       updatedAt: new Date()
-    }
+    })
 
-    const result = await db.collection('tags').insertOne(newTag)
+    const savedTag = await newTag.save()
     
     return NextResponse.json(
-      { 
-        _id: result.insertedId,
-        ...newTag
-      },
+      savedTag.toObject(),
       { status: 201 }
     )
   } catch (error) {
