@@ -13,15 +13,24 @@ interface News {
     zh: string
     en: string
   }
+  content?: {
+    zh: string
+    en: string
+  }
   category: string
+  author: string
+  views: number
   readTime: number
+  imageUrl: string
+  slug: string
+  publishedAt: string
   publishTime: string
   date: string
   weekday: string
-  views: number
   comments: number
-  isBreaking: boolean
+  isHot: boolean
   isImportant: boolean
+  isCritical: boolean
   tags: string[]
   locales: {
     zh: {
@@ -35,9 +44,40 @@ interface News {
       tags: string[]
     }
   }
+  externalUrl?: string
   status: string
   createdAt: string
   updatedAt: string
+}
+
+interface EditNewsData {
+  id: string
+  semanticId: string
+  title: {
+    zh: string
+    en: string
+  }
+  summary: {
+    zh: string
+    en: string
+  }
+  content?: {
+    zh: string
+    en: string
+  }
+  category: string
+  tags: string[]
+  author: string
+  views: number
+  readTime: number
+  imageUrl: string
+  slug: string
+  publishedAt: string
+  externalUrl?: string
+  isBreaking: boolean
+  isImportant: boolean
+  isCritical: boolean
+  status: string
 }
 
 export default function AdminNewsPage() {
@@ -46,25 +86,59 @@ export default function AdminNewsPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [hoveredCell, setHoveredCell] = useState<{content: string, x: number, y: number} | null>(null)
+  const [error, setError] = useState<string>('')
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [editingNews, setEditingNews] = useState<EditNewsData | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [categories, setCategories] = useState<string[]>([])
 
   useEffect(() => {
     loadNews()
+    loadCategories()
   }, [])
+
+  const loadCategories = async () => {
+    try {
+      const response = await fetch('/api/categories')
+      if (response.ok) {
+        const data = await response.json()
+        // 提取分类名称（优先使用中文名称，如果没有则使用英文名称）
+        const categoryNames = data.map((category: any) => 
+          category.name?.zh || category.name?.en || category.value || ''
+        ).filter((name: string) => name.trim() !== '')
+        setCategories(categoryNames)
+      }
+    } catch (error) {
+      console.error('获取分类失败:', error)
+    }
+  }
 
   const loadNews = async () => {
     try {
       setLoading(true)
+      setError('')
+      console.log('正在加载新闻数据...')
+      
       // 首先尝试从API加载
       try {
         const response = await fetch('/api/news')
+        
+        if (!response.ok) {
+          throw new Error(`API请求失败: ${response.status}`)
+        }
+        
         const result = await response.json()
+        console.log('新闻数据加载成功:', result.data?.length)
         
         if (result.success) {
           setNews(result.data)
           return
+        } else {
+          throw new Error(result.error || 'API返回数据格式错误')
         }
       } catch (apiError) {
         console.warn('API加载失败，尝试从本地JSON文件加载:', apiError)
+        setError('API连接失败，使用演示数据')
       }
       
       // 如果API加载失败，尝试从本地JSON文件加载
@@ -112,9 +186,11 @@ export default function AdminNewsPage() {
         setNews(mockNewsData)
       } catch (jsonError) {
         console.error('本地JSON数据加载失败:', jsonError)
+        setError('数据加载失败，请检查网络连接或API服务')
       }
     } catch (error) {
       console.error('加载新闻失败:', error)
+      setError(error instanceof Error ? error.message : '未知错误')
     } finally {
       setLoading(false)
     }
@@ -162,6 +238,7 @@ export default function AdminNewsPage() {
               semanticId: item.semanticId || '',
               title: item.title || { zh: '', en: '' },
               summary: item.summary || { zh: '', en: '' },
+              content: typeof item.content === 'string' ? { zh: item.content, en: '' } : item.content || { zh: '', en: '' },
               category: item.category || '',
               readTime: item.readTime || 0,
               publishTime: item.publishTime || new Date().toISOString(),
@@ -174,8 +251,9 @@ export default function AdminNewsPage() {
               tags: Array.isArray(item.tags) ? item.tags : [],
               locales: item.locales || { zh: { title: '', summary: '', tags: [] }, en: { title: '', summary: '', tags: [] } },
               status: 'published',
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString()
+              createdAt: item.createdAt || new Date().toISOString(),
+              updatedAt: item.updatedAt || new Date().toISOString(),
+              author: item.author || ''
             }))
             
             setNews(importedNews)
@@ -200,20 +278,131 @@ export default function AdminNewsPage() {
     if (!confirm('确定要删除这条新闻吗？')) return
     
     try {
+      console.log('正在删除新闻:', id)
       const response = await fetch(`/api/news?id=${id}`, {
         method: 'DELETE'
       })
+      
+      console.log('删除响应状态:', response.status)
       const result = await response.json()
+      console.log('删除响应数据:', result)
       
       if (result.success) {
         alert('删除成功')
-        loadNews()
+        await loadNews()
       } else {
         alert('删除失败: ' + result.error)
       }
     } catch (error) {
       console.error('删除新闻失败:', error)
-      alert('删除失败')
+      alert('删除失败，请查看控制台日志')
+    }
+  }
+
+  const handleEdit = (newsItem: News) => {
+    const currentUser = JSON.parse(localStorage.getItem('user') || '{}')
+    setEditingNews({
+        id: newsItem._id,
+        semanticId: newsItem.semanticId || '',
+        title: { ...newsItem.title },
+        summary: { ...newsItem.summary },
+        content: typeof newsItem.content === 'string' ? { zh: newsItem.content, en: '' } : { zh: newsItem.content?.zh || '', en: newsItem.content?.en || '' },
+        category: newsItem.category || '',
+        tags: newsItem.tags || [],
+        author: newsItem.author || currentUser.username || '',
+        views: newsItem.views || 0,
+        readTime: newsItem.readTime || 0,
+        imageUrl: newsItem.imageUrl || '',
+        slug: newsItem.slug || '',
+        publishedAt: newsItem.publishedAt || newsItem.publishTime || new Date().toISOString(),
+        externalUrl: newsItem.externalUrl || '',
+        isHot: newsItem.isHot || false,
+        isImportant: newsItem.isImportant || false,
+        isCritical: newsItem.isCritical || false,
+        status: newsItem.status || 'draft'
+      })
+    setIsEditModalOpen(true)
+  }
+
+  const handleSaveEdit = async () => {
+    if (!editingNews) return
+    
+    try {
+      setIsSubmitting(true)
+      
+      // 区分创建新新闻和编辑现有新闻
+      const isCreating = !editingNews.id
+      const url = isCreating ? '/api/news' : `/api/news`
+      const method = isCreating ? 'POST' : 'PUT'
+      const currentTime = new Date().toISOString()
+      
+      console.log(isCreating ? '正在创建新闻' : '正在更新新闻:', editingNews.id)
+      
+      const requestBody = isCreating ? {
+        semanticId: editingNews.semanticId || '',
+        title: editingNews.title,
+        summary: editingNews.summary,
+        content: editingNews.content || { zh: '', en: '' },
+        category: editingNews.category || '',
+        tags: editingNews.tags || [],
+        author: editingNews.author || '',
+        views: editingNews.views || 0,
+        imageUrl: editingNews.imageUrl || '',
+        slug: editingNews.slug || '',
+        publishedAt: editingNews.publishedAt || currentTime,
+        externalUrl: editingNews.externalUrl || '',
+        isHot: editingNews.isHot || false,
+        isImportant: editingNews.isImportant || false,
+        isCritical: editingNews.isCritical || false,
+        status: editingNews.status || 'draft',
+        createdAt: currentTime,
+        updatedAt: currentTime
+      } : {
+        id: editingNews.id,
+        semanticId: editingNews.semanticId || '',
+        title: editingNews.title,
+        summary: editingNews.summary,
+        content: editingNews.content || { zh: '', en: '' },
+        category: editingNews.category || '',
+        tags: editingNews.tags || [],
+        author: editingNews.author || '',
+        views: editingNews.views || 0,
+        imageUrl: editingNews.imageUrl || '',
+        slug: editingNews.slug || '',
+        publishedAt: editingNews.publishedAt || currentTime,
+        externalUrl: editingNews.externalUrl || '',
+        isBreaking: editingNews.isBreaking || false,
+        isImportant: editingNews.isImportant || false,
+        isCritical: editingNews.isCritical || false,
+        status: editingNews.status || 'draft',
+        updatedAt: currentTime
+      }
+      
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+      })
+
+      console.log('响应状态:', response.status)
+      const result = await response.json()
+      console.log('响应数据:', result)
+
+      if (response.ok) {
+        alert(isCreating ? '新闻创建成功！' : '新闻更新成功！')
+        setIsEditModalOpen(false)
+        setEditingNews(null)
+        await loadNews()
+      } else {
+        alert(`${isCreating ? '创建' : '更新'}失败: ${result.error}`)
+      }
+    } catch (error) {
+      console.error(`${isCreating ? '创建' : '更新'}新闻失败:`, error)
+      alert(`${isCreating ? '创建' : '更新'}新闻时发生错误，请查看控制台日志`)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -230,7 +419,34 @@ export default function AdminNewsPage() {
           </button>
           <button 
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-            onClick={() => window.location.href = '/admin/news/create'}
+            onClick={() => {
+              const currentUser = JSON.parse(localStorage.getItem('user') || '{}')
+              const currentTime = new Date().toISOString()
+              const semanticId = `news-${Date.now()}`
+              const slug = `news-${Date.now()}`
+              
+              setEditingNews({
+                id: '',
+                semanticId: semanticId,
+                title: { zh: '', en: '' },
+                summary: { zh: '', en: '' },
+                content: { zh: '', en: '' },
+                category: '',
+                tags: [],
+                author: currentUser.username || 'admin',
+                views: 0,
+                readTime: 0,
+                imageUrl: '',
+                slug: slug,
+                publishedAt: currentTime,
+                externalUrl: '',
+                isHot: false,
+                isImportant: false,
+                isCritical: false,
+                status: 'draft'
+              })
+              setIsEditModalOpen(true)
+            }}
           >
             添加新闻
           </button>
@@ -331,17 +547,18 @@ export default function AdminNewsPage() {
                   <tr className="bg-gray-100">
                     <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">ID</th>
                     <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">语义ID</th>
-                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">中文标题</th>
-                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">英文标题</th>
+                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">标题</th>
+                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">摘要</th>
                     <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">分类</th>
+                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">作者</th>
+                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">浏览量</th>
                     <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">阅读时间</th>
                     <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">发布时间</th>
-                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">浏览量</th>
-                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">评论数</th>
-                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">紧急新闻</th>
-                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">重要新闻</th>
-                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">中文摘要</th>
-                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">英文摘要</th>
+                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">创建时间</th>
+                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">更新时间</th>
+                    <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">热门新闻</th>
+                     <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">推荐新闻</th>
+                     <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">重要新闻</th>
                     <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">标签</th>
                     <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">状态</th>
                     <th className="border border-gray-300 p-2 text-center 0 overflow-hidden text-ellipsis whitespace-nowrap">操作</th>
@@ -366,17 +583,13 @@ export default function AdminNewsPage() {
                       </td>
                       <td 
                         className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
-                        onMouseEnter={(e) => handleMouseEnter(e, item.title?.zh || '')}
+                        onMouseEnter={(e) => handleMouseEnter(e, `${item.title?.zh || ''}\n${item.title?.en || ''}`)}
                         onMouseLeave={handleMouseLeave}
                       >
-                        {item.title?.zh}
-                      </td>
-                      <td 
-                        className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
-                        onMouseEnter={(e) => handleMouseEnter(e, item.title?.en || '')}
-                        onMouseLeave={handleMouseLeave}
-                      >
-                        {item.title?.en}
+                        <div className="space-y-1">
+                          <div className="font-semibold text-gray-900">中文: {item.title?.zh}</div>
+                          <div className="text-sm text-gray-600 border-t pt-1">英文: {item.title?.en}</div>
+                        </div>
                       </td>
                       <td 
                         className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
@@ -387,17 +600,10 @@ export default function AdminNewsPage() {
                       </td>
                       <td 
                         className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
-                        onMouseEnter={(e) => handleMouseEnter(e, item.readTime?.toString() || '')}
+                        onMouseEnter={(e) => handleMouseEnter(e, item.author || '')}
                         onMouseLeave={handleMouseLeave}
                       >
-                        {item.readTime}
-                      </td>
-                      <td 
-                        className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
-                        onMouseEnter={(e) => handleMouseEnter(e, item.publishTime || '')}
-                        onMouseLeave={handleMouseLeave}
-                      >
-                        {item.publishTime}
+                        {item.author}
                       </td>
                       <td 
                         className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
@@ -405,6 +611,34 @@ export default function AdminNewsPage() {
                         onMouseLeave={handleMouseLeave}
                       >
                         {item.views}
+                      </td>
+                      <td 
+                        className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
+                        onMouseEnter={(e) => handleMouseEnter(e, item.readTime?.toString() || '')}
+                        onMouseLeave={handleMouseLeave}
+                      >
+                        {item.readTime}
+                      </td>
+                      <td 
+                        className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
+                        onMouseEnter={(e) => handleMouseEnter(e, item.publishedAt || item.publishTime || '')}
+                        onMouseLeave={handleMouseLeave}
+                      >
+                        {item.publishedAt || item.publishTime}
+                      </td>
+                      <td 
+                        className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
+                        onMouseEnter={(e) => handleMouseEnter(e, item.createdAt || '')}
+                        onMouseLeave={handleMouseLeave}
+                      >
+                        {item.createdAt}
+                      </td>
+                      <td 
+                        className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
+                        onMouseEnter={(e) => handleMouseEnter(e, item.updatedAt || '')}
+                        onMouseLeave={handleMouseLeave}
+                      >
+                        {item.updatedAt}
                       </td>
                       <td 
                         className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
@@ -428,18 +662,21 @@ export default function AdminNewsPage() {
                         {item.isImportant ? '是' : '否'}
                       </td>
                       <td 
-                        className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
-                        onMouseEnter={(e) => handleMouseEnter(e, item.summary?.zh || '')}
-                        onMouseLeave={handleMouseLeave}
-                      >
-                        {item.summary?.zh}
-                      </td>
+                         className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
+                         onMouseEnter={(e) => handleMouseEnter(e, item.isCritical ? '重要新闻' : '普通新闻')}
+                         onMouseLeave={handleMouseLeave}
+                       >
+                         {item.isCritical ? '✅' : '❌'}
+                       </td>
                       <td 
                         className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
-                        onMouseEnter={(e) => handleMouseEnter(e, item.summary?.en || '')}
+                        onMouseEnter={(e) => handleMouseEnter(e, Array.isArray(item.tags) ? item.tags.join(', ') : item.tags || '')}
                         onMouseLeave={handleMouseLeave}
                       >
-                        {item.summary?.en}
+                        <div className="space-y-1">
+                          <div className="text-gray-900">中文: {item.summary?.zh}</div>
+                          <div className="text-sm text-gray-600 border-t pt-1">英文: {item.summary?.en}</div>
+                        </div>
                       </td>
                       <td 
                         className="border border-gray-300 p-2 0 overflow-hidden text-ellipsis whitespace-nowrap relative group"
@@ -465,7 +702,7 @@ export default function AdminNewsPage() {
                         <div className="flex space-x-2">
                           <button 
                             className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors"
-                            onClick={() => window.location.href = `/admin/news/edit/${item._id}`}
+                            onClick={() => handleEdit(item)}
                           >
                             编辑
                           </button>
@@ -500,6 +737,327 @@ export default function AdminNewsPage() {
           )}
         </div>
       </div>
+      
+      {/* 编辑模态框 */}
+      {isEditModalOpen && editingNews && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+            <h2 className="text-xl font-bold mb-4">{editingNews.id ? '编辑新闻' : '添加新闻'}</h2>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">中文标题</label>
+                <input
+                  type="text"
+                  value={editingNews.title.zh}
+                  onChange={(e) => setEditingNews({
+                    ...editingNews,
+                    title: { ...editingNews.title, zh: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border rounded-md"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">英文标题</label>
+                <input
+                  type="text"
+                  value={editingNews.title.en}
+                  onChange={(e) => setEditingNews({
+                    ...editingNews,
+                    title: { ...editingNews.title, en: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border rounded-md"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">中文摘要</label>
+                <textarea
+                  value={editingNews.summary.zh}
+                  onChange={(e) => setEditingNews({
+                    ...editingNews,
+                    summary: { ...editingNews.summary, zh: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border rounded-md"
+                  rows={3}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">英文摘要</label>
+                <textarea
+                  value={editingNews.summary.en}
+                  onChange={(e) => setEditingNews({
+                    ...editingNews,
+                    summary: { ...editingNews.summary, en: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border rounded-md"
+                  rows={3}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">详细内容</label>
+                <textarea
+                  value={editingNews.content?.zh || ''}
+                  onChange={(e) => setEditingNews({
+                    ...editingNews,
+                    content: { ...editingNews.content, zh: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border rounded-md"
+                  rows={6}
+                  placeholder="请输入中文新闻内容"
+                />
+                 <label className="block text-sm font-medium mb-1">英文详细内容</label>
+                <textarea
+                  value={editingNews.content?.en || ''}
+                  onChange={(e) => setEditingNews({
+                    ...editingNews,
+                    content: { ...editingNews.content, en: e.target.value }
+                  })}
+                  className="w-full px-3 py-2 border rounded-md mt-2"
+                  rows={6}
+                  placeholder="请输入英文新闻内容"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">分类</label>
+                <select
+                   value={editingNews.category || ''}
+                   onChange={(e) => setEditingNews({ ...editingNews, category: e.target.value })}
+                   className="w-full px-3 py-2 border rounded-md"
+                 >
+                   <option value="">选择分类</option>
+                   {categories.map((category) => (
+                     <option key={category} value={category}>
+                       {category}
+                     </option>
+                   ))}
+                 </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">标签</label>
+                <div className="flex flex-wrap gap-2 p-2 border rounded-md min-h-[42px]">
+                  {editingNews.tags?.map((tag, index) => (
+                    <span key={index} className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
+                      {tag}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newTags = editingNews.tags.filter((_, i) => i !== index)
+                          setEditingNews({ ...editingNews, tags: newTags })
+                        }}
+                        className="ml-1 text-blue-600 hover:text-blue-800"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                  <input
+                    type="text"
+                    placeholder="输入标签后按回车"
+                    className="flex-1 outline-none min-w-[120px] px-1"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && e.currentTarget.value.trim()) {
+                        e.preventDefault()
+                        const newTag = e.currentTarget.value.trim()
+                        const newTags = [...(editingNews.tags || []), newTag]
+                        setEditingNews({ ...editingNews, tags: newTags })
+                        e.currentTarget.value = ''
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">语义ID</label>
+                <input
+                  type="text"
+                  value={editingNews.semanticId || ''}
+                  onChange={(e) => setEditingNews({ ...editingNews, semanticId: e.target.value })}
+                  className="w-full px-3 py-2 border rounded-md"
+                  placeholder="请输入语义ID"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">作者</label>
+                <input
+                  type="text"
+                  value={editingNews.author || ''}
+                  onChange={(e) => setEditingNews({ ...editingNews, author: e.target.value })}
+                  className="w-full px-3 py-2 border rounded-md"
+                  placeholder="请输入作者名称"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">浏览量</label>
+                <input
+                  type="number"
+                  value={editingNews.views || 0}
+                  onChange={(e) => setEditingNews({ ...editingNews, views: parseInt(e.target.value) || 0 })}
+                  className="w-full px-3 py-2 border rounded-md"
+                  readOnly
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">图片URL</label>
+                <input
+                  type="url"
+                  value={editingNews.imageUrl || ''}
+                  onChange={(e) => setEditingNews({ ...editingNews, imageUrl: e.target.value })}
+                  className="w-full px-3 py-2 border rounded-md"
+                  placeholder="请输入图片URL"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">Slug</label>
+                <input
+                  type="text"
+                  value={editingNews.slug || ''}
+                  onChange={(e) => setEditingNews({ ...editingNews, slug: e.target.value })}
+                  className="w-full px-3 py-2 border rounded-md"
+                  placeholder="请输入URL友好的标识符"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">发布时间</label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={editingNews.publishedAt || ''}
+                    onChange={(e) => setEditingNews({ 
+                      ...editingNews, 
+                      publishedAt: e.target.value
+                    })}
+                    className="flex-1 px-3 py-2 border rounded-md"
+                    placeholder="输入日期时间 (YYYY-MM-DDTHH:MM:SS)"
+                  />
+                  <input
+                    type="datetime-local"
+                    value={editingNews.publishedAt ? new Date(editingNews.publishedAt).toISOString().slice(0, 16) : ''}
+                    onChange={(e) => setEditingNews({ 
+                      ...editingNews, 
+                      publishedAt: e.target.value ? new Date(e.target.value).toISOString() : '' 
+                    })}
+                    className="w-32 px-3 py-2 border rounded-md"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">外部跳转URL</label>
+                <input
+                  type="url"
+                  value={editingNews.externalUrl || ''}
+                  onChange={(e) => setEditingNews({ ...editingNews, externalUrl: e.target.value })}
+                  className="w-full px-3 py-2 border rounded-md"
+                  placeholder="请输入外部跳转URL（可选）"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">状态</label>
+                <select
+                  value={editingNews.status || 'draft'}
+                  onChange={(e) => setEditingNews({ ...editingNews, status: e.target.value })}
+                  className="w-full px-3 py-2 border rounded-md"
+                >
+                  <option value="draft">草稿</option>
+                  <option value="published">已发布</option>
+                  <option value="archived">已归档</option>
+                </select>
+              </div>
+
+              <div className="flex gap-4">
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={editingNews.isHot || false}
+                    onChange={(e) => setEditingNews({ ...editingNews, isHot: e.target.checked })}
+                    className="mr-2"
+                  />
+                  热门新闻
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={editingNews.isImportant || false}
+                    onChange={(e) => setEditingNews({ ...editingNews, isImportant: e.target.checked })}
+                    className="mr-2"
+                  />
+                  推荐新闻
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={editingNews.isCritical || false}
+                    onChange={(e) => setEditingNews({ ...editingNews, isCritical: e.target.checked })}
+                    className="mr-2"
+                  />
+                  重要新闻
+                </label>
+              </div>
+            </div>
+            
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                onClick={() => {
+                  setIsEditModalOpen(false)
+                  setEditingNews(null)
+                }}
+                disabled={isSubmitting}
+              >
+                取消
+              </button>
+              <button
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+                onClick={handleSaveEdit}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (editingNews.id ? '保存中...' : '创建中...') : (editingNews.id ? '保存' : '创建')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* 错误提示 */}
+      {error && (
+        <div className="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50">
+          <div className="flex items-center">
+            <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>{error}</span>
+            <button 
+              className="ml-4 text-red-800 hover:text-red-600"
+              onClick={() => setError('')}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+      
+      {/* 加载状态优化 */}
+      {loading && (
+        <div className="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">加载中，请稍候...</p>
+          </div>
+        </div>
+      )}
       </div>
   )
 }
