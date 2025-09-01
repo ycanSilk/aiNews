@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import RichTextEditor from '@/components/ui/rich-text-editor'
 
 interface News {
   _id: string
@@ -891,14 +892,13 @@ export default function AdminNewsPage() {
                     <div key={field}>
                       <label className="block text-sm font-medium mb-1">{fieldLabel} (中文)</label>
                       {field === 'content' ? (
-                        <textarea
+                        <RichTextEditor
                           value={multiLangValue.zh || ''}
-                          onChange={(e) => setEditingNews({
+                          onChange={(value) => setEditingNews({
                             ...editingNews,
-                            [field]: { ...multiLangValue, zh: e.target.value }
+                            [field]: { ...multiLangValue, zh: value }
                           })}
-                          className="w-full px-3 py-2 border rounded-md"
-                          rows={6}
+                          className="w-full"
                           placeholder={`请输入中文${fieldLabel}`}
                         />
                       ) : (
@@ -916,14 +916,13 @@ export default function AdminNewsPage() {
                       
                       <label className="block text-sm font-medium mb-1 mt-2">{fieldLabel} (英文)</label>
                       {field === 'content' ? (
-                        <textarea
+                        <RichTextEditor
                           value={multiLangValue.en || ''}
-                          onChange={(e) => setEditingNews({
+                          onChange={(value) => setEditingNews({
                             ...editingNews,
-                            [field]: { ...multiLangValue, en: e.target.value }
+                            [field]: { ...multiLangValue, en: value }
                           })}
-                          className="w-full px-3 py-2 border rounded-md"
-                          rows={6}
+                          className="w-full"
                           placeholder={`请输入英文${fieldLabel}`}
                         />
                       ) : (
@@ -952,9 +951,7 @@ export default function AdminNewsPage() {
                       >
                         <option value="">选择分类</option>
                         {categories.map((cat) => (
-                          <option key={cat.value} value={cat.value}>
-                            {cat.displayName}
-                          </option>
+                          <option key={cat.value} value={cat.value}>{cat.displayName}</option>
                         ))}
                       </select>
                     </div>

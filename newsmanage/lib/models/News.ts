@@ -1,37 +1,80 @@
 import mongoose, { Document, Schema } from 'mongoose'
 
 export interface INews extends Document {
-  title: string
-  content: string
-  summary?: string
+  semanticId: string
+  title: {
+    zh: string
+    en: string
+  }
+  summary: {
+    zh: string
+    en: string
+  }
+  content: {
+    zh: string
+    en: string
+  }
   category: string
   tags: string[]
   author: mongoose.Types.ObjectId
   status: 'draft' | 'published' | 'archived'
   publishedAt?: Date
   views: number
-  featured: boolean
+  readTime: number
   imageUrl?: string
   slug: string
+  isHot: boolean
+  isImportant: boolean
+  isCritical: boolean
+  externalUrl?: string
   createdAt: Date
   updatedAt: Date
 }
 
 const NewsSchema: Schema = new Schema({
-  title: {
+  semanticId: {
     type: String,
     required: true,
-    trim: true,
-    maxlength: 200
+    unique: true,
+    trim: true
   },
-  content: {
-    type: String,
-    required: true
+  title: {
+    zh: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 200
+    },
+    en: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 200
+    }
   },
   summary: {
-    type: String,
-    trim: true,
-    maxlength: 500
+    zh: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 500
+    },
+    en: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: 500
+    }
+  },
+  content: {
+    zh: {
+      type: String,
+      required: true
+    },
+    en: {
+      type: String,
+      required: true
+    }
   },
   category: {
     type: String,
@@ -59,9 +102,25 @@ const NewsSchema: Schema = new Schema({
     type: Number,
     default: 0
   },
-  featured: {
+  readTime: {
+    type: Number,
+    default: 5
+  },
+  isHot: {
     type: Boolean,
     default: false
+  },
+  isImportant: {
+    type: Boolean,
+    default: false
+  },
+  isCritical: {
+    type: Boolean,
+    default: false
+  },
+  externalUrl: {
+    type: String,
+    trim: true
   },
   imageUrl: {
     type: String,

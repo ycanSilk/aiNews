@@ -1,0 +1,56 @@
+[
+  {
+    "_id": {"$oid": "67a1b2c3d4e5f67890123456"},
+    "semanticId": "ai-news-001",
+    "title": {
+      "zh": "人工智能新闻标题",
+      "en": "AI News Title"
+    },
+    "summary": {
+      "zh": "这是人工智能新闻的摘要内容",
+      "en": "This is the summary of AI news"
+    },
+    "content": {
+      "zh": "<h1>人工智能新闻内容</h1><p>这是详细的人工智能新闻内容，包含丰富的HTML格式。</p><ul><li>列表项1</li><li>列表项2</li></ul>",
+      "en": "<h1>AI News Content</h1><p>This is detailed AI news content with rich HTML formatting.</p><ul><li>Item 1</li><li>Item 2</li></ul>"
+    },
+    "category": "technology",
+    "author": "AI Writer",
+    "status": "published",
+    "tags": ["AI", "Technology", "News"],
+    "sourceUrl": "https://example.com/ai-news",
+    "slug": "ai-news-2024",
+    "featuredImage": "",
+    "isFeatured": false,
+    "views": 0,
+    "createdAt": "2024-01-15T10:30:00.000Z",
+    "updatedAt": "2024-01-15T10:30:00.000Z"
+  },
+  {
+    "_id": {"$oid": "67a1b2c3d4e5f67890123457"},
+    "semanticId": "tech-review-002",
+    "title": {
+      "zh": "技术评测：最新AI工具",
+      "en": "Tech Review: Latest AI Tools"
+    },
+    "summary": {
+      "zh": "对最新AI工具的综合评测",
+      "en": "Comprehensive review of the latest AI tools"
+    },
+    "content": {
+      "zh": "<h2>技术评测详情</h2><p>详细的技术评测内容...</p><blockquote>引用重要的技术观点</blockquote>",
+      "en": "<h2>Tech Review Details</h2><p>Detailed technical review content...</p><blockquote>Quote important technical insights</blockquote>"
+    },
+    "category": "review",
+    "author": "Tech Reviewer",
+    "status": "draft",
+    "tags": ["Review", "AI Tools", "Technology"],
+    "sourceUrl": "https://example.com/tech-review",
+    "slug": "tech-review-latest-ai-tools",
+    "featuredImage": "",
+    "isFeatured": true,
+    "views": 150,
+    "createdAt": "2024-01-14T15:45:00.000Z",
+    "updatedAt": "2024-01-15T09:20:00.000Z"
+  }
+]

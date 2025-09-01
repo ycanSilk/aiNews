@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import Category from '../src/models/Category.js';
-import Tag from '../src/models/Tag.js';
-import News from '../src/models/News.js';
-import Article from '../src/models/Article.js';
-import User from '../src/models/User.js';
+import Category from '../newsmanage/lib/models/Category.js';
+import Tag from '../newsmanage/lib/models/Tag.js';
+import News from '../newsmanage/lib/models/News.js';
+import Article from '../newsmanage/lib/models/Article.js';
+import User from '../newsmanage/lib/models/User.js';
 import dotenv from 'dotenv';
 
 // 加载环境变量

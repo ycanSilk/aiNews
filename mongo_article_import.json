@@ -1,0 +1,57 @@
+[
+  {
+    "_id": {
+      "$oid": "67a1b2c3d4e5f67890123456"
+    },
+    "title": {
+      "zh": "InternVL3.5 – 上海AI Lab开源的多模态大模型",
+      "en": "InternVL3.5 - Shanghai AI Lab's Open Source Multimodal Large Model"
+    },
+    "summary": {
+      "zh": "InternVL3.5（书生·万象3.5）是上海人工智能实验室开源的多模态大模型，在通用能力、推理能力和部署效率上全面升级。",
+      "en": "InternVL3.5 is an open-source multimodal large model from Shanghai AI Lab, with comprehensive upgrades in general capabilities, reasoning abilities, and deployment efficiency."
+    },
+    "content": {
+      "zh": "InternVL3.5 – 上海AI Lab开源的多模态大模型\n\nInternVL3.5是什么\nInternVL3.5（书生·万象3.5）是上海人工智能实验室开源的多模态大模型，模型在通用能力、推理能力和部署效率上全面升级，提供从10亿到2410亿参数的九种尺寸版本，覆盖不同资源需求场景，包含稠密模型和专家混合模型（MoE），是首个支持GPT-OSS语言模型基座的开源多模态大模型。InternVL3.5 采用级联式强化学习（Cascade RL）框架，通过\"离线预热-在线精调\"两阶段流程，显著提升推理能力。旗舰模型 InternVL3.5-241B-A28B 在多学科推理基准 MMMU 中获得开源模型最高分77.7分，超越 GPT-5。借助动态视觉分辨率路由（ViR）和解耦部署框架（DvD），模型在高分辨率输入下的响应速度大幅提升，38B 模型的吞吐量提升达4.05倍。",
+      "en": "InternVL3.5 – Shanghai AI Lab's Open Source Multimodal Large Model\n\nWhat is InternVL3.5\nInternVL3.5 is an open-source multimodal large model from Shanghai AI Lab, with comprehensive upgrades in general capabilities, reasoning abilities, and deployment efficiency. It provides nine size versions from 1 billion to 241 billion parameters, covering different resource requirement scenarios, including dense models and mixture-of-experts (MoE) models. It is the first open-source multimodal large model supporting the GPT-OSS language model base. InternVL3.5 adopts a cascaded reinforcement learning (Cascade RL) framework, significantly improving reasoning capabilities through a two-stage process of \"offline warm-up and online fine-tuning\". The flagship model InternVL3.5-241B-A28B achieved the highest score of 77.7 points among open-source models on the multi-disciplinary reasoning benchmark MMMU, surpassing GPT-5. With dynamic visual resolution routing (ViR) and decoupled deployment framework (DvD), the model's response speed under high-resolution input is greatly improved, with a throughput increase of up to 4.05 times for the 38B model."
+    },
+    "category": {
+      "$oid": "67a1b2c3d4e5f67890123457"
+    },
+    "tags": [
+      {
+        "$oid": "67a1b2c3d4e5f67890123458"
+      },
+      {
+        "$oid": "67a1b2c3d4e5f67890123459"
+      }
+    ],
+    "author": {
+      "$oid": "67a1b2c3d4e5f6789012345a"
+    },
+    "status": "published",
+    "views": 0,
+    "readTime": 3,
+    "slug": "internvl3-5-shanghai-ai-lab-open-source-multimodal-model",
+    "imageUrl": "/images/ai-news-placeholder.jpg",
+    "publishedAt": {
+      "$date": "2024-12-30T10:00:00Z"
+    },
+    "metaDescription": {
+      "zh": "InternVL3.5是上海AI Lab开源的多模态大模型，在MMMU基准测试中获得开源模型最高分77.7分，支持从10亿到2410亿参数的多种版本。",
+      "en": "InternVL3.5 is an open-source multimodal large model from Shanghai AI Lab, achieving the highest score of 77.7 points among open-source models on MMMU benchmark, supporting multiple versions from 1B to 241B parameters."
+    },
+    "keywords": ["AI", "multimodal", "large model", "open source", "Shanghai AI Lab"],
+    "isHot": true,
+    "isImportant": true,
+    "isCritical": false,
+    "externalUrl": "",
+    "relatedArticles": [],
+    "createdAt": {
+      "$date": "2024-12-30T09:00:00Z"
+    },
+    "updatedAt": {
+      "$date": "2024-12-30T09:30:00Z"
+    }
+  }
+]

@@ -1,0 +1,580 @@
+[
+  {
+    "_id": {
+      "$oid": "68b1b62cef317d108cc84e01"
+    },
+    "semanticId": "openai-gpt-4o-mini-launch-20240831-001",
+    
+    "title": {
+      "zh": "OpenAI推出GPT-4o mini，成本降低80%",
+      "en": "OpenAI Launches GPT-4o mini, Reducing Costs by 80%"
+    },
+    
+    "summary": {
+      "zh": "OpenAI发布GPT-4o mini，这是一个更小、更高效的模型，在保持强大性能的同时，将API调用成本降低了80%，为开发者提供了更经济的选择。",
+      "en": "OpenAI has launched GPT-4o mini, a smaller and more efficient model that reduces API call costs by 80% while maintaining strong performance, providing a more economical option for developers."
+    },
+    
+    "content": {
+      "zh": "OpenAI于8月31日正式推出GPT-4o mini，这是一个经过优化的轻量级模型，旨在为开发者提供高性能且低成本的AI解决方案。GPT-4o mini在多项基准测试中表现接近GPT-4o，但API调用成本降低了80%。该模型特别适合需要大规模部署AI应用的企业和开发者，能够显著降低运营成本。OpenAI表示，GPT-4o mini即日起可通过API使用，并支持多模态输入。",
+      "en": "OpenAI officially launched GPT-4o mini on August 31, an optimized lightweight model designed to provide developers with high-performance and low-cost AI solutions. GPT-4o mini performs close to GPT-4o in various benchmarks but reduces API call costs by 80%. This model is particularly suitable for enterprises and developers who need to deploy AI applications at scale, significantly reducing operational costs. OpenAI stated that GPT-4o mini is available via API starting today and supports multimodal input."
+    },
+    
+    "category": "large-language-models",
+    
+    "publishedAt": {
+      "$date": "2025-08-31T09:00:00Z"
+    },
+    
+    "views": 980,
+    "comments": 32,
+    
+    "isHot": true,
+    "isImportant": true,
+    "featured": true,
+    
+    "tags": ["OpenAI", "GPT-4o-mini", "cost-reduction", "API", "AI"],
+    
+    "author": "AI新闻团队",
+    "status": "published",
+    
+    "imageUrl": "https://example.com/images/openai-gpt4o-mini.jpg",
+    "slug": "openai-gpt-4o-mini-launch-2025",
+    
+    "createdAt": {
+      "$date": "2025-08-31T07:30:00Z"
+    },
+    "updatedAt": {
+      "$date": "2025-08-31T09:00:00Z"
+    },
+    
+    "metadata": {
+      "source": "OpenAI官方博客",
+      "language": "zh",
+      "wordCount": 720,
+      "readingLevel": "intermediate",
+      "license": "CC BY 4.0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "68b1b62cef317d108cc84e02"
+    },
+    "semanticId": "google-gemini-2.0-release-20240831-002",
+    
+    "title": {
+      "zh": "谷歌发布Gemini 2.0，多模态能力大幅提升",
+      "en": "Google Releases Gemini 2.0 with Enhanced Multimodal Capabilities"
+    },
+    
+    "summary": {
+      "zh": "谷歌推出Gemini 2.0，新版本在图像识别、语音处理和视频理解方面有显著改进，同时提升了推理速度和准确性。",
+      "en": "Google has launched Gemini 2.0, with significant improvements in image recognition, speech processing, and video understanding, along with enhanced reasoning speed and accuracy."
+    },
+    
+    "content": {
+      "zh": "谷歌于8月31日发布了Gemini 2.0，这是其多模态AI模型的重大升级。新版本在图像识别、语音处理和视频理解方面有显著提升，能够更准确地理解和生成复杂多模态内容。Gemini 2.0还优化了推理速度，比上一版本快40%，同时保持了高准确性。该模型已集成到谷歌的各类产品中，包括搜索、助手和云服务。",
+      "en": "Google released Gemini 2.0 on August 31, a major upgrade to its multimodal AI model. The new version significantly improves image recognition, speech processing, and video understanding, enabling more accurate comprehension and generation of complex multimodal content. Gemini 2.0 also optimizes reasoning speed, making it 40% faster than the previous version while maintaining high accuracy. The model has been integrated into various Google products, including Search, Assistant, and Cloud Services."
+    },
+    
+    "category": "multimodal-ai",
+    
+    "publishedAt": {
+      "$date": "2025-08-31T10:15:00Z"
+    },
+    
+    "views": 850,
+    "comments": 28,
+    
+    "isHot": true,
+    "isImportant": true,
+    "featured": true,
+    
+    "tags": ["Google", "Gemini-2.0", "multimodal", "AI", "video-understanding"],
+    
+    "author": "科技新闻组",
+    "status": "published",
+    
+    "imageUrl": "https://example.com/images/google-gemini-2.0.jpg",
+    "slug": "google-gemini-2.0-release-2025",
+    
+    "createdAt": {
+      "$date": "2025-08-31T08:45:00Z"
+    },
+    "updatedAt": {
+      "$date": "2025-08-31T10:15:00Z"
+    },
+    
+    "metadata": {
+      "source": "Google AI博客",
+      "language": "zh",
+      "wordCount": 680,
+      "readingLevel": "intermediate",
+      "license": "CC BY 4.0"
+    }
+  },
+
+  {
+    "_id": {
+      "$oid": "68b1b62cef317d108cc84e03"
+    },
+    "semanticId": "meta-llama-4-release-20240831-003",
+    
+    "title": {
+      "zh": "Meta发布Llama 4，开源模型性能超越GPT-4",
+      "en": "Meta Releases Llama 4, Open-Source Model Outperforms GPT-4"
+    },
+    
+    "summary": {
+      "zh": "Meta推出Llama 4开源大模型，在多项基准测试中性能超越GPT-4，为研究和商业应用提供更强大的免费选择。",
+      "en": "Meta has launched Llama 4, an open-source large model that outperforms GPT-4 in various benchmarks, providing a more powerful free option for research and commercial applications."
+    },
+    
+    "content": {
+      "zh": "Meta于8月31日发布了Llama 4，这是一个全新的开源大语言模型。据官方测试数据显示，Llama 4在多项基准测试中的表现超越了GPT-4，特别是在代码生成和数学推理方面。该模型完全开源，可供研究机构和商业公司免费使用。Meta表示，Llama 4的训练数据更加多样化，涵盖了更多语言和文化背景，使其在全球范围内更具适用性。",
+      "en": "Meta released Llama 4 on August 31, a new open-source large language model. According to official test data, Llama 4 outperforms GPT-4 in various benchmarks, particularly in code generation and mathematical reasoning. The model is fully open-source and available for free use by research institutions and commercial companies. Meta stated that Llama 4's training data is more diverse, covering more languages and cultural backgrounds, making it more applicable globally."
+    },
+    
+    "category": "open-source-ai",
+    
+    "publishedAt": {
+      "$date": "2025-08-31T11:30:00Z"
+    },
+    
+    "views": 1200,
+    "comments": 56,
+    
+    "isHot": true,
+    "isImportant": true,
+    "featured": true,
+    
+    "tags": ["Meta", "Llama-4", "open-source", "GPT-4", "AI"],
+    
+    "author": "开源社区新闻",
+    "status": "published",
+    
+    "imageUrl": "https://example.com/images/meta-llama-4.jpg",
+    "slug": "meta-llama-4-release-2025",
+    
+    "createdAt": {
+      "$date": "2025-08-31T09:15:00Z"
+    },
+    "updatedAt": {
+      "$date": "2025-08-31T11:30:00Z"
+    },
+    
+    "metadata": {
+      "source": "Meta AI研究博客",
+      "language": "zh",
+      "wordCount": 750,
+      "readingLevel": "intermediate",
+      "license": "CC BY 4.0"
+    }
+  },
+
+  {
+    "_id": {
+      "$oid": "68b1b62cef317d108cc84e04"
+    },
+    "semanticId": "microsoft-ai-supercomputer-20240831-004",
+    
+    "title": {
+      "zh": "微软建成全球最大AI超级计算机",
+      "en": "Microsoft Builds World's Largest AI Supercomputer"
+    },
+    
+    "summary": {
+      "zh": "微软宣布建成全球最大的AI超级计算机，拥有100万颗专用AI芯片，将用于训练下一代大模型。",
+      "en": "Microsoft announced the completion of the world's largest AI supercomputer, equipped with 1 million dedicated AI chips, which will be used to train the next generation of large models."
+    },
+    
+    "content": {
+      "zh": "微软于8月31日宣布建成全球最大的AI超级计算机，该系统拥有100万颗专用AI芯片，计算能力达到前所未有的水平。这台超级计算机将主要用于训练下一代大语言模型和多模态AI系统。微软表示，该设施将对外开放，供合作伙伴和研究机构使用，以加速AI技术的发展。",
+      "en": "Microsoft announced on August 31 the completion of the world's largest AI supercomputer. The system is equipped with 1 million dedicated AI chips, achieving unprecedented computing power. This supercomputer will primarily be used to train the next generation of large language models and multimodal AI systems. Microsoft stated that the facility will be open to partners and research institutions to accelerate the development of AI technology."
+    },
+    
+    "category": "ai-infrastructure",
+    
+    "publishedAt": {
+      "$date": "2025-08-31T13:00:00Z"
+    },
+    
+    "views": 760,
+    "comments": 24,
+    
+    "isHot": true,
+    "isImportant": true,
+    "featured": true,
+    
+    "tags": ["Microsoft", "supercomputer", "AI-chips", "infrastructure", "cloud"],
+    
+    "author": "科技基础设施报道",
+    "status": "published",
+    
+    "imageUrl": "https://example.com/images/microsoft-supercomputer.jpg",
+    "slug": "microsoft-ai-supercomputer-2025",
+    
+    "createdAt": {
+      "$date": "2025-08-31T11:30:00Z"
+    },
+    "updatedAt": {
+      "$date": "2025-08-31T13:00:00Z"
+    },
+    
+    "metadata": {
+      "source": "微软官方新闻稿",
+      "language": "zh",
+      "wordCount": 650,
+      "readingLevel": "intermediate",
+      "license": "CC BY 4.0"
+    }
+  },
+
+  {
+    "_id": {
+      "$oid": "68b1b62cef317d108cc84e05"
+    },
+    "semanticId": "tesla-robotaxi-ai-20240831-005",
+    
+    "title": {
+      "zh": "特斯拉推出全AI驱动的Robotaxi服务",
+      "en": "Tesla Launches Fully AI-Powered Robotaxi Service"
+    },
+    
+    "summary": {
+      "zh": "特斯拉在特定城市推出完全由AI驱动的Robotaxi服务，无需人类驾驶员干预，标志着自动驾驶技术的重要里程碑。",
+      "en": "Tesla has launched a fully AI-powered Robotaxi service in select cities, requiring no human driver intervention, marking an important milestone in autonomous driving technology."
+    },
+    
+    "content": {
+      "zh": "特斯拉于8月31日在特定城市推出了全AI驱动的Robotaxi服务。该服务完全由人工智能系统控制，无需人类驾驶员干预。特斯拉表示，经过数百万英里的测试，其AI系统已经达到了比人类驾驶员更安全的水平。这项服务首先在拉斯维加斯和旧金山推出，未来将扩展到更多城市。",
+      "en": "Tesla launched a fully AI-powered Robotaxi service in select cities on August 31. The service is entirely controlled by an artificial intelligence system, requiring no human driver intervention. Tesla stated that after millions of miles of testing, its AI system has achieved a safety level higher than that of human drivers. The service is initially available in Las Vegas and San Francisco, with plans to expand to more cities in the future."
+    },
+    
+    "category": "autonomous-vehicles",
+    
+    "publishedAt": {
+      "$date": "2025-08-31T14:20:00Z"
+    },
+    
+    "views": 1100,
+    "comments": 78,
+    
+    "isHot": true,
+    "isImportant": true,
+    "featured": true,
+    
+    "tags": ["Tesla", "Robotaxi", "autonomous-driving", "AI", "transportation"],
+    
+    "author": "汽车科技新闻",
+    "status": "published",
+    
+    "imageUrl": "https://example.com/images/tesla-robotaxi.jpg",
+    "slug": "tesla-robotaxi-ai-2025",
+    
+    "createdAt": {
+      "$date": "2025-08-31T12:45:00Z"
+    },
+    "updatedAt": {
+      "$date": "2025-08-31T14:20:00Z"
+    },
+    
+    "metadata": {
+      "source": "特斯拉官方公告",
+      "language": "zh",
+      "wordCount": 700,
+      "readingLevel": "intermediate",
+      "license": "CC BY 4.0"
+    }
+  },
+
+  {
+    "_id": {
+      "$oid": "68b1b62cef317d108cc84e06"
+    },
+    "semanticId": "deepmind-protein-folding-20240831-006",
+    
+    "title": {
+      "zh": "DeepMind蛋白质折叠AI突破，准确率提升至98%",
+      "en": "DeepMind's Protein Folding AI Breakthrough Achieves 98% Accuracy"
+    },
+    
+    "summary": {
+      "zh": "DeepMind宣布其蛋白质折叠预测AI系统准确率提升至98%，为药物研发和疾病治疗带来重大突破。",
+      "en": "DeepMind announced that its protein folding prediction AI system has achieved 98% accuracy, bringing major breakthroughs to drug development and disease treatment."
+    },
+    
+    "content": {
+      "zh": "DeepMind于8月31日宣布，其蛋白质折叠预测AI系统AlphaFold 3的准确率已提升至98%。这一突破性进展将极大加速新药研发和疾病治疗研究。新系统能够预测几乎所有已知蛋白质的结构，包括与疾病相关的复杂蛋白质组合。DeepMind已将这一技术开源，供全球科研机构使用。",
+      "en": "DeepMind announced on August 31 that its protein folding prediction AI system, AlphaFold 3, has achieved 98% accuracy. This breakthrough will significantly accelerate new drug development and disease treatment research. The new system can predict the structures of almost all known proteins, including complex protein combinations related to diseases. DeepMind has open-sourced this technology for use by global research institutions."
+    },
+    
+    "category": "ai-science",
+    
+    "publishedAt": {
+      "$date": "2025-08-31T15:45:00Z"
+    },
+    
+    "views": 920,
+    "comments": 42,
+    
+    "isHot": true,
+    "isImportant": true,
+    "featured": true,
+    
+    "tags": ["DeepMind", "AlphaFold", "protein-folding", "bioinformatics", "AI"],
+    
+    "author": "科学研究院",
+    "status": "published",
+    
+    "imageUrl": "https://example.com/images/deepmind-alphafold.jpg",
+    "slug": "deepmind-protein-folding-2025",
+    
+    "createdAt": {
+      "$date": "2025-08-31T13:20:00Z"
+    },
+    "updatedAt": {
+      "$date": "2025-08-31T15:45:00Z"
+    },
+    
+    "metadata": {
+      "source": "DeepMind研究论文",
+      "language": "zh",
+      "wordCount": 680,
+      "readingLevel": "intermediate",
+      "license": "CC BY 4.0"
+    }
+  },
+
+  {
+    "_id": {
+      "$oid": "68b1b62cef317d108cc84e07"
+    },
+    "semanticId": "nvidia-ai-chip-breakthrough-20240831-007",
+    
+    "title": {
+      "zh": "英伟达发布新一代AI芯片，性能提升5倍",
+      "en": "NVIDIA Releases Next-Gen AI Chips with 5x Performance Improvement"
+    },
+    
+    "summary": {
+      "zh": "英伟达推出新一代AI芯片B200，相比前代产品性能提升5倍，能耗降低40%，为AI训练和推理提供更强大算力。",
+      "en": "NVIDIA has launched its next-generation AI chip B200, with 5x performance improvement over previous generations and 40% lower energy consumption, providing more powerful computing capabilities for AI training and inference."
+    },
+    
+    "content": {
+      "zh": "英伟达于8月31日发布了新一代AI芯片B200，这是其Blackwell架构的首款产品。新芯片在AI训练和推理性能方面比前代产品提升5倍，同时能耗降低40%。B200芯片采用先进的3nm制程工艺，集成了更多的晶体管和专用AI计算单元。英伟达表示，该芯片将大幅加速大语言模型和多模态AI的发展。",
+      "en": "NVIDIA released its next-generation AI chip B200 on August 31, the first product of its Blackwell architecture. The new chip offers 5x performance improvement in AI training and inference compared to previous generations, while reducing energy consumption by 40%. The B200 chip uses advanced 3nm process technology and integrates more transistors and dedicated AI computing units. NVIDIA stated that this chip will significantly accelerate the development of large language models and multimodal AI."
+    },
+    
+    "category": "ai-hardware",
+    
+    "publishedAt": {
+      "$date": "2025-08-31T16:30:00Z"
+    },
+    
+    "views": 880,
+    "comments": 35,
+    
+    "isHot": true,
+    "isImportant": true,
+    "featured": true,
+    
+    "tags": ["NVIDIA", "AI-chips", "B200", "hardware", "computing"],
+    
+    "author": "硬件科技新闻",
+    "status": "published",
+    
+    "imageUrl": "https://example.com/images/nvidia-b200.jpg",
+    "slug": "nvidia-ai-chip-breakthrough-2025",
+    
+    "createdAt": {
+      "$date": "2025-08-31T14:15:00Z"
+    },
+    "updatedAt": {
+      "$date": "2025-08-31T16:30:00Z"
+    },
+    
+    "metadata": {
+      "source": "英伟达技术发布会",
+      "language": "zh",
+      "wordCount": 720,
+      "readingLevel": "intermediate",
+      "license": "CC BY 4.0"
+    }
+  },
+
+  {
+    "_id": {
+      "$oid": "68b1b62cef317d108cc84e08"
+    },
+    "semanticId": "amazon-ai-healthcare-20240831-008",
+    
+    "title": {
+      "zh": "亚马逊推出AI医疗诊断系统，准确率超人类专家",
+      "en": "Amazon Launches AI Medical Diagnosis System with Accuracy Surpassing Human Experts"
+    },
+    
+    "summary": {
+      "zh": "亚马逊发布AI医疗诊断系统，在多种疾病诊断中的准确率超过人类医学专家，为医疗行业带来革命性变化。",
+      "en": "Amazon has released an AI medical diagnosis system that surpasses human medical experts in accuracy for various disease diagnoses, bringing revolutionary changes to the healthcare industry."
+    },
+    
+    "content": {
+      "zh": "亚马逊于8月31日推出了基于AI的医疗诊断系统，该系统在多种常见疾病的诊断准确率上超过了人类医学专家。该系统利用深度学习技术分析医学影像、病历数据和实验室结果，能够提供快速准确的诊断建议。亚马逊表示，该系统已经通过FDA认证，将在合作医院率先部署。",
+      "en": "Amazon launched an AI-based medical diagnosis system on August 31. The system surpasses human medical experts in diagnostic accuracy for various common diseases. Using deep learning technology to analyze medical images, patient records, and laboratory results, the system can provide fast and accurate diagnostic recommendations. Amazon stated that the system has received FDA approval and will be deployed first in partner hospitals."
+    },
+    
+    "category": "ai-healthcare",
+    
+    "publishedAt": {
+      "$date": "2025-08-31T17:15:00Z"
+    },
+    
+    "views": 950,
+    "comments": 63,
+    
+    "isHot": true,
+    "isImportant": true,
+    "featured": true,
+    
+    "tags": ["Amazon", "AI-healthcare", "medical-diagnosis", "FDA", "healthtech"],
+    
+    "author": "医疗科技报道",
+    "status": "published",
+    
+    "imageUrl": "https://example.com/images/amazon-ai-healthcare.jpg",
+    "slug": "amazon-ai-healthcare-2025",
+    
+    "createdAt": {
+      "$date": "极速响应2025-08-31T15:00:00Z"
+    },
+    "updatedAt": {
+      "$date": "2025-08-31T17:15:00Z"
+    },
+    
+    "metadata": {
+      "source": "亚马逊健康部门公告",
+      "language": "极速响应zh",
+      "wordCount": 690,
+      "readingLevel": "intermediate",
+      "license": "CC BY 4.0"
+    }
+  },
+
+  {
+    "_id": {
+      "$oid": "68b1b62ce极速响应317d108cc84e09"
+    },
+    "semanticId": "baidu-ernie-5-release-20240831-009",
+    
+    "title": {
+      "zh": "百度发布文心大模型5.0，中文理解能力全球领先",
+      "en": "Baidu Releases Ernie 5.0 with World-Leading Chinese Understanding Capabilities"
+    },
+    
+    "summary": {
+      "zh": "百度推出文心大模型5.0，在中文理解和生成方面达到全球领先水平，特别优化了中文语境下的语义理解。",
+      "en": "Baidu has launched Ernie 5.0, achieving world-leading levels in Chinese understanding and generation, with special optimization for semantic understanding in Chinese contexts."
+    },
+    
+    "content": {
+      "zh": "百度于8月31日发布了文心大模型5.0，这是其大语言模型的重要升级版本。新模型在中文理解和生成方面达到全球领先水平，特别优化了中文语境下的语义理解和文化背景处理。文心5.0在中文基准测试中的表现超越了所有国际同类产品，同时保持了优秀的英文能力。百度表示，该模型将广泛应用于搜索、内容创作和企业服务等领域。",
+      "en": "Baidu released Ernie 5.0 on August 31, a significant upgrade to its large language model. The new model achieves world-leading levels in Chinese understanding and generation, with special optimization for semantic understanding and cultural context processing in Chinese. Ernie 5.0 outperforms all international counterparts in Chinese benchmark tests while maintaining excellent English capabilities. Baidu stated that the model will be widely applied in search, content creation, and enterprise services."
+    },
+    
+    "category": "large-language-models",
+    
+    "publishedAt": {
+      "$date": "2025-08-31T18:00:00Z"
+    },
+    
+    "views": 820,
+    "comments": 38,
+    
+    "isHot": true,
+    "isImportant": true,
+    "featured": true,
+    
+    "tags": ["Baidu", "Ernie-5.0", "Chinese-NLP", "AI", "language-models"],
+    
+    "author": "中文AI新闻",
+    "status": "published",
+    
+    "imageUrl": "https://example.com/images/baidu-ernie-5.jpg",
+    "slug": "baidu-ernie-5-release-2025",
+    
+    "createdAt": {
+      "$date": "2025-08-31T16:30:00Z"
+    },
+    "updated极速响应At": {
+      "$date": "2025-08-31T18:00:00Z"
+    },
+    
+    "metadata": {
+      "source": "百度AI发布会",
+      "language": "zh",
+      "wordCount": 710,
+      "readingLevel": "intermediate",
+      "license": "CC BY 4.0"
+    }
+  },
+
+  {
+    "_id": {
+      "$oid": "68b1b62cef317d108cc84e10"
+    },
+    "semanticId": "anthropic-constitutional-ai-20240831-010",
+    
+    "title": {
+      "zh": "Anthropic发布宪法AI框架，确保AI行为符合人类价值观",
+      "en": "Anthropic Releases Constitutional AI Framework to Ensure AI Behavior Aligns with Human Values"
+    },
+    
+    "summary": {
+      "zh": "Anthropic推出宪法AI框架，通过明确的规则和价值观约束确保AI系统的行为符合人类伦理和道德标准。",
+      "en": "Anthropic has launched a Constitutional AI framework that ensures AI system behavior aligns with human ethics and moral standards through clear rules and value constraints."
+    },
+    
+    "content": {
+      "zh": "Anthropic于8月31日发布了宪法AI框架，这是一个旨在确保AI系统行为符合人类价值观和伦理标准的新型架构。该框架通过明确的规则集和价值观约束，使AI系统在决策时能够遵循预设的道德原则。Anthropic表示，这一框架将开源发布，供整个AI行业使用，以促进负责任的人工智能发展。",
+      "en": "Anthropic released the Constitutional AI framework on August 31, a new architecture designed to ensure that AI system behavior aligns with human values and ethical standards. The framework uses clear rule sets and value constraints to enable AI systems to follow preset moral principles when making decisions. Anthropic stated that this framework will be released as open-source for the entire AI industry to use, promoting responsible artificial intelligence development."
+    },
+    
+    "category": "ai-ethics",
+    
+    "publishedAt": {
+      "$date": "2025-08-31T19:20:00Z"
+    },
+    
+    "views": 780,
+    "comments": 29,
+    
+    "isHot": true,
+    "isImportant": true,
+    "featured": true,
+    
+    "tags": ["Anthropic", "AI-ethics", "constitutional-ai", "responsible-ai", "governance"],
+    
+    "author": "AI伦理研究",
+    "status": "published",
+    
+    "imageUrl": "https://example.com/images/anthropic-constitutional-ai.jpg",
+    "slug": "anthropic-constitutional-ai-2025",
+    
+    "createdAt": {
+      "$date": "2025-08-31T17:45:00Z"
+    },
+    "updatedAt": {
+      "$date": "2025-08-31T19:20:00Z"
+    },
+    
+    "metadata": {
+      "source": "Anthropic研究博客",
+      "language": "zh",
+      "wordCount": 670,
+      "readingLevel": "intermediate",
+      "license": "CC BY 4.0"
+    }
+  }
+]

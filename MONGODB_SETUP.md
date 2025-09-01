@@ -35,7 +35,7 @@ npm run server
 
 ## 📊 数据库结构
 
-### News 集合结构
+### News 集合结构（基础版）
 ```javascript
 {
   semanticId: String,      // 语义ID
@@ -47,28 +47,57 @@ npm run server
     zh: String,           // 中文摘要
     en: String            // 英文摘要
   },
+  content: {
+    zh: String,           // 中文内容（富文本HTML）
+    en: String            // 英文内容（富文本HTML）
+  },
   category: String,       // 分类
   readTime: Number,       // 阅读时间
-  publishTime: Date,      // 发布时间
-  date: String,           // 日期字符串
-  weekday: String,        // 星期几
+  publishedAt: Date,      // 发布时间
   views: Number,          // 浏览量
-  comments: Number,        // 评论数
   tags: [String],         // 标签数组
-  locales: {              // 多语言数据
-    zh: {
-      title: String,
-      summary: String,
-      tags: [String]
-    },
-    en: {
-      title: String,
-      summary: String,
-      tags: [String]
-    }
-  },
+  isHot: Boolean,         // 热门标记
+  isImportant: Boolean,   // 重要标记
+  isCritical: Boolean,    // 关键标记
+  externalUrl: String,    // 外部链接
   createdAt: Date,        // 创建时间
   updatedAt: Date         // 更新时间
+}
+```
+
+### Article 集合结构（高级版 - 支持富文本）
+```javascript
+{
+  semanticId: String,      // 语义ID
+  title: { zh: String, en: String },           // 多语言标题
+  summary: { zh: String, en: String },         // 多语言摘要
+  content: { zh: String, en: String },          // 多语言富文本内容
+  category: ObjectId,                          // 分类引用
+  tags: [ObjectId],                            // 标签引用数组
+  author: ObjectId,                            // 作者引用
+  status: 'draft' | 'published' | 'archived',  // 状态
+  publishedAt: Date,                           // 发布时间
+  views: Number,                               // 浏览量
+  readTime: Number,                            // 阅读时间
+  imageUrl: String,                            // 主图URL
+  slug: String,                                // URL标识
+  isHot: Boolean,                              // 热门标记
+  isImportant: Boolean,                        // 重要标记
+  isCritical: Boolean,                         // 关键标记
+  externalUrl: String,                         // 外部链接
+  featuredImage: {                            // 特色图片
+    url: String,
+    alt: String,
+    caption: String
+  },
+  seo: {                                       // SEO优化
+    metaTitle: String,
+    metaDescription: String,
+    keywords: [String]
+  },
+  relatedArticles: [ObjectId],                 // 相关文章
+  createdAt: Date,                             // 创建时间
+  updatedAt: Date                              // 更新时间
 }
 ```
 
@@ -77,6 +106,8 @@ npm run server
 ### 新闻相关
 - `GET /api/v1/news` - 获取新闻列表
 - `GET /api/v1/news/:id` - 获取单条新闻
+- `GET /api/v1/articles` - 获取文章列表（支持富文本）
+- `GET /api/v1/articles/:id` - 获取单篇文章（支持富文本）
 
 ### 分类相关
 - `GET /api/v1/categories` - 获取所有分类

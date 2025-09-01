@@ -1,4 +1,9 @@
 import mongoose from 'mongoose'
+// 导入模型以确保它们被注册
+import '@/lib/models/Article'
+import '@/lib/models/Category'
+import '@/lib/models/Tag'
+import '@/lib/models/User'
 
 declare global {
   var mongoose: {
