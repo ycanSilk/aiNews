@@ -13,86 +13,105 @@ interface UseArticlesDataResult {
   articles: ArticleData[];
   loading: boolean;
   error: string | null;
-  totalCount: number;
   refetch: () => void;
 }
 
+// 静态文章数据
+const staticArticles: ArticleData[] = [
+  {
+    _id: '1',
+    title: 'AI Revolution in Healthcare',
+    content: 'Artificial intelligence is transforming healthcare with advanced diagnostics and personalized treatment plans.',
+    category: 'AI Applications',
+    publishDate: '2024-01-15',
+    isHot: true,
+    isRecommended: true,
+    imageUrl: '/placeholder.svg',
+    author: 'AI News Team',
+    readTime: 5
+  },
+  {
+    _id: '2', 
+    title: 'Machine Learning Breakthrough',
+    content: 'New machine learning algorithms are achieving unprecedented accuracy in complex pattern recognition tasks.',
+    category: 'Machine Learning',
+    publishDate: '2024-01-10',
+    isHot: false,
+    isRecommended: true,
+    imageUrl: '/placeholder.svg',
+    author: 'Tech Research',
+    readTime: 8
+  },
+  {
+    _id: '3',
+    title: 'Natural Language Processing Advances',
+    content: 'Recent developments in NLP are enabling more natural and context-aware conversations with AI assistants.',
+    category: 'NLP',
+    publishDate: '2024-01-05',
+    isHot: true,
+    isRecommended: false,
+    imageUrl: '/placeholder.svg',
+    author: 'Language AI Labs',
+    readTime: 6
+  }
+];
+
 export const useArticlesData = (
-  lang: string = 'ch', 
+  lang: string,
   options: UseArticlesDataOptions = {}
 ): UseArticlesDataResult => {
   const [articles, setArticles] = useState<ArticleData[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [totalCount, setTotalCount] = useState(0);
 
-  const buildQueryString = () => {
-    const params = new URLSearchParams();
-    params.append('lang', lang);
-    
-    if (options.page) params.append('page', options.page.toString());
-    if (options.limit) params.append('limit', options.limit.toString());
-    if (options.category) params.append('category', options.category);
-    if (options.isHot !== undefined) params.append('isHot', options.isHot.toString());
-    if (options.isRecommended !== undefined) params.append('isRecommended', options.isRecommended.toString());
-    
-    return params.toString();
-  };
-
-  const fetchData = async () => {
+  const fetchArticles = async () => {
     try {
       setLoading(true);
       setError(null);
       
-      const queryString = buildQueryString();
-      const response = await fetch(`/api/v1/articles?${queryString}`);
+      // 模拟API延迟
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      // 应用筛选条件
+      let filteredArticles = [...staticArticles];
+      
+      if (options.category) {
+        filteredArticles = filteredArticles.filter(article => 
+          article.category === options.category
+        );
       }
       
-      const result = await response.json();
+      if (options.isHot) {
+        filteredArticles = filteredArticles.filter(article => article.isHot);
+      }
       
-      // 格式化数据
-      const formattedArticles: ArticleData[] = result.data.map((article: any) => ({
-        _id: article._id,
-        semanticId: article.semanticId,
-        title: article.title,
-        content: article.content,
-        highlight: article.highlight,
-        author: article.author?.username || article.author || 'Unknown',
-        category: article.category,
-        tags: article.tags,
-        coverImage: article.coverImage,
-        isHot: article.isHot,
-        isRecommended: article.isRecommended,
-        viewCount: article.viewCount,
-        likeCount: article.likeCount,
-        createdAt: article.createdAt,
-        updatedAt: article.updatedAt
-      }));
+      if (options.isRecommended) {
+        filteredArticles = filteredArticles.filter(article => article.isRecommended);
+      }
       
-      setArticles(formattedArticles);
-      setTotalCount(result.totalCount || formattedArticles.length);
+      // 应用分页
+      if (options.page && options.limit) {
+        const startIndex = (options.page - 1) * options.limit;
+        filteredArticles = filteredArticles.slice(startIndex, startIndex + options.limit);
+      }
+      
+      setArticles(filteredArticles);
     } catch (err) {
-      console.error('Failed to fetch articles data:', err);
-      setError('Failed to load articles data');
-      setArticles([]);
-      setTotalCount(0);
+      console.error('Failed to load articles:', err);
+      setError('Failed to load articles');
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, [lang, options.page, options.limit, options.category, options.isHot, options.isRecommended]);
+    fetchArticles();
+  }, [lang, JSON.stringify(options)]);
 
-  const refetch = () => {
-    fetchData();
+  return {
+    articles,
+    loading,
+    error,
+    refetch: fetchArticles
   };
-
-  return { articles, loading, error, totalCount, refetch };
 };
-
-export default useArticlesData;

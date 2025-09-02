@@ -1,39 +1,30 @@
-import { Search, Menu, Bell, X, Languages } from "lucide-react";
+import { Search, Menu, Bell, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect, useRef } from "react";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useLanguageData } from '@/hooks/useLanguageData';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const languageRef = useRef<HTMLDivElement>(null);
-  const { setLanguage } = useLanguage();
   
-  // 使用本地JSON文件获取header配置数据
-  const { data: indexData, loading, error } = useLanguageData('index.json');
-  const { currentLanguage } = useLanguage();
+  // 直接使用英文数据
+  const currentLanguage = 'en';
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsMenuOpen(false);
       }
-      if (languageRef.current && !languageRef.current.contains(event.target as Node)) {
-        setIsLanguageOpen(false);
-      }
     };
 
-    if (isMenuOpen || isLanguageOpen) {
+    if (isMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isMenuOpen, isLanguageOpen]);
+  }, [isMenuOpen]);
 
   return (
     <header className="bg-news-card border-b border-border shadow-sm sticky top-0 z-50 backdrop-blur-sm bg-news-card/95">
@@ -45,21 +36,24 @@ const Header = () => {
               <span className="text-primary-foreground font-bold text-sm">AI</span>
             </div>
             <h1 className="text-xl font-bold text-foreground">
-              {indexData?.header?.logoText || 'AI新闻资讯'}
+              AI News
             </h1>
           </div>
 
           {/* Navigation */}
           <nav className="hidden xl:flex items-center space-x-8">
-            {indexData?.header?.navItems?.map((item: any, index: number) => (
-              <a 
-                key={index}
-                href={item.href.startsWith('/ch/') || item.href.startsWith('/en/') ? item.href.replace(/^\/(ch|en)\//, `/${currentLanguage}/`) : item.href}
-                className="hover:text-blue-500 transition-colors hover:border-b-2 hover:border-blue-500"
-              >
-                {item.label}
-              </a>
-            ))}
+            <a href="/" className="hover:text-blue-500 transition-colors hover:border-b-2 hover:border-blue-500">
+              Home
+            </a>
+            <a href="/articles" className="hover:text-blue-500 transition-colors hover:border-b-2 hover:border-blue-500">
+              Articles
+            </a>
+            <a href="/timeline" className="hover:text-blue-500 transition-colors hover:border-b-2 hover:border-blue-500">
+              Timeline News
+            </a>
+            <a href="/about" className="hover:text-blue-500 transition-colors hover:border-b-2 hover:border-blue-500">
+              About Us
+            </a>
           </nav>
 
           {/* Search and Actions */}
@@ -74,7 +68,7 @@ const Header = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
                 type="search"
-                placeholder={indexData?.header?.searchPlaceholder || "搜索AI新闻..."}
+                placeholder="Search AI news..."
                 className="pl-10 w-64 hover:border-blue-500"
               />
             </div>
@@ -83,39 +77,7 @@ const Header = () => {
               <Bell className="w-5 h-5" />
             </Button>
 
-            {/* 语言切换按钮 */}
-            <div className="relative" ref={languageRef}>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="text-muted-foreground hover:text-primary hover:bg-blue-100"
-                onClick={() => setIsLanguageOpen(!isLanguageOpen)}
-              >
-                <Languages className="w-5 h-5" />
-              </Button>
-              
-              {/* 语言选择菜单 */}
-              {isLanguageOpen && (
-                <div className="absolute right-0 top-12 bg-white border border-blue-300 rounded-md shadow-lg z-50 min-w-32">
-                  <div className="py-1">
-                    {indexData?.header?.languageOptions?.map((option: any, index: number) => (
-                      <button 
-                        key={index}
-                        className="w-full px-4  py-2 text-left text-sm text-gray-800 hover:bg-blue-100 transition-colors"
-                        onClick={() => {
-                          setIsLanguageOpen(false);
-                          if (option.value === 'ch' || option.value === 'en') {
-                            setLanguage(option.value);
-                          }
-                        }}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+
             
             {/* 移动端汉堡菜单 */}
             <Button 
@@ -143,15 +105,18 @@ const Header = () => {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <nav className="container mx-auto flex flex-col ">
-                    {indexData?.header?.navItems?.map((item: any, index: number) => (
-                      <a 
-                        key={index}
-                        href={item.href.startsWith('/ch/') || item.href.startsWith('/en/') ? item.href.replace(/^\/(ch|en)\//, `/${currentLanguage}/`) : item.href}
-                        className="text-muted-foreground hover:text-black transition-colors border-b border-border/50 py-2 px-3 hover:bg-blue-400"
-                      >
-                        {item.label}
-                      </a>
-                    ))}
+                    <a href="/" className="text-muted-foreground hover:text-black transition-colors border-b border-border/50 py-2 px-3 hover:bg-blue-400">
+                      Home
+                    </a>
+                    <a href="/articles" className="text-muted-foreground hover:text-black transition-colors border-b border-border/50 py-2 px-3 hover:bg-blue-400">
+                      Articles
+                    </a>
+                    <a href="/timeline" className="text-muted-foreground hover:text-black transition-colors border-b border-border/50 py-2 px-3 hover:bg-blue-400">
+                      Timeline News
+                    </a>
+                    <a href="/about" className="text-muted-foreground hover:text-black transition-colors border-b border-border/50 py-2 px-3 hover:bg-blue-400">
+                      About Us
+                    </a>
                   </nav>
             </div>
           </>

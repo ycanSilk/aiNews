@@ -5,7 +5,6 @@ import FilterButtons from '@/components/timeline/FilterButtons';
 import TimelineItem from '@/components/timeline/TimelineItem';
 import NewsCount from '@/components/timeline/NewsCount';
 import LoadMoreButton from '@/components/timeline/LoadMoreButton';
-import { useMongoDBData } from '@/hooks/useMongoDBData';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -45,9 +44,7 @@ interface TimelineProps {
 }
 
 const Timeline: React.FC<TimelineProps> = ({ config, language }) => {
-  // 使用MongoDB API获取新闻数据
-  const { data: newsData, loading: newsLoading } = useMongoDBData<any[]>('timeline');
-  
+  // 静态数据模式 - 数据库功能已禁用
   const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
   const [searchTerm, setSearchTerm] = useState(config.defaultSearchTerm || "OpenAI");
   const [activeFilter, setActiveFilter] = useState("all");
@@ -55,12 +52,11 @@ const Timeline: React.FC<TimelineProps> = ({ config, language }) => {
   const [isLoading, setIsLoading] = useState(false);
   const timelineRef = useRef<HTMLDivElement>(null);
 
-  // 数据加载完成后设置初始状态
+  // 静态数据初始化
   useEffect(() => {
-    if (!newsLoading) {
-      setNewsItems(newsData || []);
-    }
-  }, [newsLoading, newsData]);
+    // 空数据 - 静态网站模式
+    setNewsItems([]);
+  }, []);
 
   const filteredItems = newsItems.filter(item => {
     const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -116,7 +112,7 @@ const Timeline: React.FC<TimelineProps> = ({ config, language }) => {
     return () => observer.disconnect();
   }, [displayedItems]);
 
-  if (newsLoading) {
+  if (false) {
     return <div>Loading...</div>;
   }
 

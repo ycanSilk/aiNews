@@ -1,10 +1,14 @@
 import { Clock, Eye } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useLanguageData } from '@/hooks/useLanguageData';
-import { useLanguage } from '@/contexts/LanguageContext';
-// 导入工具函数
-import { formatDateByLanguage, generateIncrementedViews } from '@/lib/utils';
+
+// 静态配置数据
+const staticIndexData = {
+  common: {
+    viewsText: "次阅读",
+    readMoreText: "查看详情"
+  }
+};
 
 interface NewsCardProps {
   title: string;
@@ -31,9 +35,27 @@ const NewsCard = ({
   tags = [],
   externalUrl
 }: NewsCardProps) => {
-  // 使用语言数据钩子加载通用文本配置
-  const { data: indexData } = useLanguageData<any>('index.json');
-  const { currentLanguage } = useLanguage();
+  // 使用静态配置
+  const currentLanguage = 'en';
+  
+  // 简单的日期格式化函数
+  const formatDateByLanguage = (dateString: string, language: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(language === 'ch' ? 'zh-CN' : 'en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  // 简单的浏览量格式化函数
+  const generateIncrementedViews = (views: number) => {
+    if (views >= 1000) {
+      return (views / 1000).toFixed(1) + 'k';
+    }
+    return views.toString();
+  };
+
   // 将摘要分割成列表项
   const summaryItems = summary.split('。').filter(item => item.trim());
 
@@ -83,7 +105,7 @@ const NewsCard = ({
               <div className="flex items-center space-x-1">
                 <Eye className="w-3 h-3 text-primary" />
                 <span className="text-primary">
-                  {generateIncrementedViews(views || 0)} {indexData?.common?.viewsText || '次阅读'}
+                  {generateIncrementedViews(views || 0)} {staticIndexData.common.viewsText}
                 </span>
               </div>
 
@@ -99,7 +121,7 @@ const NewsCard = ({
               target="_blank"
               rel="noopener noreferrer"
             >
-              {indexData?.common?.readMoreText || '查看详情'}
+              {staticIndexData.common.readMoreText}
             </a>
           </div>
         </div>

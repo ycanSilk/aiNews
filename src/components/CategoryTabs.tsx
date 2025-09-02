@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
-import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CategoryTabsProps {
   categories: any[];
@@ -13,15 +12,13 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
   activeCategory, 
   onCategoryChange 
 }) => {
-  const { currentLanguage } = useLanguage();
-  
-  // 使用API获取的分类数据
-  const allCategories = ['全部', ...categories.map(cat => cat.name?.[currentLanguage] || cat.name?.ch || '')];
+  // 使用静态分类数据，避免重复添加'All'
+  const allCategories = categories;
 
   return (
     <div className=" bg-white shadow-sm">
       <Tabs 
-        defaultValue="全部" 
+        defaultValue="All" 
         value={activeCategory} 
         onValueChange={onCategoryChange} 
         className="w-full"

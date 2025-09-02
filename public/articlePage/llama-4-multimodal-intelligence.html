@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Llama 4 herd: The beginning of a new era of natively multimodal AI innovation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        .header {
+            margin-bottom: 30px;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .date {
+            font-size: 14px;
+            color: #666;
+        }
+        .takeaways {
+            margin: 20px 0;
+        }
+        .takeaways li {
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        .section {
+            margin: 30px 0;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .math {
+            font-family: "Times New Roman", Times, serif;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="title">The Llama 4 herd: The beginning of a new era of natively multimodal AI innovation</div>
+        <div class="date">April 5,2025 • 12 minute read</div>
+    </div>
+
+    <div class="takeaways">
+        <h3>Takeaways</h3>
+        <ul>
+            <li>We're sharing the first models in the Ulama 4 herd, which will enable people to build more personalized multimodal experiences</li>
+            <li>Ulama 4 Scout, a 17 billion active parameter model with 16 experts, is the best multimodal model in the world in its class and is more powerful than all previous generation Llama models, while fitting in a single NVIDIA H100 GPU. Additionally Uama 4 Scout offers an industry-leading context window of 10M and delivers better results than Gemma 3, Gemini 2.0 Flash-Lite, and Mistral broad range of widely reported benchmarks.</li>
+            <li>Uama 4 Maverick, a 17 billion active parameter model with 128 experts, is the best multimodal model in its class, beating GPT-4o and Gemini 2.0 Flash across a broad range of widely reported benchmarks, while achieving comparable results to the new DeepSeek v3 on reasoning and codingat less than half the active parameters. Ulama 4 Maverick offers a best-in-class performance to cost ratio with an experimental chat version scoring ELO of 1417 on LMArena.</li>
+            <li>These models are our best yet thanks to distillation from Llama 4 Behemoth, a 288 billion active parameter model with 16 experts that is our most powerful yet and among the world's smartest LLMs. Llama 4 Behemoth outperforms GPT-4.5,Claude Sonnet 3.7, and Gemini 2.0 Pro on several STEM benchmarks. Llama 4 Behemoth is still training, and we're excited to share more details about it even while it's still in flight.</li>
+            <li>Download the Llama 4 Scout and Llama 4 Maverick models today on llama.com and Hugging Face.Try Meta AI built with Ulama 4 in WhatsApp,Messenger, Instagram Direct, and on the web.</li>
+        </ul>
+    </div>
+
+    <p>As more people continue to use artificial intelligence to enhance their daily lives, it's important that the leading models and systems are openly available so everyone can build the future of personalized experiences. Today, we're excited to announce the most advanced suite of models that support the entire Ulama ecosystem. We're introducing Ulama 4 Scout and Ulama 4 Maverick, the first open-weight natively multimodal models with unprecedented context length support and our first built using a mixture-of-experts(MoE) architecture. We're also previewing Llama 4 Behemoth, one of the smartest LLMs in the world and our most powerful yet to serve as a teacher for our new models.</p>
+
+    <p>These Ulama 4 models mark the beginning of a new era for the Ulama ecosystem. We designed two efficient models in the Ulama 4 series, Llama 4 Scout, a 17 billion active parameter model with 16 experts, and Ulama 4 Maverick, a 17 billion active parameter model with 128 experts. The former fits on a single H100 GPU(with Int4 quantization)while the latter fits on a single H100 host. We also trained a teacher model, Llama 4 Behemoth, that outperforms GPT-4.5, Claude Sonnet 3.7, and Gemini 2.0 Pro on STEM-focused benchmarks such as MATH-500 and GPQA Diamond. While we're not yet releasing Ulama 4 Behemoth as it is still training, we're excited to share more technical details about our approach.</p>
+
+    <p>We continue to believe that openness drives innovation and is good for developers,good for Meta, and good for the world. We're making Ulama 4 Scout and Ulama 4 Maverick available for download today on llama.com and Hugging Face so everyone can continue to build new experiences using our latest technology. We'll also make them available via our partners in the coming days. You can also try Meta Al with Llama 4 starting today in WhatsApp, Messenger, Instagram Direct, and on the Meta.Al website.</p>
+
+    <p>This is just the beginning for the Ulama 4 collection. We believe that the most intelligent systems need to be capable of taking generalized actions, conversing naturally with humans, and working through challenging problems they haven't seen before. Giving Ulama superpowers in these areas will lead to better products for people on our platforms and more opportunities for developers to innovate on the next big consumer and business use cases. We're continuing to research and prototype both models and products, and we'll share more about our vision at UlamaCon on April 29-sign up to hear more.</p>
+
+    <p>Whether you're a developer building on top of our models, an enterprise integrating them into your workflows, or simply curious about the potential uses and benefits of Al Ulama 4 Scout and Ulama 4 Maverick are the best choices for adding next-generation intelligence to your products. Today, we're excited to share more about the four major parts of their development and insights into our research and design process. We also can't wait to see the incredible new experiences the community builds with our new Ulama 4 models.</p>
+
+    <div class="section">
+        <h3 class="section-title">Pre-training</h3>
+        <p>These models represent the best of Llama, offering multimodal intelligence at a compelling price while outperforming models of significantly larger sizes. Building the next generation of Llama models required us to take several new approaches during pre-training.</p>
+        
+        <p>Our new Ulama 4 models are our first models that use a mixture of experts(MoE)architecture. In MoE models, a single token activates only a fraction of the total parameters. MoE architectures are more compute efficient for training and inference and given a fixed training FLOPs budget, delivers higher quality compared to a dense model.</p>
+        
+        <p>As an example, Llama 4 Maverick models have 17B active parameters and 400B total parameters. We use alternating dense and mixture-of-experts(MoE) layers for inference efficiency. MoE layers use 128 routed experts and a shared expert. Each token is sent to the shared expert and also to one of the 128 routed experts. As a result, while all parameters are stored in memory, only a subset of the total parameters are activated while serving these models. This improves inference efficiency by lowering model serving costs and latency-Llama 4 Maverick can be run on a single NVIDIA H100 DGX host for easy deployment, or with distributed inference for maximum efficiency.</p>
+        
+        <p>Ulama 4 models are designed with native multimodality, incorporating early fusion to seamlessly integrate text and vision tokens into a unified model backbone. Early fusion is a major step forward, since it enables us to jointly pre-train the model with large amounts of unlabeled text,image,and video data. We also improved the vision encoder in Ulama 4. This is based on MetaCLIP but trained separately in conjunction with a frozen Ulama model to better adapt the encoder to the LLM.</p>
+        
+        <p>We developed a new training technique which we refer to as MetaP that allows us to reliably set critical model hyper-parameters such as per-layer leaming rates and initialization scales. We found that chosen hyper-parameters transfer well across different values of batch size, model width, depth, and training tokens. Llama 4 enables open source fine-tuning efforts by pre-training on 200 languages, including over 100 with over 1 billion tokens each, and overall 10x more multilingual tokens than Uama 3.</p>
+        
+        <p>Additionally, we focus on efficient model training by using FP8 precision, without sacrificing quality and ensuring high model FLOPs utilization-while pre-training our Uama 4 Behemoth model using FP8 and 32K GPUs, we achieved 390 TFLOPs/GPU.The overall data mixture for training consisted of more than 30 trillion tokens, which is more than double the Ulama 3 pre-training mixture and includes diverse text,image, and video datasets.</p>
+        
+        <p>We continued training the model in what we call"mid-training" to improve core capabilities with new training recipes including long context extension using specialized datasets.This enabled us to enhance model quality while also unlocking best-in-class 10M input context length for Ulama 4 Scout.</p>
+    </div>
+
+    <div class="section">
+        <h3 class="section-title">Post-training our new models</h3>
+        <p>Our newest models include smaller and larger options to accommodate a range of use cases and developer needs. Llama 4 Maverick offers unparalleled, industry-leading performance in image and text understanding, enabling the creation of sophisticated Al applications that bridge language barriers. As our product workhorse model for general assistant and chat use cases, Uama 4 Maverick is great for precise image understanding and creative writing.</p>
+        
+        <p>The biggest challenge while post-training the Llama 4 Maverick model was maintaining a balance between multiple input modalities, reasoning,and conversational abilities.For mixing modalities, we came up with a carefully curated curriculum strategy that does not trade-off performance compared to the individual modality expert models. With Llama 4 we revamped our post-training pipeline by adopting a different approach: lightweight supervised fine-tuning(SFT)> online reinforcement learning(RL)> lightweight direct preference optimization(DPO). A key learning was that SFT and DPO can over-constrain the model, restricting exploration during the online RL stage and leading to suboptimal accuracy,particularly in reasoning,coding,and math domains.To address this,we removed more than 50% of our data tagged as easy by using Llama models as a judge and did lightweight SFT on the remaining harder set. In the subsequent multimodal online RL stage, by carefully selecting harder prompts, we were able to achieve a step change in performance. Furthermore, we implemented a continuous online RL strategy,where we alternated between training the model and then using it to continually filter and retain only medium-to-hard difficulty prompts.This strategy proved highly beneficial in terms of compute and accuracy tradeoffs. We then did a lightweight DPO to handle corner cases related to model response quality, effectively achieving a good balance between the model's intelligence and conversational abilities. Both the pipeline architecture and the continuous online RL strategy with adaptive data filtering</p>
+        
+        <p class="math">culminated in an industry-leading, general-purpose chat model with state-of-the-art intelligence and image understanding capabilities.</p>
+        
+        <p class="math">As a general purpose LLM, Uama 4 Maverick contains 17 billion active parameters, 128 experts, and 400 billion total parameters, offering high quality at a lower price compared to Uama 3.3 70B. Uama 4 Maverick is the best-in-class multimodal model, exceeding comparable models like GPT-4o and Gemini 2.0 on coding, reasoning, multilingual,long-context, and image benchmarks, and it's competitive with the much larger DeepSeek v3.1 on coding and reasoning.</p>
+        
+        <h4>Llama 4 Maverick instruction-tuned benchmarks</h4>
+        <table>
+            <tr>
+                <th>Emger Benhmark</th>
+                <th>Liama 4 Mavarick</th>
+                <th>Gamini 2.0 Flash</th>
+                <th>DeepSeek v3.1</th>
+                <th>GPT-40</th>
+            </tr>
+            <tr>
+                <td>- Costper IMInsur&Comput toNcms:1s endedl</td>
+                <td>$0.19-$0.49</td>
+                <td>$0.17</td>
+                <td>$0.46</td>
+                <td>$4.38</td>
+            </tr>
+            <tr>
+                <td>Image the waking MMNU</td>
+                <td>73.4</td>
+                <td>71.7</td>
+                <td>N</td>
+                <td>69.1</td>
+            </tr>
+            <tr>
+                <td>Multivate</td>
+                <td>73.7</td>
+                <td>73.1</td>
+                <td>N</td>
+                <td>63.9</td>
+            </tr>
+            <tr>
+                <td>Irange I manda-ring CHINA</td>
+                <td>90.0</td>
+                <td>883</td>
+                <td>N</td>
+                <td>857</td>
+            </tr>
+            <tr>
+                <td class="math">D_{SCUQA}\|_{ANN}</td>
+                <td>M.4</td>
+                <td>-</td>
+                <td>N</td>
+                <td>N7.8</td>
+            </tr>
+            <tr>
+                <td>Coding LmeCodeBorch</td>
+                <td>43.4</td>
+                <td>34.5</td>
+                <td>45.9/49.2</td>
+                <td class="math"></td>
+            </tr>
+            <tr>
+                <td>MMIL,Pro</td>
+                <td>00.5</td>
+                <td>770</td>
+                <td>D1.2</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>G2()A Diemand</td>
+                <td>09.8</td>
+                <td>0 C</td>
+                <td>66.4</td>
+                <td>03.0</td>
+            </tr>
+            <tr>
+                <td>Ma-Brynd MLilingual MMLJ</td>
+                <td>84.5</td>
+                <td></td>
+                <td></td>
+                <td>B1.5</td>
+            </tr>
+            <tr>
+                <td>Leng Camal MT03</td>
+                <td>54.0/46.4</td>
+                <td>48.4/39.8</td>
+                <td>Content whdowls'ORE</td>
+                <td>Content Aedranic 128K</td>
+            </tr>
+            <tr>
+                <td>HTT03.0.4</td>
+                <td>50.8/46.7</td>
+                <td>45.5/39.6</td>
+                <td>Content whdowls'ORE</td>
+                <td>Content Aedranic 128K</td>
+            </tr>
+        </table>
+        
+        <p>Our smaller model, Llama 4 Scout, is a general purpose model with 17 billion active parameters,16 experts, and 109 billion total parameters that delivers state-of-the-art performance for its class. Llama 4 Scout dramatically increases the supported context length from 128K in Llama 3 to an industry leading 10 million tokens.This opens up a world of possibilities,including multi-document summarization, parsing extensive user activity for personalized tasks, and reasoning over vast codebases.</p>
+        
+        <p>Ulama 4 Scout is both pre-trained and post-trained with a 256K context length, which empowers the base model with advanced length generalization capability. We present compelling results in tasks such as retrieval with"retrieval needle in haystack" for text as well as cumulative negative log-likelihoods(NLLs) over 10 million tokens of code. A key innovation in the Ulama 4 architecture is the use of interleaved attention layers without positional embeddings. Additionally, we employ inference time temperature scaling of attention to enhance length generalization. We call this the iRoPE architecture, where"i"stands for"interleaved" attention layers, highlighting the long-term goal of supporting"infinite" context length, and"RoPE" refers to the rotary position embeddings employed in most layers.</p>
+        
+        <h4>Needle-in-a-haystack(N-H)</h4>
+        <p>■Savezolaire.itsol Feliorotore.itwo</p>
+        
+        <h4>Cumulative average NLL for code</h4>
+        
+        <p>We trained both of our models on a wide variety of image and video frame stills in order to give them broad visual understanding, including of temporal activities and related images. This enables effortless interaction on multi-image inputs alongside text prompts for visual reasoning and understanding tasks. The models were pre-trained on up to 48 images, and we've tested in post-training with good results up to eight images.</p>
+        
+        <p>Uama 4 Scout is also best-in-class on image grounding, able to align user prompts with relevant visual concepts and anchor model responses to regions in the image. This enables more precise visual question answering for the LLM to better understand user intent and localize objects of interest. Ulama 4 Scout also exceeds comparable models on coding, reasoning, long context, and image benchmarks and offers stronger performance than all previous Llama models.</p>
+        
+        <h4>Llama 4 Scout instruction-tuned benchmarks</h4>
+        <table>
+            <tr>
+                <th>Category Bentmark</th>
+                <th>Sout</th>
+                <th>Llama 3.3 700</th>
+                <th>Uama 3.14050</th>
+                <th>Gemma 3270</th>
+                <th>Nbstr/ 5.1240</th>
+                <th>Geminl 2.0 Flash-Lite</th>
+            </tr>
+            <tr>
+                <td class="math">Im_{0}=10^{2}M_{0}m_{0}a.deg MiMMU</td>
+                <td>69.4</td>
+                <td></td>
+                <td></td>
+                <td>545</td>
+                <td>62.8</td>
+                <td>SU.J</td>
+            </tr>
+            <tr>
+                <td>MathValue</td>
+                <td>70.7</td>
+                <td></td>
+                <td>No HLTamodal Rupert</td>
+                <td>67.5</td>
+                <td>63.9</td>
+                <td>57.6</td>
+            </tr>
+            <tr>
+                <td>ImageLreomentedog ChartQA</td>
+                <td>88.8</td>
+                <td></td>
+                <td></td>
+                <td>70.3</td>
+                <td>65.2</td>
+                <td>73.0</td>
+            </tr>
+            <tr>
+                <td>DocVGA(wer)</td>
+                <td>54.4</td>
+                <td></td>
+                <td></td>
+                <td>90.4</td>
+                <td>94.</td>
+                <td>91.2</td>
+            </tr>
+            <tr>
+                <td>C 1 weCindeftarch 00001224-2017V10150</td>
+                <td>27.6</td>
+                <td>55.5</td>
+                <td>317</td>
+                <td>29.7</td>
+                <td></td>
+                <td>28.3</td>
+            </tr>
+            <tr>
+                <td>MPLU Pro</td>
+                <td>74.3</td>
+                <td>58.9</td>
+                <td>73.4</td>
+                <td>C7.5</td>
+                <td>65.8</td>
+                <td>71.6</td>
+            </tr>
+            <tr>
+                <td>GPQA Diamond</td>
+                <td>57.2</td>
+                <td>50.5</td>
+                <td>490</td>
+                <td>424</td>
+                <td>45.0</td>
+                <td>61.5</td>
+            </tr>
+            <tr>
+                <td>Lere Cernet MTOBIuPbC</td>
+                <td>42.2/36.6</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Lontent wesdows 1.28K</td>
+                <td>42.3/35.1</td>
+            </tr>
+            <tr>
+                <td>MTOBI</td>
+                <td>59.7/59.5</td>
+                <td></td>
+                <td></td>
+                <td>Content wandows T28K</td>
+                <td></td>
+                <td>35.1/30.02</td>
+            </tr>
+        </table>
+        
+        <p>1.F2.................................................................................................0</p>
+        <p>1.F2.................................................................................................n 3.5-</p>
+        
+        <p>These new models are important building blocks that will help enable the future of human connection. In keeping with our commitment to open source, we're making Uama 4 Maverick and Uama 4 Scout available to download on llama.com and Hugging Face, with availability across the most widely used cloud and data platforms, edge silicon and global service integrators to follow shortly.</p>
+    </div>
+
+    <div class="section">
+        <h3 class="section-title">Pushing Ulama to new sizes: The 2T Behemoth</h3>
+        <p>We're excited to share a preview of Ulama 4 Behemoth, a teacher model that demonstrates advanced intelligence among models in its class. Ulama 4 Behemoth is also a multimodal mixture-of-experts model, with 288B active parameters,16 experts,and nearly two trillion total parameters. Offering state-of-the-art performance for non-reasoning models on math, multilinguality, and image benchmarks, it was the perfect choice to teach the smaller Ulama 4 models. We codistilled the Ulama 4 Maverick model from Llama 4 Behemoth as a teacher model, resulting in substantial quality improvements across end task evaluation metrics. We developed a novel distillation loss function that dynamically weights the soft and hard targets through training.Codistillation from Ulama 4 Behemoth during pre-training amortizes the computational cost of resource-intensive forward passes needed to compute the targets for distillation for the majority of the training data used in student training. For additional new data incorporated in student training, we ran forward passes on the Behemoth model to create distillation targets.</p>
+        
+        <h4>Llama 4 Behemoth instruction-tuned benchmarks</h4>
+        <table>
+            <tr>
+                <th>Benchmark</th>
+                <th>Llama 4 Behamoth</th>
+                <th>Claude Sonnez3.7</th>
+                <th>GemIn 2.0Prc</th>
+                <th>GPT-4.5</th>
+            </tr>
+            <tr>
+                <td>- LbeCode-Berch</td>
+                <td>49.4</td>
+                <td>-</td>
+                <td>36.0°</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td class="math">\kappa_{sn} h_{dgo} MATH-530</td>
+                <td>95.0</td>
+                <td>82.2</td>
+                <td>91.E</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>HMLU Pro</td>
+                <td class="math">\overline{a}\overline{2}\overline{3}</td>
+                <td>-</td>
+                <td>79.1</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>G=nA nbemand</td>
+                <td>737</td>
+                <td class="math">n(n)</td>
+                <td>64.7</td>
+                <td class="math">\gamma_{14}</td>
+            </tr>
+            <tr>
+                <td>N.I.Bpad MLiting.alMMLJq</td>
+                <td>35.8</td>
+                <td>83.2</td>
+                <td>-</td>
+                <td>05.1</td>
+            </tr>
+            <tr>
+                <td>[ MMMIJ</td>
+                <td>76.1</td>
+                <td>718</td>
+                <td>72.7</td>
+                <td>74.4</td>
+            </tr>
+        </table>
+        
+        <p>infrastructure due to its unprecedented scale. We optimized the design of our MoE parallelization for speed, which enabled faster iteration. We developed a fully asynchronous online RL training framework that enhanced flexibility. Compared to the existing distributed training framework, which sacrifices the compute memory in order to stack all models in memory, our new infrastructure enabled flexible allocation of different models to separate GPUs, balancing resources across multiple models based on computational speed. This innovation resulted in a~10x improvement in training efficiency over previous generations.</p>
+    </div>
+
+    <div class="section">
+        <h3 class="section-title">Safeguards and protections</h3>
+        <p>We aim to develop the most helpful and useful models while protecting against and mitigating the most severe risks. We built Ulama 4 with the best practices outlined in our Developer Use Guide: Al Protections. This includes integrating mitigations at each layer of model development from pre-training to post-training to tunable system-level mitigations that shield developers from adversarial users. In doing so, we empower developers to create helpful, safe,and adaptable experiences for their Ulama-supported applications.</p>
+        
+        <h4>Pre- and post-training mitigations</h4>
+        <p>For pre-training, we use data filtering in combination with other data mitigations to safeguard models. For post-training, we apply a range of techniques to ensure our models conform to policies that are helpful to users and developers, including the right level of safety data at each stage.</p>
+        
+        <h4>System-level approaches</h4>
+        <p>At the system-level, we have open

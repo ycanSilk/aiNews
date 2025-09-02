@@ -1,32 +1,66 @@
 import React from 'react';
 
-interface AboutMeConfig {
-  pageTitle: {
-    title: string;
-    description: string;
+const AboutMe: React.FC = () => {
+  const config = {
+    pageTitle: {
+      title: "About AI News Platform",
+      description: "A cutting-edge AI-powered news aggregation and analysis platform"
+    },
+    coreFeatures: {
+      title: "Core Features",
+      features: [
+        {
+          title: "Real-time AI News Aggregation",
+          items: [
+            "Collects news from multiple authoritative sources",
+            "Real-time updates and breaking news alerts",
+            "AI-powered content filtering and ranking"
+          ]
+        },
+        {
+          title: "Intelligent Content Analysis",
+          items: [
+            "Natural language processing for content understanding",
+            "Sentiment analysis and trend identification",
+            "Automated summarization and key point extraction"
+          ]
+        },
+        {
+          title: "Personalized User Experience",
+          items: [
+            "Customized news feed based on user preferences",
+            "Smart recommendations and related content suggestions",
+            "Multi-language support and accessibility features"
+          ]
+        }
+      ]
+    },
+    comparisonAdvantages: {
+      title: "Comparison Advantages",
+      table: [
+        {
+          feature: "Content Update Speed",
+          aiPlatform: "Real-time updates (minutes)",
+          traditionalPlatform: "Daily/weekly updates"
+        },
+        {
+          feature: "Information Accuracy",
+          aiPlatform: "Multi-source verification",
+          traditionalPlatform: "Single source reliance"
+        },
+        {
+          feature: "Personalization",
+          aiPlatform: "AI-driven recommendations",
+          traditionalPlatform: "Fixed content structure"
+        },
+        {
+          feature: "Content Depth",
+          aiPlatform: "In-depth analysis and insights",
+          traditionalPlatform: "Basic news reporting"
+        }
+      ]
+    }
   };
-  coreFeatures: {
-    title: string;
-    features: Array<{
-      title: string;
-      items: string[];
-    }>;
-  };
-  comparisonAdvantages: {
-    title: string;
-    table: Array<{
-      feature: string;
-      aiPlatform: string;
-      traditionalPlatform: string;
-    }>;
-  };
-}
-
-interface AboutMeProps {
-  config: AboutMeConfig;
-}
-
-const AboutMe: React.FC<AboutMeProps> = ({ config }) => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">

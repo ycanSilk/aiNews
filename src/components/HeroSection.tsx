@@ -1,37 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap } from "lucide-react";
 import heroImage from "@/assets/hero-ai-news.jpg";
-import { useLanguageData } from '@/hooks/useLanguageData';
 
 const HeroSection = () => {
-  // 使用本地JSON数据获取首页配置数据
-  const { data: indexData, loading, error } = useLanguageData<any>('index.json');
-  // 加载状态显示
-  if (loading) {
-    return (
-      <section className="relative bg-gradient-to-br from-tech-blue via-primary to-tech-blue overflow-hidden min-h-[400px] flex items-center justify-center">
-        <div className="text-white">{indexData?.common?.loadingText || '加载中...'}</div>
-      </section>
-    );
-  }
-
-  // 错误状态显示
-  if (error) {
-    return (
-      <section className="relative bg-gradient-to-br from-tech-blue via-primary to-tech-blue overflow-hidden min-h-[400px] flex items-center justify-center">
-        <div className="text-white">加载失败: {error}</div>
-      </section>
-    );
-  }
-
-  // 使用配置数据或默认值
-  const heroConfig = indexData?.hero || {};
-  const {
-    tagline = '实时AI资讯',
-    title = 'AI科技最新动态',
-    description = '获取最新的AI科技新闻、技术突破和行业洞察。掌握AI发展的每一个重要时刻。',
-    buttonText = '订阅更新'
-  } = heroConfig;
 
   return (
     <section className="relative bg-gradient-to-br from-tech-blue via-primary to-tech-blue overflow-hidden" style={{ backgroundImage: `url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -41,20 +12,20 @@ const HeroSection = () => {
           <div className="text-white space-y-4 md:space-y-6">
             <div className="flex items-center space-x-2 text-white/90">
               <Zap className="w-6 h-6 md:w-10 md:h-10" />
-              <h2 className="text-2xl md:text-4xl font-medium">{tagline}</h2>
+              <h2 className="text-2xl md:text-4xl font-medium">Real-time AI News</h2>
             </div>
             <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold leading-tight">
-              {title}
+              Latest AI Technology Updates
             </h1>
             <p className="text-base md:text-lg text-white/90 max-w-md">
-              {description}
+              Get the latest AI technology news, breakthroughs and industry insights. Stay informed about every important moment in AI development.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
                 size="lg" 
                 className="bg-white text-primary hover:bg-white/90 font-semibold"
               >
-                {buttonText}
+                Subscribe
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </div>

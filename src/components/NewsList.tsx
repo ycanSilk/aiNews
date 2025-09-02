@@ -4,33 +4,69 @@ import DateFilter from "./DateFilter";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { Eye, MessageSquare, Clock, Flame, Loader2 } from "lucide-react";
 
-// 使用MongoDB API获取新闻数据
-import { useMongoDBData } from '@/hooks/useMongoDBData';
-// 使用本地JSON数据获取界面文本
-import { useLanguageData } from '@/hooks/useLanguageData';
-// 导入工具函数
-import { formatDateToChinese, formatDateByLanguage, generateIncrementedViews } from '@/lib/utils';
-// 导入语言上下文
-import { useLanguage } from '@/contexts/LanguageContext';
+// 静态数据
+const staticNewsData = [
+  {
+    id: 1,
+    title: { en: "AI Technology Breakthrough", ch: "AI技术突破" },
+    summary: { en: "New AI model achieves state-of-the-art performance", ch: "新AI模型实现最先进性能" },
+    category: { en: "Technology", ch: "技术" },
+    publishTime: "2024-01-15T10:00:00Z",
+    views: 1250,
+    isBreaking: true,
+    tags: { en: ["AI", "Technology"], ch: ["人工智能", "技术"] }
+  },
+  {
+    id: 2,
+    title: { en: "Web Development Trends", ch: "Web开发趋势" },
+    summary: { en: "Latest trends in web development for 2024", ch: "2024年Web开发最新趋势" },
+    category: { en: "Development", ch: "开发" },
+    publishTime: "2024-01-14T14:30:00Z",
+    views: 890,
+    isBreaking: false,
+    tags: { en: ["Web", "Development"], ch: ["网页", "开发"] }
+  },
+  {
+    id: 3,
+    title: { en: "React Best Practices", ch: "React最佳实践" },
+    summary: { en: "Essential React patterns every developer should know", ch: "每个开发者都应该知道的React模式" },
+    category: { en: "Development", ch: "开发" },
+    publishTime: "2024-01-13T09:15:00Z",
+    views: 1560,
+    isBreaking: false,
+    tags: { en: ["React", "JavaScript"], ch: ["React", "JavaScript"] }
+  }
+];
+
+const staticCategories = ["All", "Latest", "Large Language Models", "AI Agents", "Computer Vision", "Voice AI", "FinTech", "Applications", "Other Highlights"];
+
+const staticIndexData = {
+  common: {
+    loadingText: "Loading...",
+    errorText: "Error loading data",
+    backToTopText: "Back to Top",
+    viewsText: "Views"
+  },
+  newsSection: {
+    hotNewsTitle: "Hot News",
+    allNewsText: "All news displayed",
+    filteredText: "Filtered: {filtered} news, Displayed: {visible} items",
+    dateRangeText: "Date Range",
+    toText: "to"
+  }
+};
 
 const NewsList = () => {
-  // 使用MongoDB API获取新闻数据和分类数据
-  const { data: newsData, loading: newsLoading, error: newsError } = useMongoDBData<any[]>('news');
-  const { data: categoryData, loading: categoryLoading, error: categoryError } = useMongoDBData<any>('categories');
-  // 使用本地JSON数据获取界面文本
-  const { data: indexData } = useLanguageData<any>('index.json');
-  // 获取当前语言
-  const { currentLanguage } = useLanguage();
+  // 使用静态数据
+  const newsData = staticNewsData;
+  const categoryData = staticCategories;
+  const currentLanguage = 'en';
   
-  // 从分类数据中获取所有分类名称
-  const categories = useMemo(() => {
-    if (!categoryData) return [];
-    // categories API直接返回分类数组，而不是包含newsCategories字段的对象
-    return Array.isArray(categoryData) ? categoryData : [];
-  }, [categoryData]);
+  // 使用静态分类数据
+  const categories = staticCategories;
 
   // 状态来跟踪当前选中的分类
-  const [activeCategory, setActiveCategory] = useState("全部");
+  const [activeCategory, setActiveCategory] = useState("All");
   // 状态来跟踪日期筛选 - 默认显示最近一周的新闻
   const [dateRange, setDateRange] = useState<{start: string | null, end: string | null}>({
     start: null,
@@ -53,7 +89,7 @@ const NewsList = () => {
     let result = [...newsData];
     
     // 按分类筛选
-    if (activeCategory && activeCategory !== '全部') {
+    if (activeCategory && activeCategory !== 'All') {
       result = result.filter(news => {
         const categoryName = news.category?.name?.[currentLanguage] || news.category?.name?.ch;
         return categoryName === activeCategory;
@@ -246,32 +282,23 @@ const NewsList = () => {
     };
   }, [isLoading, visibleCount, filteredNews.length, showNoResultsMessage, loadMoreNews]);
 
-  // 加载状态显示
-  if (newsLoading || categoryLoading) {
-    return (
-      <section className="bg-news-background relative">
-        <div className="container mx-auto px-4 py-12">
-          <div className="flex justify-center">
-              <Loader2 className="w-8 h-8 text-primary animate-spin" />
-              <span className="ml-2">{indexData?.common?.loadingText || '加载中...'}</span>
-            </div>
-        </div>
-      </section>
-    );
-  }
+  // 简单的日期格式化函数
+  const formatDateByLanguage = (dateString: string, language: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(language === 'ch' ? 'zh-CN' : 'en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
 
-  // 错误状态显示
-  if (newsError || categoryError) {
-    return (
-      <section className="bg-news-background relative">
-        <div className="container mx-auto px-4 py-12">
-          <div className="text-center text-red-500">
-            <p>{indexData?.common?.errorText || '加载数据时出错'}: {newsError || categoryError}</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  // 简单的浏览量格式化函数
+  const generateIncrementedViews = (views: number) => {
+    if (views >= 1000) {
+      return (views / 1000).toFixed(1) + 'k';
+    }
+    return views.toString();
+  };
 
   return (
     <section className="bg-news-background relative">
@@ -302,7 +329,7 @@ const NewsList = () => {
         aria-label="返回顶部"
       >
         <span className="text-lg">▲</span>
-        <span className="text-xs leading-tight hidden md:block">{indexData?.common?.backToTopText || '返回顶部'}</span>
+        <span className="text-xs leading-tight hidden md:block">{staticIndexData.common.backToTopText || '返回顶部'}</span>
       </button>
       
       {/* 新闻列表内容 */}
@@ -312,7 +339,7 @@ const NewsList = () => {
           <div className="w-full lg:w-9/12">
             {Object.entries(visibleNews).map(([date, newsItems]) => {
               const [year, month, day] = date.split('-');
-              const monthDay = indexData?.common?.dateFormat
+              const monthDay = staticIndexData?.common?.dateFormat
                 ?.replace('{month}', month || '')
                 ?.replace('{day}', day || '')
                 ?.replace('{weekday}', '') || `${month || ''}月${day || ''}日`;
@@ -358,10 +385,10 @@ const NewsList = () => {
               {isLoading ? (
                 <div className="flex flex-col items-center">
                   <Loader2 className="w-8 h-8 text-primary animate-spin mb-2" />
-                  <p className="text-sm text-muted-foreground">{indexData?.common?.loadingText || '加载中...'}</p>
+                  <p className="text-sm text-muted-foreground">{staticIndexData.common.loadingText}</p>
                 </div>
               ) : hasFutureDateSelection ? (
-                  <p className="text-sm text-muted-foreground">{indexData?.newsSection?.futureDateText || ''}</p>
+                  <p className="text-sm text-muted-foreground">data</p>
               ) : showNoResultsMessage ? (
                 <p className="text-sm text-muted-foreground">
                   在所选日期范围内没有找到相关新闻
@@ -374,15 +401,15 @@ const NewsList = () => {
                   )}
                 </p>
               ) : visibleCount >= filteredNews.length ? (
-                <p className="text-sm text-muted-foreground">{indexData?.newsSection?.allNewsText || '已显示全部新闻'}</p>
+                <p className="text-sm text-muted-foreground">{staticIndexData.newsSection.allNewsText}</p>
               ) : null}
             </div>
             
             {/* 调试信息 - 仅用于开发环境 */}
             {process.env.NODE_ENV === 'development' && (
               <div className="text-xs text-gray-400 mt-2 text-center">
-                {indexData?.newsSection?.filteredText?.replace('{filtered}', filteredNews.length.toString())?.replace('{visible}', visibleCount.toString()) || `已过滤: ${filteredNews.length} 条新闻, 已显示: ${visibleCount} 条`}
-                {dateRange.start && dateRange.end && `, ${indexData?.newsSection?.dateRangeText || '日期范围'}: ${dateRange.start} ${indexData?.newsSection?.toText || '至'} ${dateRange.end}`}
+                {staticIndexData.newsSection.filteredText.replace('{filtered}', filteredNews.length.toString()).replace('{visible}', visibleCount.toString())}
+                {dateRange.start && dateRange.end && `, ${staticIndexData.newsSection.dateRangeText}: ${dateRange.start} ${staticIndexData.newsSection.toText} ${dateRange.end}`}
               </div>
             )}
           </div>
@@ -394,7 +421,7 @@ const NewsList = () => {
                 <span className="w-6 h-6 rounded-full  flex items-center justify-center text-red-500 mr-3">
                     <Flame className="w-7 h-7" />
                 </span>
-                {indexData?.newsSection?.hotNewsTitle || '热门新闻'}
+                {staticIndexData.newsSection.hotNewsTitle}
               </h3>
               
               <div className="space-y-6">
@@ -412,7 +439,7 @@ const NewsList = () => {
                       <div className="flex items-center mt-1 text-xs text-gray-500 space-x-2">
                         <span>{formatDateByLanguage(news.publishTime || '', currentLanguage)}</span>
                         <span>•</span>
-                        <span>{generateIncrementedViews(news.views || 0)} {indexData?.common?.viewsText || '浏览'}</span>
+                        <span>{generateIncrementedViews(news.views || 0)} {staticIndexData.common.viewsText}</span>
                       </div>
                     </div>
                   </div>
