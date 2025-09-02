@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const TagSchema = new mongoose.Schema({
   // 多语言名称
   name: {
-    zh: { type: String, required: true }, // 中文名称（必需）
+    ch: { type: String, required: true }, // 中文名称（必需）
     en: { type: String }                  // 英文名称（可选）
   },
   
@@ -18,7 +18,7 @@ const TagSchema = new mongoose.Schema({
   
   // 多语言描述
   description: {
-    zh: { type: String }, // 中文描述
+    ch: { type: String }, // 中文描述
     en: { type: String }   // 英文描述
   },
   

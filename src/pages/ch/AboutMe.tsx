@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AboutMe from "@/components/aboutme/AboutMe";
-import aboutMeConfig from "@/data/local/cn/aboutMe.json";
+import aboutMeConfig from "@/data/local/ch/aboutMe.json";
 
 const AboutMeCh = () => {
   return (

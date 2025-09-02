@@ -11,14 +11,16 @@ router.get('/news', async (req, res) => {
     if (category) query.category = category;
     if (search) {
       query.$or = [
-        { 'title.zh': { $regex: search, $options: 'i' } },
+        { 'title.ch': { $regex: search, $options: 'i' } },
         { 'title.en': { $regex: search, $options: 'i' } },
-        { 'summary.zh': { $regex: search, $options: 'i' } },
+        { 'summary.ch': { $regex: search, $options: 'i' } },
         { 'summary.en': { $regex: search, $options: 'i' } }
       ];
     }
 
     const news = await News.find(query)
+      .populate('category', 'name value')
+      .populate('tags', 'name value')
       .sort({ publishTime: -1 })
       .limit(limit * 1)
       .skip((page - 1) * limit);

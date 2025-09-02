@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
-import { useLanguageData } from '@/hooks/useLanguageData';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CategoryTabsProps {
-  categories: string[];
+  categories: any[];
   activeCategory: string;
   onCategoryChange: (category: string) => void;
 }
@@ -13,11 +13,10 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
   activeCategory, 
   onCategoryChange 
 }) => {
-  // 使用语言数据钩子加载分类数据
-  const { data: categoryData, loading, error } = useLanguageData<any>('categories.json');
+  const { currentLanguage } = useLanguage();
   
-  // 使用分类数据
-  const allCategories = categoryData?.newsCategories?.map((cat: any) => cat.name) || [];
+  // 使用API获取的分类数据
+  const allCategories = ['全部', ...categories.map(cat => cat.name?.[currentLanguage] || cat.name?.ch || '')];
 
   return (
     <div className=" bg-white shadow-sm">

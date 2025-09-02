@@ -6,15 +6,15 @@ const NewsSchema = new mongoose.Schema({
   
   // 多语言内容
   title: {
-    zh: { type: String, required: true },
+    ch: { type: String, required: true },
     en: { type: String }
   },
   summary: {
-    zh: { type: String },
+    ch: { type: String },
     en: { type: String }
   },
   content: {
-    zh: { type: String, required: true },
+    ch: { type: String, required: true },
     en: { type: String }
   },
   

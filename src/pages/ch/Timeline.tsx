@@ -1,12 +1,12 @@
 import React from 'react';
 import Timeline from '@/components/timeline/Timeline';
-import chineseConfig from '@/data/local/cn/timeLine.json';
+import chineseConfig from '@/data/local/ch/timeLine.json';
 
 const ChineseTimeline = () => {
   return (
     <Timeline 
-      config={chineseConfig.cn}
-      language="cn"
+      config={chineseConfig.ch}
+      language="ch"
     />
   );
 };

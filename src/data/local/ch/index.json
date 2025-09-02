@@ -2,10 +2,10 @@
   "header": {
     "logoText": "AI新闻",
     "navItems": [
-      {"label": "首页", "href": "/cn/index"},
-      {"label": "文章", "href": "/cn/article"},
-      {"label": "时间线新闻", "href": "/cn/timeline"},
-      {"label": "关于我们", "href": "/cn/aboutme"}
+      {"label": "首页", "href": "/ch/index"},
+      {"label": "文章", "href": "/ch/articles"},
+      {"label": "时间线新闻", "href": "/ch/timeline"},
+      {"label": "关于我们", "href": "/ch/aboutme"}
     ],
     "searchPlaceholder": "搜索AI资讯...",
     "languageOptions": [

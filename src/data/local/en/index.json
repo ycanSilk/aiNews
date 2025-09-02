@@ -3,7 +3,7 @@
     "logoText": "AI News",
     "navItems": [
       {"label": "Home", "href": "/en/index"},
-      {"label": "Aticle", "href": "/en/article"},
+      {"label": "Articles", "href": "/en/articles"},
       {"label": "Timeline News", "href": "/en/timeline"},
       {"label": "About Us", "href": "/en/aboutme"}
     ],

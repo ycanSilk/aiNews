@@ -54,7 +54,10 @@ const NewsList = () => {
     
     // 按分类筛选
     if (activeCategory && activeCategory !== '全部') {
-      result = result.filter(news => news.category?.cn === activeCategory);
+      result = result.filter(news => {
+        const categoryName = news.category?.name?.[currentLanguage] || news.category?.name?.ch;
+        return categoryName === activeCategory;
+      });
     }
     
     // 按日期范围筛选
@@ -334,13 +337,14 @@ const NewsList = () => {
                     {newsItems.map((news) => (
                       <div key={news.id} className="w-full">
                         <NewsCard
-                          title={news.title?.[currentLanguage] || news.title?.cn || ''}
-                          summary={news.summary?.[currentLanguage] || news.summary?.cn || ''}
-                          category={news.category?.[currentLanguage] || news.category?.cn || ''}
+                          title={news.title?.[currentLanguage] || news.title?.ch || ''}
+                          summary={news.summary?.[currentLanguage] || news.summary?.ch || ''}
+                          category={news.category?.[currentLanguage] || news.category?.ch || ''}
                           publishTime={news.publishTime}
                           views={news.views}
                           isBreaking={news.isBreaking}
-                          tags={news.tags?.[currentLanguage] || news.tags?.cn || []}
+                          tags={news.tags?.[currentLanguage] || news.tags?.ch || []}
+                          externalUrl={news.externalUrl}
                         />
                       </div>
                     ))}
@@ -403,7 +407,7 @@ const NewsList = () => {
                     {/* 新闻内容 */}
                     <div className="flex-1">
                       <h4 className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-                        {news.title?.[currentLanguage] || news.title?.cn || ''}
+                        {news.title?.[currentLanguage] || news.title?.ch || ''}
                       </h4>
                       <div className="flex items-center mt-1 text-xs text-gray-500 space-x-2">
                         <span>{formatDateByLanguage(news.publishTime || '', currentLanguage)}</span>

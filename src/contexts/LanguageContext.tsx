@@ -24,14 +24,14 @@ interface LanguageProviderProps {
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [currentLanguage, setCurrentLanguage] = useState('cn');
+  const [currentLanguage, setCurrentLanguage] = useState('ch');
 
   useEffect(() => {
     // 根据路由路径确定当前语言
     if (location.pathname.startsWith('/en')) {
       setCurrentLanguage('en');
     } else {
-      setCurrentLanguage('cn');
+      setCurrentLanguage('ch');
     }
   }, [location.pathname]);
 
@@ -43,9 +43,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     
     if (lang === 'en') {
       // 切换到英文版
-      if (currentPath.startsWith('/cn/')) {
-        targetPath = currentPath.replace('/cn/', '/en/');
-      } else if (currentPath === '/cn') {
+      if (currentPath.startsWith('/ch/')) {
+        targetPath = currentPath.replace('/ch/', '/en/');
+      } else if (currentPath === '/ch') {
         targetPath = '/en';
       } else if (!currentPath.startsWith('/en/') && currentPath !== '/en') {
         targetPath = '/en';
@@ -53,11 +53,11 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     } else {
       // 切换到中文版
       if (currentPath.startsWith('/en/')) {
-        targetPath = currentPath.replace('/en/', '/cn/');
+        targetPath = currentPath.replace('/en/', '/ch/');
       } else if (currentPath === '/en') {
-        targetPath = '/cn';
-      } else if (!currentPath.startsWith('/cn/') && currentPath !== '/cn') {
-        targetPath = '/cn';
+        targetPath = '/ch';
+      } else if (!currentPath.startsWith('/ch/') && currentPath !== '/ch') {
+        targetPath = '/ch';
       }
     }
     
@@ -65,8 +65,8 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   };
 
   const getDataPath = (fileName: string): string => {
-    // 映射语言代码到实际目录名：'cn' -> 'cn', 'en' -> 'en'
-    const languageDir = currentLanguage === 'cn' ? 'cn' : currentLanguage;
+    // 映射语言代码到实际目录名：'ch' -> 'ch', 'en' -> 'en'
+    const languageDir = currentLanguage === 'ch' ? 'ch' : currentLanguage;
     // 使用相对路径，Vite会自动处理src目录下的文件
     return `../../data/local/${languageDir}/${fileName}`;
   };

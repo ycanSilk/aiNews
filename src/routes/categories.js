@@ -1,11 +1,13 @@
 import express from 'express';
 const router = express.Router();
 import News from '../models/News.js';
+import Category from '../models/Category.js';
 
 // 获取所有分类
 router.get('/categories', async (req, res) => {
   try {
-    const categories = await News.distinct('category');
+    const categories = await Category.find({ isActive: true })
+      .sort({ displayOrder: 1, name: 1 });
     res.json(categories);
   } catch (error) {
     res.status(500).json({ error: error.message });

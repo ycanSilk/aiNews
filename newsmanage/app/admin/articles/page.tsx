@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import ArticleEditModal from '@/components/admin/ArticleEditModal'
 
 interface Article {
   _id: string
@@ -89,14 +88,13 @@ interface EditArticleData {
 export default function AdminNewsPage() {
   const router = useRouter()
   const [articles, setArticles] = useState<Article[]>([])
+  const [filteredArticles, setFilteredArticles] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [totalItems, setTotalItems] = useState(0)
   const [hoveredCell, setHoveredCell] = useState<{content: string, x: number, y: number} | null>(null)
   const [error, setError] = useState<string>('')
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [editingArticle, setEditingArticle] = useState<EditArticleData | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [categories, setCategories] = useState<{displayName: string, value: string}[]>([])
   const [searchKeyword, setSearchKeyword] = useState('')
@@ -267,6 +265,7 @@ export default function AdminNewsPage() {
       const result = await response.json()
       if (result.success) {
         setArticles(result.data)
+        setFilteredArticles(result.data)
         setTotalItems(result.pagination.total)
       } else {
         throw new Error(result.error || 'API返回失败')
@@ -282,7 +281,6 @@ export default function AdminNewsPage() {
   }
 
   // 搜索和筛选处理 - 现在由API处理筛选，这里直接使用返回的数据
-  const filteredArticles = articles
 
   // 分页计算 - 基于API返回的总数
    const totalPages = Math.ceil(totalItems / itemsPerPage)
@@ -369,16 +367,29 @@ export default function AdminNewsPage() {
     if (!confirm('确定要删除这篇文章吗？')) return
     
     try {
-      const response = await fetch(`/api/articles?id=${id}`, {
+      console.log('=== 开始删除文章 ===')
+      console.log('文章ID:', id)
+      console.log('请求URL:', `/api/articles/${id}`)
+      
+      const response = await fetch(`/api/articles/${id}`, {
         method: 'DELETE'
       })
       
+      console.log('删除响应状态:', response.status)
+      console.log('删除响应头:', Object.fromEntries(response.headers.entries()))
+      
+      const result = await response.json()
+      console.log('删除响应数据:', result)
+      
       if (response.ok) {
+        console.log('文章删除成功，更新本地状态')
         setArticles(prev => prev.filter(item => item._id !== id))
         setFilteredArticles(prev => prev.filter(item => item._id !== id))
         setError('')
+        console.log('本地状态更新完成')
       } else {
-        throw new Error('删除失败')
+        console.error('删除失败，服务器返回错误:', result.error)
+        throw new Error(result.error || '删除失败')
       }
     } catch (err) {
       console.error('删除文章错误:', err)
@@ -387,85 +398,10 @@ export default function AdminNewsPage() {
   }
 
   const handleEdit = (article: Article) => {
-    setEditingArticle({
-      id: article._id,
-      semanticId: article.semanticId,
-      title: article.title,
-      summary: article.summary,
-      content: article.content,
-      category: article.category,
-      tags: article.tags,
-      author: article.author,
-      views: article.views,
-      readTime: article.readTime,
-      imageUrl: article.imageUrl,
-      slug: article.slug,
-      publishedAt: article.publishedAt,
-      externalUrl: article.externalUrl,
-      isBreaking: article.isBreaking,
-      isImportant: article.isImportant,
-      isCritical: article.isCritical,
-      status: article.status
-    })
-    setIsEditModalOpen(true)
+    router.push(`/admin/articles/edit/${article._id}`)
   }
 
-  const handleSaveEdit = async (articleData: EditArticleData) => {
-    setIsSubmitting(true)
-    
-    try {
-      let response: Response
-      
-      if (editingArticle && editingArticle.id) {
-        // 更新现有文章
-        response = await fetch(`/api/articles?id=${editingArticle.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(articleData)
-        })
-      } else {
-        // 创建新文章
-        response = await fetch('/api/articles', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(articleData)
-        })
-      }
-
-      if (response.ok) {
-        const savedArticle = await response.json()
-        
-        if (editingArticle && editingArticle.id) {
-          // 更新列表中的文章
-          setArticles(prev => prev.map(item => 
-            item._id === editingArticle.id ? savedArticle : item
-          ))
-          setFilteredArticles(prev => prev.map(item => 
-            item._id === editingArticle.id ? savedArticle : item
-          ))
-        } else {
-          // 添加新文章到列表
-          setArticles(prev => [...prev, savedArticle])
-          setFilteredArticles(prev => [...prev, savedArticle])
-        }
-
-        setIsEditModalOpen(false)
-        setEditingArticle(null)
-        setError('')
-      } else {
-        throw new Error(editingArticle && editingArticle.id ? '更新失败' : '创建失败')
-      }
-    } catch (err) {
-      console.error('保存文章错误:', err)
-      setError(editingArticle && editingArticle.id ? '更新失败，请重试' : '创建失败，请重试')
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
+  // 保存编辑（已弃用，现在使用独立编辑页面）
 
   return (
     <div className="p-6">
@@ -711,12 +647,6 @@ export default function AdminNewsPage() {
                             快速编辑
                           </button>
                           <button 
-                            className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 transition-colors"
-                            onClick={() => window.open(`/admin/articles/edit/${item._id}`, '_blank')}
-                          >
-                            全屏编辑
-                          </button>
-                          <button 
                             className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors"
                             onClick={() => handleDelete(item._id)}
                           >
@@ -748,20 +678,7 @@ export default function AdminNewsPage() {
         </div>
       </div>
       
-      {/* 编辑模态框 */}
-      <ArticleEditModal
-        isOpen={isEditModalOpen}
-        editingArticle={editingArticle}
-        isSubmitting={isSubmitting}
-        categories={categories}
-        statusOptions={statusOptions}
-        onClose={() => {
-          setIsEditModalOpen(false)
-          setEditingArticle(null)
-        }}
-        onSave={handleSaveEdit}
-        onUpdateArticle={setEditingArticle}
-      />
+      {/* 编辑模态框（已弃用，现在使用独立编辑页面） */}
       
       {/* 错误提示 */}
       {error && (

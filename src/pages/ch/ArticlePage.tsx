@@ -7,7 +7,7 @@ const ArticlePage: React.FC = () => {
   return (
     <div className="article-page">
       <Header />
-      <ArticleComponentDB lang="zh" />
+      <ArticleComponentDB lang="ch" />
       <Footer />
     </div>
   );

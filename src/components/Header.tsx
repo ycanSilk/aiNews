@@ -14,6 +14,7 @@ const Header = () => {
   
   // 使用本地JSON文件获取header配置数据
   const { data: indexData, loading, error } = useLanguageData('index.json');
+  const { currentLanguage } = useLanguage();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -53,7 +54,7 @@ const Header = () => {
             {indexData?.header?.navItems?.map((item: any, index: number) => (
               <a 
                 key={index}
-                href={item.href}
+                href={item.href.startsWith('/ch/') || item.href.startsWith('/en/') ? item.href.replace(/^\/(ch|en)\//, `/${currentLanguage}/`) : item.href}
                 className="hover:text-blue-500 transition-colors hover:border-b-2 hover:border-blue-500"
               >
                 {item.label}
@@ -145,7 +146,7 @@ const Header = () => {
                     {indexData?.header?.navItems?.map((item: any, index: number) => (
                       <a 
                         key={index}
-                        href={item.href}
+                        href={item.href.startsWith('/ch/') || item.href.startsWith('/en/') ? item.href.replace(/^\/(ch|en)\//, `/${currentLanguage}/`) : item.href}
                         className="text-muted-foreground hover:text-black transition-colors border-b border-border/50 py-2 px-3 hover:bg-blue-400"
                       >
                         {item.label}

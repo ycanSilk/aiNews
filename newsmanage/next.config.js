@@ -4,7 +4,7 @@ const nextConfig = {
     domains: ['localhost'],
   },
   env: {
-    PORT: '8888'
+    PORT: '8899'
   }
 }
 

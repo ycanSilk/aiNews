@@ -7,7 +7,7 @@ interface ArticleComponentDBProps {
   lang?: string;
 }
 
-const ArticleComponentDB: React.FC<ArticleComponentDBProps> = ({ lang = 'zh' }) => {
+const ArticleComponentDB: React.FC<ArticleComponentDBProps> = ({ lang = 'ch' }) => {
   const { data, loading, error } = useArticleData(lang);
 
   if (loading) {

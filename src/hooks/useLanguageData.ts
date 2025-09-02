@@ -20,8 +20,8 @@ export const useLanguageData = <T,>(fileName: string): UseLanguageDataResult<T> 
         setError(null);
         
         // 构建完整的文件路径
-        // 映射语言代码到实际目录名：'cn' -> 'cn', 'en' -> 'en'
-        const languageDir = currentLanguage === 'cn' ? 'cn' : 'en';
+        // 映射语言代码到实际目录名：'ch' -> 'ch', 'en' -> 'en'
+  const languageDir = currentLanguage === 'ch' ? 'ch' : 'en';
         const fullPath = `/src/data/local/${languageDir}/${fileName}`;
         
         // 使用fetch API获取JSON数据

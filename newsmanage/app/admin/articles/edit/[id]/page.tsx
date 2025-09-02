@@ -4,93 +4,38 @@ import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import EnhancedRichTextEditor from '@/components/ui/enhanced-rich-text-editor'
 
-interface Article {
-  _id: string
-  semanticId: string
-  title: {
-    zh: string
-    en: string
-  }
-  summary: {
-    zh: string
-    en: string
-  }
-  content?: {
-    zh: string
-    en: string
-  }
-  category: string
-  author: string
-  views: number
-  readTime: number
-  imageUrl: string
-  slug: string
-  publishedAt: string
-  publishTime: string
-  date: string
-  weekday: string
-  comments: number
-  isHot: boolean
-  isImportant: boolean
-  isCritical: boolean
-  tags: string[]
-  locales: {
-    zh: {
-      title: string
-      summary: string
-      tags: string[]
-    }
-    en: {
-      title: string
-      summary: string
-      tags: string[]
-    }
-  }
-  externalUrl?: string
-  status: string
-  createdAt: string
-  updatedAt: string
-}
-
 interface EditArticleData {
-  _id: string
+  _id?: string
+  semanticId: string
   title: { zh: string; en: string }
   summary: { zh: string; en: string }
   content?: { zh: string; en: string }
   category: string
   author: string
-  imageUrl: string
+  views: number
   slug: string
   publishedAt: string
-  publishTime: string
-  date: string
-  weekday: string
-  isHot: boolean
-  isImportant: boolean
-  isCritical: boolean
   tags: string[]
-  externalUrl?: string
-  status: string
+  isFeatured: boolean
+  createdAt?: string
+  updatedAt?: string
 }
 
 const fieldMappings: Record<string, string> = {
+  _id: 'ID',
+  semanticId: '语义ID',
   title: '标题',
   summary: '摘要',
   content: '内容',
   category: '分类',
   author: '作者',
-  imageUrl: '图片URL',
+  views: '浏览量',
   slug: 'Slug',
   publishedAt: '发布时间',
-  publishTime: '发布具体时间',
-  date: '日期',
-  weekday: '星期',
-  isHot: '热门',
-  isImportant: '重要',
-  isCritical: '紧急',
   tags: '标签',
-  externalUrl: '外部链接',
-  status: '状态'
+  isFeatured: '是否推荐',
+  createdAt: '创建时间',
+  updatedAt: '更新时间'
 }
 
 function formatDateTime(dateString: string): string {
@@ -106,77 +51,108 @@ function formatDateTime(dateString: string): string {
 }
 
 export default function ArticleEditPage() {
-  const params = useParams()
   const router = useRouter()
+  const params = useParams()
   const id = params.id as string
   
-  const [editingArticle, setEditingArticle] = useState<EditArticleData>({
-    _id: '',
-    title: { zh: '', en: '' },
-    summary: { zh: '', en: '' },
-    content: { zh: '', en: '' },
-    category: '',
-    author: '',
-    imageUrl: '',
-    slug: '',
-    publishedAt: '',
-    publishTime: '',
-    date: '',
-    weekday: '',
-    isHot: false,
-    isImportant: false,
-    isCritical: false,
-    tags: [],
-    status: 'draft'
-  })
-  
+  const [editingArticle, setEditingArticle] = useState<EditArticleData | null>(null)
   const [categories, setCategories] = useState<Array<{value: string, displayName: string}>>([])
-  const [statusOptions] = useState([
-    { value: 'draft', label: '草稿' },
-    { value: 'published', label: '已发布' },
-    { value: 'archived', label: '已归档' }
-  ])
+  const [users, setUsers] = useState<any[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
+  const [tagInput, setTagInput] = useState('')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    loadArticleData()
+    if (id) {
+      loadArticle()
+    }
     loadCategories()
+    loadUsers()
   }, [id])
+
+  const loadArticle = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch(`/api/articles/${id}`)
+      if (response.ok) {
+        const result = await response.json()
+        if (result.success) {
+          const article = result.data
+          setEditingArticle({
+            _id: article._id,
+            semanticId: article.semanticId,
+            title: article.title,
+            summary: article.summary,
+            content: article.content,
+            category: article.category?._id || article.category,
+            author: article.author?._id || article.author,
+            views: article.views,
+            slug: article.slug,
+            publishedAt: article.publishedAt,
+            tags: article.tags,
+            isFeatured: article.isFeatured || false
+          })
+        } else {
+          setError('文章加载失败')
+        }
+      } else {
+        setError('文章加载失败')
+      }
+    } catch (err) {
+      setError('文章加载失败')
+      console.error('Error loading article:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const loadCategories = async () => {
     try {
       const response = await fetch('/api/categories')
       if (response.ok) {
-        const data = await response.json()
-        setCategories(data.categories || [])
+        const categoriesData = await response.json()
+        // 转换分类数据格式为 {value, displayName}
+        const formattedCategories = categoriesData.map((cat: any) => ({
+          value: cat._id || cat.value,
+          displayName: cat.name?.zh || cat.name?.en || cat.name || cat._id
+        }))
+        setCategories(formattedCategories)
       }
     } catch (err) {
       console.error('Error loading categories:', err)
     }
   }
 
-  const loadArticleData = async () => {
+  const loadUsers = async () => {
     try {
-      const response = await fetch(`/api/articles/${id}`)
+      const response = await fetch('/api/admin/database/adminuser')
       if (response.ok) {
-        const articleData = await response.json()
-        setEditingArticle(articleData)
-        setIsLoading(false)
-      } else {
-        console.error('Failed to load article data')
-        setIsLoading(false)
+        const data = await response.json()
+        setUsers(data.data?.items || [])
       }
-    } catch (err) {
-      console.error('Error loading article data:', err)
-      setIsLoading(false)
+    } catch (error) {
+      console.error('加载用户失败:', error)
     }
   }
 
   const handleSave = async () => {
+    if (!editingArticle) return
+    
     setIsSubmitting(true)
     setError('')
+    
+    // 调试输出：显示所有字段的值
+    console.log('=== 提交的文章数据 ===')
+    console.log('完整数据:', JSON.stringify(editingArticle, null, 2))
+    console.log('各字段详情:')
+    Object.entries(editingArticle).forEach(([key, value]) => {
+      if (typeof value === 'object' && value !== null) {
+        console.log(`${key}:`, JSON.stringify(value, null, 2))
+      } else {
+        console.log(`${key}:`, value)
+      }
+    })
     
     try {
       const response = await fetch(`/api/articles/${id}`, {
@@ -192,11 +168,11 @@ export default function ArticleEditPage() {
         router.refresh()
       } else {
         const errorData = await response.json()
-        setError(errorData.message || '保存失败')
+        setError(errorData.message || '更新失败')
       }
     } catch (err) {
-      setError('保存时发生错误')
-      console.error('Error saving article:', err)
+      setError('更新时发生错误')
+      console.error('Error updating article:', err)
     } finally {
       setIsSubmitting(false)
     }
@@ -207,15 +183,35 @@ export default function ArticleEditPage() {
   }
 
   const onUpdateArticle = (updatedData: Partial<EditArticleData>) => {
-    setEditingArticle(prev => ({ ...prev, ...updatedData }))
+    if (editingArticle) {
+      setEditingArticle(prev => ({ ...prev!, ...updatedData }))
+    }
   }
 
-  if (isLoading) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 p-6 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">加载中...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">加载中，请稍候...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!editingArticle) {
+    return (
+      <div className="min-h-screen bg-gray-100 p-6">
+        <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg p-8">
+          <div className="text-center">
+            <p className="text-red-600">{error || '文章不存在'}</p>
+            <button
+              onClick={handleCancel}
+              className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              返回文章列表
+            </button>
+          </div>
         </div>
       </div>
     )
@@ -257,7 +253,7 @@ export default function ArticleEditPage() {
             const value = editingArticle[field as keyof EditArticleData]
             
             // 排除不需要显示的字段
-            const excludedFields = ['_id', 'views', 'comments', 'createdAt', 'updatedAt', 'readTime']
+            const excludedFields = ['_id', 'views', 'createdAt', 'updatedAt']
             if (excludedFields.includes(field)) {
               return null
             }
@@ -294,6 +290,7 @@ export default function ArticleEditPage() {
                   <label className="block text-lg font-semibold mb-3 mt-6">{fieldLabel} (英文)</label>
                   {field === 'content' ? (
                     <EnhancedRichTextEditor
+                     
                       value={multiLangValue.en || ''}
                       onChange={(value) => onUpdateArticle({
                         [field]: { ...multiLangValue, en: value }
@@ -324,6 +321,7 @@ export default function ArticleEditPage() {
                     value={value as string || ''}
                     onChange={(e) => onUpdateArticle({ [field]: e.target.value })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-md text-lg"
+                    required
                   >
                     <option value="">选择分类</option>
                     {categories.map((cat) => (
@@ -334,8 +332,8 @@ export default function ArticleEditPage() {
                   </select>
                 </div>
               )
-            } else if (field === 'status') {
-              // 状态选择框
+            } else if (field === 'author') {
+              // 作者选择框
               return (
                 <div key={field} className="border-b pb-6">
                   <label className="block text-lg font-semibold mb-3">{fieldLabel}</label>
@@ -343,31 +341,71 @@ export default function ArticleEditPage() {
                     value={value as string || ''}
                     onChange={(e) => onUpdateArticle({ [field]: e.target.value })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-md text-lg"
+                    required
                   >
-                    {statusOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
+                    <option value="">选择作者</option>
+                    {users.map((user) => (
+                      <option key={user._id} value={user._id}>
+                        {user.username || user.email || user._id}
                       </option>
                     ))}
                   </select>
                 </div>
               )
+
             } else if (field === 'tags') {
-              // 标签输入
+              // 标签输入（支持回车生成）
               const tags = value as string[] || []
+              
+              const handleTagKeyDown = (e: React.KeyboardEvent) => {
+                if (e.key === 'Enter' && tagInput.trim()) {
+                  e.preventDefault()
+                  const newTags = [...tags, tagInput.trim()]
+                  onUpdateArticle({ [field]: newTags })
+                  setTagInput('')
+                }
+              }
+              
+              const removeTag = (index: number) => {
+                const newTags = tags.filter((_, i) => i !== index)
+                onUpdateArticle({ [field]: newTags })
+              }
+              
               return (
                 <div key={field} className="border-b pb-6">
                   <label className="block text-lg font-semibold mb-3">{fieldLabel}</label>
+                  
+                  {/* 已添加的标签显示 */}
+                  {tags.length > 0 && (
+                    <div className="mb-3 flex flex-wrap gap-2">
+                      {tags.map((tag, index) => (
+                        <span
+                          key={index}
+                          className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                        >
+                          {tag}
+                          <button
+                            type="button"
+                            onClick={() => removeTag(index)}
+                            className="ml-2 text-blue-600 hover:text-blue-800"
+                          >
+                            ×
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* 标签输入框 */}
                   <input
                     type="text"
-                    value={tags.join(', ')}
-                    onChange={(e) => onUpdateArticle({ 
-                      [field]: e.target.value.split(',').map(tag => tag.trim()).filter(tag => tag) 
-                    })}
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={handleTagKeyDown}
                     className="w-full px-4 py-3 border border-gray-300 rounded-md text-lg"
-                    placeholder="输入标签，用逗号分隔"
+                    placeholder="输入标签后按回车添加"
                   />
-                  <p className="text-sm text-gray-500 mt-2">例如: 科技,人工智能,新闻</p>
+                  <p className="text-sm text-gray-500 mt-2">输入标签后按回车键添加</p>
                 </div>
               )
             } else if (typeof value === 'boolean') {
@@ -417,7 +455,7 @@ export default function ArticleEditPage() {
             disabled={isSubmitting}
             className="px-8 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
           >
-            {isSubmitting ? '保存中...' : '保存更改'}
+            {isSubmitting ? '保存中...' : '保存文章'}
           </button>
         </div>
       </div>

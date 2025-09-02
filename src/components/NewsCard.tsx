@@ -16,6 +16,7 @@ interface NewsCardProps {
   imageUrl?: string;
   isBreaking?: boolean;
   tags?: string[];
+  externalUrl?: string;
 }
 
 const NewsCard = ({
@@ -27,7 +28,8 @@ const NewsCard = ({
   views,
   imageUrl,
   isBreaking = false,
-  tags = []
+  tags = [],
+  externalUrl
 }: NewsCardProps) => {
   // 使用语言数据钩子加载通用文本配置
   const { data: indexData } = useLanguageData<any>('index.json');
@@ -36,7 +38,10 @@ const NewsCard = ({
   const summaryItems = summary.split('。').filter(item => item.trim());
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer bg-news-card border-0 border-b-2 border-blue-500 m-0 relative md:max-h-40">
+    <Card 
+      className="group hover:shadow-lg transition-all duration-300 cursor-pointer bg-news-card border-0 border-b-2 border-blue-500 m-0 relative md:max-h-40"
+      onClick={() => externalUrl && window.open(externalUrl, '_blank')}
+    >
       <div className="flex flex-col md:flex-row overflow-hidden">
         <div className="p-3 flex-grow">
           <h3 className="text-lg font-semibold text-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors">
@@ -83,7 +88,17 @@ const NewsCard = ({
               </div>
 
             </div>
-            <a href="#" className="text-primary font-medium hover:underline transition-all duration-200 ">
+            <a 
+              href={externalUrl || '#'} 
+              className="text-primary font-medium hover:underline transition-all duration-200 "
+              onClick={(e) => {
+                if (!externalUrl) {
+                  e.preventDefault();
+                }
+              }}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {indexData?.common?.readMoreText || '查看详情'}
             </a>
           </div>
