@@ -166,7 +166,7 @@ const BlogList: React.FC<BlogListProps> = ({ lang }) => {
               onClick={() => handleBlogClick(blog.blogUrl)}
             >
               {/* Blog Header */}
-              <div className="px-10 py-5 flex flex-col md:flex-row items-start gap-4">
+              <div className="px-10 py-6 flex flex-col md:flex-row items-start gap-4">
               
                 {/* Blog Info */}
                 <div className="flex-1">
