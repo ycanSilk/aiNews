@@ -6,7 +6,7 @@ const staticTimelineConfig = {
   title: "AI News Timeline",
   subtitle: "Latest developments in artificial intelligence",
   defaultSearchTerm: "OpenAI",
-  hotSearchTags: ["OpenAI", "GPT-4", "DALL-E", "ChatGPT"],
+  hotSearchTags: ["AI","DeepSeek", "OpenAI", "GPT-4", "Claude","DALL-E","Gemini ","Llama ", "Qwen3","ChatGPT"],
   uiTexts: {
     searchPlaceholder: "Search AI news...",
     hotSearchLabel: "Hot searches:",

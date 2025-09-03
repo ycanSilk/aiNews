@@ -56,12 +56,12 @@ const NewsCard = ({
     return views.toString();
   };
 
-  // 将摘要分割成列表项
-  const summaryItems = summary.split('。').filter(item => item.trim());
+  // 将正文内容分割成段落
+  const contentParagraphs = summary.split('\n').filter(paragraph => paragraph.trim());
 
   return (
     <Card 
-      className="group hover:shadow-lg transition-all duration-300 cursor-pointer bg-news-card border-0 border-b-2 border-blue-500 m-0 relative md:max-h-40"
+      className="group hover:shadow-lg transition-all duration-300 cursor-pointer bg-news-card border-0 m-0 relative"
       onClick={() => externalUrl && window.open(externalUrl, '_blank')}
     >
       <div className="flex flex-col md:flex-row overflow-hidden">
@@ -70,15 +70,14 @@ const NewsCard = ({
             {title}
           </h3>
           
-          {/* 列表形式的新闻正文 */}
-          <ul className="text-muted-foreground text-sm mb-4 space-y-1">
-            {summaryItems.map((item, index) => (
-              <li key={index} className="flex items-start">
-                <span className="text-primary mr-2">•</span>
-                <span>{item.trim()}.</span>
-              </li>
+          {/* 段落形式的新闻正文 */}
+          <div className="text-muted-foreground text-sm mb-4 space-y-3">
+            {contentParagraphs.map((paragraph, index) => (
+              <p key={index} className="leading-relaxed">
+                {paragraph.trim()}
+              </p>
             ))}
-          </ul>
+          </div>
 
           {/* 标签显示 */}
           {tags.length > 0 && (

@@ -166,25 +166,20 @@ const BlogList: React.FC<BlogListProps> = ({ lang }) => {
               onClick={() => handleBlogClick(blog.blogUrl)}
             >
               {/* Blog Header */}
-              <div className="p-4 flex flex-col md:flex-row items-start gap-4">
-                {/* Cover Image */}
-                <div
-                  className="w-full md:w-32  bg-cover bg-center rounded-lg flex-shrink-0 border border-gray-200"
-                  style={{ backgroundImage: `url(${blog.coverImage})` }}
-                />
-
+              <div className="px-10 py-5 flex flex-col md:flex-row items-start gap-4">
+              
                 {/* Blog Info */}
                 <div className="flex-1">
-                  <h2 className="">
+                  <h2 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
                     {blog.title || 'No Title'}
                   </h2>
-                  <p className="">
+                  <p className="text-gray-600 text-sm mb-3 line-clamp-2">
                     {blog.summary || 'No summary available'}
                   </p>
-                  <div className="">
+                  <div className="text-gray-700 text-sm mb-3 line-clamp-3">
                     {blog.content ? blog.content.replace(/<[^>]*>/g, '') : 'No content available'}
                   </div>
-                  <div className="">
+                  <div className="text-xs text-gray-500 flex items-center">
                     <span>{formatDate(blog.createdAt || '')}</span>
                     <span className="mx-2">•</span>
                     <span>{blog.views || 0} views</span>

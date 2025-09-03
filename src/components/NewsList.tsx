@@ -1,74 +1,11 @@
 import NewsCard from "./NewsCard";
 import CategoryTabs from "./CategoryTabs";
 import DateFilter from "./DateFilter";
+import Header from "./Header";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { Eye, MessageSquare, Clock, Flame, Loader2 } from "lucide-react";
-
-// 静态数据
-const staticNewsData = [
-  {
-    id: 1,
-    title: { en: "AI Technology Breakthrough", ch: "AI技术突破" },
-    summary: { en: "New AI model achieves state-of-the-art performance", ch: "新AI模型实现最先进性能" },
-    category: { en: "Technology", ch: "技术" },
-    publishTime: "2025-08-30T10:00:00Z",
-    views: 1250,
-    isBreaking: true,
-    tags: { en: ["AI", "Technology"], ch: ["人工智能", "技术"] }
-  },
-  {
-    id: 2,
-    title: { en: "Web Development Trends", ch: "Web开发趋势" },
-    summary: { en: "Latest trends in web development for 2024", ch: "2024年Web开发最新趋势" },
-    category: { en: "Development", ch: "开发" },
-    publishTime: "2025-08-29T14:30:00Z",
-    views: 890,
-    isBreaking: false,
-    tags: { en: ["Web", "Development"], ch: ["网页", "开发"] }
-  },
-  {
-    id: 3,
-    title: { en: "React Best Practices", ch: "React最佳实践" },
-    summary: { en: "Essential React patterns every developer should know", ch: "每个开发者都应该知道的React模式" },
-    category: { en: "Development", ch: "开发" },
-    publishTime: "2025-08-28T09:15:00Z",
-    views: 1560,
-    isBreaking: false,
-    tags: { en: ["React", "JavaScript"], ch: ["React", "JavaScript"] }
-  },
-  {
-    id: 4,
-    title: { en: "AI in Healthcare", ch: "人工智能在医疗领域的应用" },
-    summary: { en: "How AI is revolutionizing medical diagnosis and treatment", ch: "人工智能如何革新医疗诊断和治疗" },
-    category: { en: "Applications", ch: "应用" },
-    publishTime: "2025-08-31T16:20:00Z",
-    views: 2100,
-    isBreaking: true,
-    tags: { en: ["AI", "Healthcare", "Medical"], ch: ["人工智能", "医疗", "医学"] }
-  },
-  {
-    id: 5,
-    title: { en: "Machine Learning Trends", ch: "机器学习趋势" },
-    summary: { en: "Latest developments in machine learning algorithms", ch: "机器学习算法的最新发展" },
-    category: { en: "Large Language Models", ch: "大语言模型" },
-    publishTime: "2025-09-01T11:45:00Z",
-    views: 1780,
-    isBreaking: false,
-    tags: { en: ["Machine Learning", "AI"], ch: ["机器学习", "人工智能"] }
-  },
-  {
-    id: 6,
-    title: { en: "Cloud Computing Advancements", ch: "云计算进展" },
-    summary: { en: "New cloud technologies and their impact on businesses", ch: "新云技术及其对企业的影响" },
-    category: { en: "Technology", ch: "技术" },
-    publishTime: "2025-09-02T14:30:00Z",
-    views: 950,
-    isBreaking: false,
-    tags: { en: ["Cloud", "Technology"], ch: ["云", "技术"] }
-  }
-];
-
-const staticCategories = ["All", "Latest", "Large Language Models", "AI Agents", "Computer Vision", "Voice AI", "FinTech", "Applications", "Other Highlights"];
+import { loadNewsData, loadCategoriesData, getHotNews, filterNewsByCategory, filterNewsByDateRange, searchNewsByKeyword } from "../services/newsService";
+import { NewsItemWithCategory, Category } from "../types/news";
 
 const staticIndexData = {
   common: {
@@ -87,13 +24,33 @@ const staticIndexData = {
 };
 
 const NewsList = () => {
-  // 使用静态数据
-  const newsData = staticNewsData;
-  const categoryData = staticCategories;
+  // 状态管理
+  const [newsData, setNewsData] = useState<NewsItemWithCategory[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const [searchKeyword, setSearchKeyword] = useState('');
   const currentLanguage = 'en';
   
-  // 使用静态分类数据
-  const categories = staticCategories;
+  // 加载数据
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setIsLoadingData(true);
+        const [news, categories] = await Promise.all([
+          loadNewsData(),
+          loadCategoriesData()
+        ]);
+        setNewsData(news);
+        setCategories(categories);
+      } catch (error) {
+        console.error('数据加载失败:', error);
+      } finally {
+        setIsLoadingData(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   // 状态来跟踪当前选中的分类
   const [activeCategory, setActiveCategory] = useState("All");
@@ -104,9 +61,15 @@ const NewsList = () => {
   });
   // 状态来跟踪日期范围按钮的显示文本
   const [dateRangeText, setDateRangeText] = useState<string>('Last Week');
+  // 处理搜索功能
+  const handleSearch = (keyword: string) => {
+    setSearchKeyword(keyword);
+    // 重置到第一页以便显示搜索结果
+    setVisibleCount(10);
+  };
   
   // 状态来跟踪懒加载
-  const [visibleCount, setVisibleCount] = useState(3); // 初始显示3条新闻
+  const [visibleCount, setVisibleCount] = useState(10); // 初始显示10条新闻
   const [isLoading, setIsLoading] = useState(false); // 加载状态
   const [showBackToTop, setShowBackToTop] = useState(false); // 返回顶部按钮显示状态
   const loaderRef = useRef<HTMLDivElement>(null);
@@ -114,45 +77,22 @@ const NewsList = () => {
 
   // 过滤和排序新闻数据
   const filteredNews = useMemo(() => {
-    if (!newsData) return [];
-    
-    let result = [...newsData];
+    if (newsData.length === 0) return [];
     
     // 按分类筛选
-    if (activeCategory && activeCategory !== 'All') {
-      result = result.filter(news => {
-        const categoryName = news.category?.name?.[currentLanguage] || news.category?.name?.ch;
-        return categoryName === activeCategory;
-      });
-    }
+    let result = filterNewsByCategory(newsData, activeCategory);
     
     // 按日期范围筛选
-    if (dateRange.start || dateRange.end) {
-      const startDate = dateRange.start ? new Date(dateRange.start).getTime() : null;
-      const endDate = dateRange.end ? new Date(dateRange.end).getTime() + 86399999 : null; // 包含当天最后一刻
-      
-      result = result.filter(news => {
-        const newsTime = new Date(news.publishTime).getTime();
-        
-        // 处理开始日期筛选
-        if (startDate && newsTime < startDate) {
-          return false;
-        }
-        
-        // 处理结束日期筛选（包含当天）
-        if (endDate && newsTime > endDate) {
-          return false;
-        }
-        
-        return true;
-      });
-    }
+    result = filterNewsByDateRange(result, dateRange.start, dateRange.end);
+    
+    // 按关键词搜索
+    result = searchNewsByKeyword(result, searchKeyword);
     
     // 确保新闻按日期降序排列
-    result.sort((a, b) => new Date(b.publishTime).getTime() - new Date(a.publishTime).getTime());
+    result.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
     
     return result;
-  }, [newsData, activeCategory, dateRange.start, dateRange.end]);
+  }, [newsData, activeCategory, dateRange.start, dateRange.end, searchKeyword]);
   
   // 处理懒加载的可见新闻
   const visibleNews = useMemo(() => {
@@ -165,7 +105,8 @@ const NewsList = () => {
     for (const news of filteredNews) {
       if (count >= visibleCount) break;
       
-      const newsDate = new Date(news.publishTime).toISOString().split('T')[0];
+      // 安全处理日期格式
+      const newsDate = news.publishedAt ? new Date(news.publishedAt).toISOString().split('T')[0] : 'unknown-date';
       
       if (!result[newsDate]) {
         result[newsDate] = [];
@@ -199,6 +140,12 @@ const NewsList = () => {
   
   // 处理日期范围变化
   const handleDateRangeChange = (startDate: string | null, endDate: string | null) => {
+    // 当选择'all'选项时，直接传递null值，不需要验证
+    if (startDate === null && endDate === null) {
+      setDateRange({ start: null, end: null });
+      return;
+    }
+    
     // 验证日期范围有效性
     let validStartDate = startDate;
     let validEndDate = endDate;
@@ -228,21 +175,12 @@ const NewsList = () => {
 
   // 热门新闻数据 - 按浏览量降序排列取前10条
   const hotNews = useMemo(() => {
-    if (!newsData) return [];
-    
-    // 按浏览量降序排序
-    const sortedByViews = [...newsData].sort((a, b) => {
-      const viewsA = a.views || 0;
-      const viewsB = b.views || 0;
-      return viewsB - viewsA; // 降序排列
-    });
-    
-    return sortedByViews.slice(0, 10); // 取前10条最热门的新闻
+    return getHotNews(newsData, 10);
   }, [newsData]);
   
   // 当分类或日期范围改变时，重置可见数量
   useEffect(() => {
-    setVisibleCount(3);
+    setVisibleCount(10);
   }, [activeCategory, dateRange]);
 
   // 当新闻数据加载完成时，设置默认日期范围为最近一周
@@ -276,7 +214,7 @@ const NewsList = () => {
     // 2秒延迟
     setTimeout(() => {
       setVisibleCount(prevCount => {
-        const newCount = Math.min(prevCount + 3, filteredNews.length);
+        const newCount = Math.min(prevCount + 10, filteredNews.length);
         setIsLoading(false);
         return newCount;
       });
@@ -331,13 +269,23 @@ const NewsList = () => {
   };
 
   return (
-    <section className="bg-news-background relative">
+    <div className="min-h-screen">
+      <section className="bg-news-background relative">
       {/* 分类标签切换组件 */}
-      <CategoryTabs 
-        categories={categories}
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
-      />
+            <CategoryTabs 
+              categories={categories}
+              activeCategory={activeCategory}
+              onCategoryChange={setActiveCategory}
+            />
+            
+            {/* 搜索结果显示 */}
+            {searchKeyword && (
+              <div className="container mx-auto px-4 pt-4">
+                <p className="text-sm text-muted-foreground">
+                  搜索 "{searchKeyword}" 找到 {filteredNews.length} 条结果
+                </p>
+              </div>
+            )}
       
       {/* 日期筛选组件 */}
       <div className="container mx-auto px-4 pt-6">
@@ -394,13 +342,12 @@ const NewsList = () => {
                     {newsItems.map((news) => (
                       <div key={news.id} className="w-full">
                         <NewsCard
-                          title={news.title?.[currentLanguage] || news.title?.ch || ''}
-                          summary={news.summary?.[currentLanguage] || news.summary?.ch || ''}
-                          category={news.category?.[currentLanguage] || news.category?.ch || ''}
-                          publishTime={news.publishTime}
+                          title={news.title}
+                          summary={news.content}
+                          category={news.categoryName}
+                          publishTime={news.publishedAt}
                           views={news.views}
-                          isBreaking={news.isBreaking}
-                          tags={news.tags?.[currentLanguage] || news.tags?.ch || []}
+                          tags={news.tags}
                           externalUrl={news.externalUrl}
                         />
                       </div>
@@ -419,7 +366,6 @@ const NewsList = () => {
                 </div>
               ) : showNoResultsMessage ? (
                 <p className="text-sm text-muted-foreground">
-                  在所选日期范围内没有找到相关新闻
                   {dateRange.start && dateRange.end && (
                     <> ({
                       dateRange.start === dateRange.end 
@@ -462,10 +408,10 @@ const NewsList = () => {
                     {/* 新闻内容 */}
                     <div className="flex-1">
                       <h4 className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
-                        {news.title?.[currentLanguage] || news.title?.ch || ''}
+                        {news.title}
                       </h4>
                       <div className="flex items-center mt-1 text-xs text-gray-500 space-x-2">
-                        <span>{formatDateByLanguage(news.publishTime || '', currentLanguage)}</span>
+                        <span>{formatDateByLanguage(news.publishedAt || '', currentLanguage)}</span>
                         <span>•</span>
                         <span>{generateIncrementedViews(news.views || 0)} {staticIndexData.common.viewsText}</span>
                       </div>
@@ -478,6 +424,7 @@ const NewsList = () => {
         </div>
       </div>
     </section>
+    </div>
   );
 };
 

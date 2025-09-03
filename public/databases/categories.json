@@ -1,0 +1,82 @@
+[
+  {
+    "id":"507f191e810c19729de860eb",
+    "name": "All",
+    "slug": "all",
+    "description": "所有AI新闻分类",
+    "parentId": null,
+    "order": 1,
+    "createdAt": "2025-06-10 10:30:00",
+    "updatedAt": "2025-06-15 08:00:00"
+  },
+  {
+    "id":"507f191e810c19729de860ed",
+    "name": "Large Language Models",
+    "slug": "large-language-models",
+    "description": "大型语言模型相关新闻和研究",
+    "parentId": null,
+    "order": 4,
+    "createdAt": "2025-06-10 10:30:00",
+    "updatedAt": "2025-06-15 08:00:00"
+  },
+  {
+    "id":"507f191e810c19729de860ee",
+    "name": "AI Agents",
+    "slug": "ai-agents",
+    "description": "AI智能体和自主系统",
+    "parentId": null,
+    "order": 5,
+    "createdAt": "2025-06-10 10:30:00",
+    "updatedAt": "2025-06-15 08:00:00"
+  },
+  {
+    "id":"507f191e810c19729de860ef",
+    "name": "Computer Vision",
+    "slug": "computer-vision",
+    "description": "计算机视觉和图像识别技术",
+    "parentId": null,
+    "order": 6,
+    "createdAt": "2025-06-10 10:30:00",
+    "updatedAt": "2025-06-15 08:00:00"
+  },
+  {
+    "id":"507f191e810c19729de860f0",
+    "name": "Voice AI",
+    "slug": "voice-ai",
+    "description": "语音AI和语音识别技术",
+    "parentId": null,
+    "order": 7,
+    "createdAt": "2025-06-10 10:30:00",
+    "updatedAt": "2025-06-15 08:00:00"
+  },
+  {
+    "id":"507f191e810c19729de860f1",
+    "name": "FinTech",
+    "slug": "fintech",
+    "description": "金融科技和AI在金融领域的应用",
+    "parentId": null,
+    "order": 8,
+    "createdAt": "2025-06-10 10:30:00",
+    "updatedAt": "2025-06-15 08:00:00"
+  },
+  {
+    "id":"507f191e810c19729de860f2",
+    "name": "Applications",
+    "slug": "applications",
+    "description": "AI在各个领域的实际应用案例",
+    "parentId": null,
+    "order": 9,
+    "createdAt": "2025-06-10 10:30:00",
+    "updatedAt": "2025-06-15 08:00:00"
+  },
+  {
+    "id":"507f191e810c19729de860f3",
+    "name": "Other Highlights",
+    "slug": "other-highlights",
+    "description": "其他重要的AI新闻和亮点",
+    "parentId": null,
+    "order": 10,
+    "createdAt": "2025-06-10 10:30:00",
+    "updatedAt": "2025-06-15 08:00:00"
+  }
+]

@@ -8,7 +8,9 @@ import LoadMoreButton from '@/components/timeline/LoadMoreButton';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
+
 interface NewsItem {
+  id: string;
   date: string;
   title: string;
   content: string;
@@ -52,82 +54,40 @@ const Timeline: React.FC<TimelineProps> = ({ config, language }) => {
   const [isLoading, setIsLoading] = useState(false);
   const timelineRef = useRef<HTMLDivElement>(null);
 
-  // 静态数据初始化
+  // 从news.json加载真实数据
   useEffect(() => {
-    // 默认静态新闻数据
-    const defaultNewsItems: NewsItem[] = [
-      {
-        date: "2024-01-15",
-        title: "OpenAI releases GPT-4 Turbo with improved capabilities",
-        content: "OpenAI has launched GPT-4 Turbo, featuring enhanced reasoning, better memory, and improved multimodal understanding.",
-        important: true,
-        tags: ["AI", "产品更新"],
-        url: "#"
-      },
-      {
-        date: "2024-01-10",
-        title: "Google DeepMind develops new AI model for scientific discovery",
-        content: "Google's DeepMind team has created an AI system that can accelerate scientific research in various fields including medicine and materials science.",
-        important: false,
-        tags: ["AI", "研究"],
-        url: "#"
-      },
-      {
-        date: "2024-01-05",
-        title: "Microsoft integrates AI Copilot across Office suite",
-        content: "Microsoft has fully integrated its AI Copilot feature into all Office applications, providing AI-assisted writing, data analysis, and presentation creation.",
-        important: true,
-        tags: ["AI", "产品更新"],
-        url: "#"
-      },
-      {
-        date: "2023-12-20",
-        title: "New breakthrough in quantum computing with AI assistance",
-        content: "Researchers have used AI algorithms to optimize quantum computing processes, achieving significant improvements in computational efficiency.",
-        important: false,
-        tags: ["AI", "研究"],
-        url: "#"
-      },
-      {
-        date: "2023-12-15",
-        title: "Tesla unveils new AI-powered autonomous driving features",
-        content: "Tesla has released version 12 of its Full Self-Driving software with enhanced AI capabilities for better road navigation and safety.",
-        important: true,
-        tags: ["AI", "产品更新"],
-        url: "#"
-      },
-      {
-        date: "2023-12-10",
-        title: "AI helps discover new antibiotic compounds",
-        content: "Artificial intelligence has been used to identify promising new antibiotic candidates that could combat drug-resistant bacteria.",
-        important: false,
-        tags: ["AI", "研究"],
-        url: "#"
-      },
-      {
-        date: "2023-12-05",
-        title: "Amazon launches AI-powered shopping assistant",
-        content: "Amazon has introduced a new AI shopping assistant that provides personalized product recommendations and shopping guidance.",
-        important: true,
-        tags: ["AI", "产品更新"],
-        url: "#"
-      },
-      {
-        date: "2023-11-28",
-        title: "AI model achieves human-level performance in medical diagnosis",
-        content: "A new AI system has demonstrated diagnostic accuracy comparable to experienced medical professionals in multiple medical specialties.",
-        important: true,
-        tags: ["AI", "研究"],
-        url: "#"
+    const loadNewsData = async () => {
+      try {
+        const response = await fetch('/databases/news.json');
+        const newsData = await response.json();
+        
+        const realNewsItems: NewsItem[] = newsData.map((news: any) => ({
+          id: news.id,
+          date: news.publishedAt.split(' ')[0], // 只取日期部分
+          title: news.title,
+          content: news.content,
+          important: news.views > 1500, // 浏览量超过1500的标记为重要
+          tags: news.tags,
+          url: news.externalUrl || "#"
+        }));
+        
+        // 按日期降序排序
+        realNewsItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        
+        setNewsItems(realNewsItems);
+      } catch (error) {
+        console.error('加载新闻数据失败:', error);
       }
-    ];
+    };
     
-    setNewsItems(defaultNewsItems);
+    loadNewsData();
   }, []);
 
   const filteredItems = newsItems.filter(item => {
-    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.content.toLowerCase().includes(searchTerm.toLowerCase());
+    const searchTermLower = searchTerm.toLowerCase();
+    const matchesSearch = item.title.toLowerCase().includes(searchTermLower) ||
+                         item.content.toLowerCase().includes(searchTermLower) ||
+                         item.tags.some(tag => tag.toLowerCase().includes(searchTermLower));
     
     const matchesFilter = activeFilter === "all" ||
                          (activeFilter === "important" && item.important) ||

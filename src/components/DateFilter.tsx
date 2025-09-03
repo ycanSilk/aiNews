@@ -47,12 +47,18 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
   // Handle preset date range selection
   const handlePresetRange = (days: number | null) => {
     if (days === null) {
-      // All
-      setStartDate("");
-      setEndDate("");
+      // All - set range from 2000 to today
+      const today = new Date();
+      const year2000 = new Date(2000, 0, 1); // January 1, 2000
+      
+      const startDateStr = year2000.toISOString().split('T')[0];
+      const endDateStr = today.toISOString().split('T')[0];
+      
+      setStartDate(startDateStr);
+      setEndDate(endDateStr);
       setSelectedRange(staticIndexData.newsSection.allText);
  
-      onDateRangeChange(null, null);
+      onDateRangeChange(startDateStr, endDateStr);
     } else {
       const end = new Date();
       const start = new Date();

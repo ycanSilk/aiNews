@@ -3,7 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect, useRef } from "react";
 
-const Header = () => {
+interface HeaderProps {
+  onSearch: (keyword: string) => void;
+}
+
+const Header = ({ onSearch }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   
@@ -70,6 +74,7 @@ const Header = () => {
                 type="search"
                 placeholder="Search AI news..."
                 className="pl-10 w-64 hover:border-blue-500"
+                onChange={(e) => onSearch(e.target.value)}
               />
             </div>
             

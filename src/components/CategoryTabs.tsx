@@ -1,8 +1,9 @@
 import * as React from "react";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
+import { Category } from "../types/news";
 
 interface CategoryTabsProps {
-  categories: any[];
+  categories: Category[];
   activeCategory: string;
   onCategoryChange: (category: string) => void;
 }
@@ -12,8 +13,8 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
   activeCategory, 
   onCategoryChange 
 }) => {
-  // 使用静态分类数据，避免重复添加'All'
-  const allCategories = categories;
+  // 添加'All'选项到分类列表
+  const allCategories = ['All', ...categories.map(cat => cat.name).filter(name => name !== 'All')];
 
   return (
     <div className=" bg-white shadow-sm">
@@ -25,9 +26,9 @@ const CategoryTabs: React.FC<CategoryTabsProps> = ({
       >
         <div className="container mx-auto px-4 py-4 flex items-center">
           <TabsList className="w-full overflow-x-auto overflow-y-hidden whitespace-nowrap justify-start md:justify-center py-2 px-1 rounded-none bg-transparent space-x-4 md:space-x-6 text-black">
-            {allCategories.map((category) => (
+            {allCategories.map((category, index) => (
               <TabsTrigger 
-                key={category} 
+                key={`${category}-${index}`} 
                 value={category} 
                 className="rounded-none data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary text-lg"
               >
