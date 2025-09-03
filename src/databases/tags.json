@@ -1,0 +1,9 @@
+{
+  _id: ObjectId("507f191e810c19729de860ec"), // 标签唯一ID
+  name: "机器学习", // 标签名称
+  slug: "machine-learning", // URL友好的标签名称（用于生成标签页面链接）
+  description: "与机器学习相关的文章", // 标签描述
+  articleCount: 15, // 使用该标签的文章数量（冗余设计，避免每次统计）
+  createdAt: ISODate("2023-05-01T00:00:00Z"), // 创建时间
+  updatedAt: ISODate("2023-06-20T00:00:00Z") // 最后更新时间
+}

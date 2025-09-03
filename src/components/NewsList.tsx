@@ -11,7 +11,7 @@ const staticNewsData = [
     title: { en: "AI Technology Breakthrough", ch: "AI技术突破" },
     summary: { en: "New AI model achieves state-of-the-art performance", ch: "新AI模型实现最先进性能" },
     category: { en: "Technology", ch: "技术" },
-    publishTime: "2024-01-15T10:00:00Z",
+    publishTime: "2025-08-30T10:00:00Z",
     views: 1250,
     isBreaking: true,
     tags: { en: ["AI", "Technology"], ch: ["人工智能", "技术"] }
@@ -21,7 +21,7 @@ const staticNewsData = [
     title: { en: "Web Development Trends", ch: "Web开发趋势" },
     summary: { en: "Latest trends in web development for 2024", ch: "2024年Web开发最新趋势" },
     category: { en: "Development", ch: "开发" },
-    publishTime: "2024-01-14T14:30:00Z",
+    publishTime: "2025-08-29T14:30:00Z",
     views: 890,
     isBreaking: false,
     tags: { en: ["Web", "Development"], ch: ["网页", "开发"] }
@@ -31,10 +31,40 @@ const staticNewsData = [
     title: { en: "React Best Practices", ch: "React最佳实践" },
     summary: { en: "Essential React patterns every developer should know", ch: "每个开发者都应该知道的React模式" },
     category: { en: "Development", ch: "开发" },
-    publishTime: "2024-01-13T09:15:00Z",
+    publishTime: "2025-08-28T09:15:00Z",
     views: 1560,
     isBreaking: false,
     tags: { en: ["React", "JavaScript"], ch: ["React", "JavaScript"] }
+  },
+  {
+    id: 4,
+    title: { en: "AI in Healthcare", ch: "人工智能在医疗领域的应用" },
+    summary: { en: "How AI is revolutionizing medical diagnosis and treatment", ch: "人工智能如何革新医疗诊断和治疗" },
+    category: { en: "Applications", ch: "应用" },
+    publishTime: "2025-08-31T16:20:00Z",
+    views: 2100,
+    isBreaking: true,
+    tags: { en: ["AI", "Healthcare", "Medical"], ch: ["人工智能", "医疗", "医学"] }
+  },
+  {
+    id: 5,
+    title: { en: "Machine Learning Trends", ch: "机器学习趋势" },
+    summary: { en: "Latest developments in machine learning algorithms", ch: "机器学习算法的最新发展" },
+    category: { en: "Large Language Models", ch: "大语言模型" },
+    publishTime: "2025-09-01T11:45:00Z",
+    views: 1780,
+    isBreaking: false,
+    tags: { en: ["Machine Learning", "AI"], ch: ["机器学习", "人工智能"] }
+  },
+  {
+    id: 6,
+    title: { en: "Cloud Computing Advancements", ch: "云计算进展" },
+    summary: { en: "New cloud technologies and their impact on businesses", ch: "新云技术及其对企业的影响" },
+    category: { en: "Technology", ch: "技术" },
+    publishTime: "2025-09-02T14:30:00Z",
+    views: 950,
+    isBreaking: false,
+    tags: { en: ["Cloud", "Technology"], ch: ["云", "技术"] }
   }
 ];
 
@@ -342,7 +372,7 @@ const NewsList = () => {
               const monthDay = staticIndexData?.common?.dateFormat
                 ?.replace('{month}', month || '')
                 ?.replace('{day}', day || '')
-                ?.replace('{weekday}', '') || `${month || ''}月${day || ''}日`;
+                ?.replace('{weekday}', '') || formatDateByLanguage(date, currentLanguage);
               
               // 使用日期作为key，确保唯一性
               const uniqueKey = date;
@@ -387,8 +417,6 @@ const NewsList = () => {
                   <Loader2 className="w-8 h-8 text-primary animate-spin mb-2" />
                   <p className="text-sm text-muted-foreground">{staticIndexData.common.loadingText}</p>
                 </div>
-              ) : hasFutureDateSelection ? (
-                  <p className="text-sm text-muted-foreground">data</p>
               ) : showNoResultsMessage ? (
                 <p className="text-sm text-muted-foreground">
                   在所选日期范围内没有找到相关新闻

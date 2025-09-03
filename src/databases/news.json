@@ -1,0 +1,23 @@
+{
+  "_id": {"$oid": "507f1f77bcf86cd799439011"},
+  "title": "AI在医疗领域的突破性应用",
+  "slug": "ai-breakthrough-in-medical-field",
+  "content": "文章详细内容...",
+  "excerpt": "文章摘要...",
+  "coverImage": "/images/ai-medical.jpg",
+  "categoryId": {"$oid": "507f191e810c19729de860ea"},
+  "tags": ["医疗", "AI", "创新"],
+  "authorId": {"$oid": "507f191e810c19729de860eb"},
+  "status": "published",
+  "publishedAt": {"$date": "2023-06-15T08:00:00Z"},
+  "views": 1250,
+  "likes": 42,
+  "commentsCount": 8,
+  "seo": {
+    "metaTitle": "AI医疗应用 | AI新闻",
+    "metaDescription": "了解AI如何在医疗领域带来革命性变化",
+    "keywords": ["AI医疗", "人工智能", "医疗科技"]
+  },
+  "createdAt": {"$date": "2023-06-10T10:30:00Z"},
+  "updatedAt": {"$date": "2023-06-15T08:00:00Z"}
+}

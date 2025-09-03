@@ -1,0 +1,11 @@
+{
+  _id: ObjectId("507f191e810c19729de860ed"), // 评论唯一ID
+  articleId: ObjectId("507f1f77bcf86cd799439011"), // 关联的文章ID
+  userId: ObjectId("507f191e810c19729de860eb"), // 评论用户ID
+  content: "这篇文章非常有见地，AI确实正在改变医疗行业", // 评论内容
+  parentId: null, // 父评论ID（用于构建评论回复系统，null表示顶级评论）
+  likes: 3, // 该评论获得的点赞数
+  status: "approved", // 评论状态：pending(待审核)/approved(已通过)/rejected(已拒绝)
+  createdAt: ISODate("2023-06-16T10:15:00Z"), // 评论创建时间
+  updatedAt: ISODate("2023-06-16T10:15:00Z") // 评论最后更新时间
+}

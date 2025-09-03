@@ -5,8 +5,8 @@ import { Badge } from "@/components/ui/badge";
 // 静态配置数据
 const staticIndexData = {
   common: {
-    viewsText: "次阅读",
-    readMoreText: "查看详情"
+    viewsText: "Views",
+    readMoreText: "Read More"
   }
 };
 

@@ -1,16 +1,16 @@
 import React from 'react';
-
+import BlogList from "@/components/blogList/blogList";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const ArticlePage: React.FC = () => {
+const BlogPage: React.FC = () => {
   return (
-    <div className="article-page">
+    <div className="Blog-page">
       <Header />
-      <ArticleList />
+      <BlogList lang="en" />
       <Footer />
     </div>
   );
 };
 
-export default ArticlePage;
+export default BlogPage;

@@ -1,0 +1,15 @@
+{
+  _id: ObjectId("507f191e810c19729de860eb"), // 用户唯一ID
+  username: "aieditor", // 用户名（用于登录和显示）
+  email: "editor@ainews.com", // 用户邮箱
+  password: "加密后的密码", // 加密后的密码（建议使用bcrypt等强哈希算法）
+  role: "editor", // 用户角色：admin(管理员)/editor(编辑)/contributor(投稿者)/subscriber(订阅者)
+  avatar: "/avatars/default.jpg", // 用户头像路径
+  bio: "专注于AI领域的新闻编辑", // 用户简介
+  socialMedia: { // 社交媒体信息
+    twitter: "@aieditor", // Twitter账号
+    linkedin: "linkedin.com/in/aieditor" // LinkedIn链接
+  },
+  createdAt: ISODate("2023-01-15T00:00:00Z"), // 账号创建时间
+  updatedAt: ISODate("2023-06-01T00:00:00Z") // 账号最后更新时间
+}

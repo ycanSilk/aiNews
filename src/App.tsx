@@ -6,9 +6,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import AboutMe from "./pages/AboutMe"; 
 import Timeline from "./pages/Timeline";
-import ArticlePage from "./pages/ArticlePage";
-import ArticlesListPage from "./pages/ArticlesListPage";
-import ArticleTemplateDemo from "./pages/ArticleTemplateDemo";
+import BlogPage from "./pages/blogList";
+
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,7 +20,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/articles" element={<ArticlesListPage />} />
+          <Route path="/blog" element={<BlogPage />} />
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/about" element={<AboutMe />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

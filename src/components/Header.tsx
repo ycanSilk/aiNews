@@ -45,8 +45,8 @@ const Header = () => {
             <a href="/" className="hover:text-blue-500 transition-colors hover:border-b-2 hover:border-blue-500">
               Home
             </a>
-            <a href="/articles" className="hover:text-blue-500 transition-colors hover:border-b-2 hover:border-blue-500">
-              Articles
+            <a href="/blog" className="hover:text-blue-500 transition-colors hover:border-b-2 hover:border-blue-500">
+              Blog
             </a>
             <a href="/timeline" className="hover:text-blue-500 transition-colors hover:border-b-2 hover:border-blue-500">
               Timeline News
@@ -108,8 +108,8 @@ const Header = () => {
                     <a href="/" className="text-muted-foreground hover:text-black transition-colors border-b border-border/50 py-2 px-3 hover:bg-blue-400">
                       Home
                     </a>
-                    <a href="/articles" className="text-muted-foreground hover:text-black transition-colors border-b border-border/50 py-2 px-3 hover:bg-blue-400">
-                      Articles
+                    <a href="/blog" className="text-muted-foreground hover:text-black transition-colors border-b border-border/50 py-2 px-3 hover:bg-blue-400">
+                      Blog
                     </a>
                     <a href="/timeline" className="text-muted-foreground hover:text-black transition-colors border-b border-border/50 py-2 px-3 hover:bg-blue-400">
                       Timeline News

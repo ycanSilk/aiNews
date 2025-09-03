@@ -3,7 +3,7 @@ import { Github, Twitter, Mail, Rss } from "lucide-react";
 const Footer = () => {
 
   return (
-    <footer className="bg-foreground text-background py-12">
+    <footer className="bg-foreground text-background py-5">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 text-center">
           {/* Logo and Description */}
@@ -52,8 +52,8 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-background/20 mt-8 text-center">
-          <p className="text-background/70 text-sm">
+        <div className="border-t border-background/20 text-center mt-5">
+          <p className="text-background/70 text-sm mt-5">
             © 2024 AI News Hub. All rights reserved.
           </p>
         </div>

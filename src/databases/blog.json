@@ -1,0 +1,36 @@
+{
+  _id: ObjectId("607f1f77bcf86cd799439012"), // MongoDB自动生成的唯一标识符
+  title: "如何开始学习人工智能", // 文章标题
+  slug: "how-to-start-learning-ai", // URL友好的标题格式
+  content: "文章详细内容...", // 文章正文内容（可包含Markdown格式）
+  excerpt: "本文将介绍学习AI的入门路径...", // 文章简短摘要
+  coverImage: "/images/ai-learning-path.jpg", // 封面图片路径
+  categoryId: ObjectId("607f191e810c19729de860fa"), // 所属分类ID（关联categories集合）
+  tags: ["学习指南", "入门", "AI教育"], // 文章标签数组
+  authorId: ObjectId("507f191e810c19729de860eb"), // 作者ID（关联users集合）
+  status: "published", // 文章状态：draft(草稿)/published(已发布)/archived(归档)
+  isFeatured: false, // 是否精选文章
+  allowComments: true, // 是否允许评论
+  publishedAt: ISODate("2023-06-20T08:00:00Z"), // 发布时间
+  views: 850, // 阅读次数统计
+  likes: 35, // 点赞数统计
+  readingTime: 8, // 预计阅读时间（分钟）
+  commentsCount: 5, // 评论数统计
+  seo: { // SEO优化相关字段
+    metaTitle: "AI学习指南 | 从零开始学习人工智能",
+    metaDescription: "一份完整的AI学习路径指南，适合初学者",
+    keywords: ["AI学习", "人工智能入门", "机器学习基础"]
+  },
+  metadata: { // 文章元数据
+    wordCount: 2450, // 文章字数
+    isOriginal: true, // 是否原创
+    originalUrl: null, // 如果是转载，原始文章URL
+    language: "zh-CN" // 文章语言
+  },
+  relatedPosts: [ // 相关文章ID数组
+    ObjectId("607f1f77bcf86cd799439013"),
+    ObjectId("607f1f77bcf86cd799439014")
+  ],
+  createdAt: ISODate("2023-06-18T10:30:00Z"), // 创建时间
+  updatedAt: ISODate("2023-06-20T08:00:00Z") // 最后更新时间
+}

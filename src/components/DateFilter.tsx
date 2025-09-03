@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Calendar, ChevronDown } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronDown } from "lucide-react";
 
-// 静态配置数据
+// Static configuration data
 const staticIndexData = {
   newsSection: {
     dateFilterTitle: 'Please select the date to display news:',
@@ -23,7 +23,7 @@ interface DateFilterProps {
 }
 
 const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) => {
-  // 使用静态配置
+  // Use static configuration
   const currentLanguage = 'en';
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
@@ -32,22 +32,22 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
   const [selectedRange, setSelectedRange] = useState<string>('');
 
-  // 设置默认选中范围
+  // Set default selected range
   useEffect(() => {
     setSelectedRange(staticIndexData.newsSection.lastWeekText);
   }, []);
 
   
-  // 创建ref用于检测点击外部
+  // Create refs for detecting outside clicks
   const dropDownRef = useRef<HTMLDivElement>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const calendarButtonRef = useRef<HTMLButtonElement>(null);
 
-  // 处理预设日期范围选择
+  // Handle preset date range selection
   const handlePresetRange = (days: number | null) => {
     if (days === null) {
-      // 全部
+      // All
       setStartDate("");
       setEndDate("");
       setSelectedRange(staticIndexData.newsSection.allText);
@@ -56,7 +56,7 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
     } else {
       const end = new Date();
       const start = new Date();
-      start.setDate(end.getDate() - days + 1); // +1 确保包含起始日期
+      start.setDate(end.getDate() - days + 1); // +1 to ensure inclusion of start date
       
       const startDateStr = start.toISOString().split('T')[0];
       const endDateStr = end.toISOString().split('T')[0];
@@ -64,7 +64,7 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
       setStartDate(startDateStr);
       setEndDate(endDateStr);
       
-      // 设置选中的范围文本
+      // Set selected range text
       let rangeText = '';
       if (days === 3) rangeText = staticIndexData.newsSection.last3DaysText;
       else if (days === 7) rangeText = staticIndexData.newsSection.lastWeekText;
@@ -75,14 +75,14 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
       onDateRangeChange(startDateStr, endDateStr);
     }
     setShowDropDown(false);
-    // 确保焦点回到日期范围按钮，提供更好的用户体验
+    // Ensure focus returns to date range button for better UX
     buttonRef.current?.focus();
   };
 
-  // 处理自定义日期范围选择
+  // Handle custom date range selection
   const handleCustomRange = () => {
     if (startDate && endDate) {
-      // 检查日期范围是否在90天以内
+      // Check if date range is within 90 days
       const start = new Date(startDate);
       const end = new Date(endDate);
       const diffTime = Math.abs(end.getTime() - start.getTime());
@@ -96,11 +96,11 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
       }
     }
     setShowCalendar(false);
-    // 确保焦点回到日期范围按钮，提供更好的用户体验
+    // Ensure focus returns to date range button for better UX
     buttonRef.current?.focus();
   };
 
-  // 清除日期筛选
+  // Clear date filter
   const handleClear = () => {
     setStartDate("");
     setEndDate("");
@@ -111,22 +111,22 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
 
 
 
-  // 切换下拉菜单显示
+  // Toggle dropdown display
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown);
     setShowCalendar(false);
   };
 
-  // 切换日历显示
+  // Toggle calendar display
   const toggleCalendar = () => {
     setShowCalendar(!showCalendar);
     setShowDropDown(false);
   };
 
-  // 监听点击事件，实现点击外部关闭菜单和日历
+  // Listen for click events to close menu and calendar when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // 如果点击的是下拉菜单按钮或日历按钮，不关闭
+      // If clicking dropdown button or calendar button, don't close
       if (buttonRef.current && buttonRef.current.contains(event.target as Node)) {
         return;
       }
@@ -134,25 +134,25 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
         return;
       }
       
-      // 如果点击的是下拉菜单内容，不关闭
+      // If clicking dropdown content, don't close
       if (dropDownRef.current && dropDownRef.current.contains(event.target as Node)) {
         return;
       }
       
-      // 如果点击的是日历内容，不关闭
+      // If clicking calendar content, don't close
       if (calendarRef.current && calendarRef.current.contains(event.target as Node)) {
         return;
       }
       
-      // 点击外部，关闭下拉菜单和日历
+      // Click outside, close dropdown and calendar
       setShowDropDown(false);
       setShowCalendar(false);
     };
     
-    // 添加事件监听器
+    // Add event listener
     document.addEventListener('mousedown', handleClickOutside);
     
-    // 清理函数
+    // Cleanup function
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -160,7 +160,7 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
 
   return (
     <div className="relative flex flex-col md:flex-row gap-4 items-start md:items-center mb-6">
-      {/* 下拉菜单按钮 */}
+      {/* Dropdown button */}
       <p className="text-2xl ">{staticIndexData.newsSection.dateFilterTitle}</p>
       <div className="relative">
   
@@ -178,7 +178,7 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
           <ChevronDown className="w-4 h-4 transition-transform duration-200" style={{ transform: showDropDown ? 'rotate(180deg)' : 'rotate(0)' }} />
         </Button>
         
-        {/* 下拉菜单内容 */}
+        {/* Dropdown content */}
         {showDropDown && (
           <div ref={dropDownRef} className="absolute top-full left-0 mt-1 w-48 bg-background border border-border shadow-lg z-10">
             <button 
@@ -215,7 +215,7 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
         )}
       </div>
       
-      {/* 日历选择按钮 */}
+      {/* Calendar selection button */}
       <div className="relative">
         <Button 
           variant="default" 
@@ -223,21 +223,53 @@ const DateFilter = ({ onDateRangeChange, onRangeTextChange }: DateFilterProps) =
           onClick={toggleCalendar}
           ref={calendarButtonRef}
         >
-          <Calendar className="w-4 h-4" />
+          <CalendarIcon className="w-4 h-4" />
           {startDate && endDate ? `${startDate} ${staticIndexData.newsSection.toText} ${endDate}` : 'Select news display date'}
         </Button>
         
-        {/* 日历选择器 - 已移除不存在的组件 */}
+        {/* Calendar picker */}
         {showCalendar && (
           <div ref={calendarRef} className="absolute top-full left-0 mt-1 z-10 p-4 bg-background border border-border">
-            <div className="text-center text-muted-foreground">
-              日历功能已禁用 - 静态网站模式
+            <label className="block text-sm font-medium mb-1">Start Date</label>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="w-full p-2 border border-border rounded-md mb-3"
+            />
+            <label className="block text-sm font-medium mb-1">End Date</label>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="w-full p-2 border border-border rounded-md mb-3"
+            />
+            <div className="flex gap-2">
+              <Button 
+                variant="default" 
+                className="flex-1"
+                onClick={() => {
+                  if (startDate && endDate) {
+                    onDateRangeChange(startDate, endDate);
+                  }
+                  setShowCalendar(false);
+                }}
+              >
+                Apply
+              </Button>
+              <Button 
+                variant="outline" 
+                className="flex-1"
+                onClick={() => setShowCalendar(false)}
+              >
+                Close
+              </Button>
             </div>
           </div>
         )}
       </div>
       
-      {/* 当前筛选状态显示 */}
+      {/* Current filter status display */}
       {startDate && endDate && !showCalendar && !showDropDown && (
         <div className="text-sm text-muted-foreground mt-2 md:mt-0">    
           <button 

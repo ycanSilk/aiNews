@@ -54,8 +54,75 @@ const Timeline: React.FC<TimelineProps> = ({ config, language }) => {
 
   // 静态数据初始化
   useEffect(() => {
-    // 空数据 - 静态网站模式
-    setNewsItems([]);
+    // 默认静态新闻数据
+    const defaultNewsItems: NewsItem[] = [
+      {
+        date: "2024-01-15",
+        title: "OpenAI releases GPT-4 Turbo with improved capabilities",
+        content: "OpenAI has launched GPT-4 Turbo, featuring enhanced reasoning, better memory, and improved multimodal understanding.",
+        important: true,
+        tags: ["AI", "产品更新"],
+        url: "#"
+      },
+      {
+        date: "2024-01-10",
+        title: "Google DeepMind develops new AI model for scientific discovery",
+        content: "Google's DeepMind team has created an AI system that can accelerate scientific research in various fields including medicine and materials science.",
+        important: false,
+        tags: ["AI", "研究"],
+        url: "#"
+      },
+      {
+        date: "2024-01-05",
+        title: "Microsoft integrates AI Copilot across Office suite",
+        content: "Microsoft has fully integrated its AI Copilot feature into all Office applications, providing AI-assisted writing, data analysis, and presentation creation.",
+        important: true,
+        tags: ["AI", "产品更新"],
+        url: "#"
+      },
+      {
+        date: "2023-12-20",
+        title: "New breakthrough in quantum computing with AI assistance",
+        content: "Researchers have used AI algorithms to optimize quantum computing processes, achieving significant improvements in computational efficiency.",
+        important: false,
+        tags: ["AI", "研究"],
+        url: "#"
+      },
+      {
+        date: "2023-12-15",
+        title: "Tesla unveils new AI-powered autonomous driving features",
+        content: "Tesla has released version 12 of its Full Self-Driving software with enhanced AI capabilities for better road navigation and safety.",
+        important: true,
+        tags: ["AI", "产品更新"],
+        url: "#"
+      },
+      {
+        date: "2023-12-10",
+        title: "AI helps discover new antibiotic compounds",
+        content: "Artificial intelligence has been used to identify promising new antibiotic candidates that could combat drug-resistant bacteria.",
+        important: false,
+        tags: ["AI", "研究"],
+        url: "#"
+      },
+      {
+        date: "2023-12-05",
+        title: "Amazon launches AI-powered shopping assistant",
+        content: "Amazon has introduced a new AI shopping assistant that provides personalized product recommendations and shopping guidance.",
+        important: true,
+        tags: ["AI", "产品更新"],
+        url: "#"
+      },
+      {
+        date: "2023-11-28",
+        title: "AI model achieves human-level performance in medical diagnosis",
+        content: "A new AI system has demonstrated diagnostic accuracy comparable to experienced medical professionals in multiple medical specialties.",
+        important: true,
+        tags: ["AI", "研究"],
+        url: "#"
+      }
+    ];
+    
+    setNewsItems(defaultNewsItems);
   }, []);
 
   const filteredItems = newsItems.filter(item => {
@@ -117,9 +184,9 @@ const Timeline: React.FC<TimelineProps> = ({ config, language }) => {
   }
 
   return (
-    <div className='mb-20'>
+    <div>
       <Header />
-        <div className='container'>
+        <div className='container mb-10'>
           <TimelineHeader 
         title={config.title}
         subtitle={config.subtitle}
