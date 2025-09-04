@@ -431,7 +431,10 @@ const NewsList = () => {
                     </div>
            
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-xs sm:text-sm md:text-base font-medium hover:text-primary transition-colors cursor-pointer line-clamp-2 md:line-clamp-3">
+                      <h4 
+                        className="text-xs sm:text-sm md:text-base font-medium hover:text-primary transition-colors cursor-pointer line-clamp-2 md:line-clamp-3"
+                        onClick={() => news.externalUrl && window.open(news.externalUrl, '_blank')}
+                      >
                         {news.title}
                       </h4>
                       <div className="flex items-center mt-1 text-[1rem] sm:text-xs md:text-sm text-gray-500 space-x-1 sm:space-x-2 md:space-x-3">
