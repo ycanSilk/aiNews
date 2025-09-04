@@ -1,4 +1,4 @@
-import { Clock, Eye } from "lucide-react";
+import { Clock } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -11,12 +11,12 @@ const staticIndexData = {
 };
 
 interface NewsCardProps {
+  id: string;
   title: string;
   summary: string;
   category: string;
   readTime?: string;
   publishTime: string;
-  views: number;
   imageUrl?: string;
   isBreaking?: boolean;
   tags?: string[];
@@ -24,12 +24,12 @@ interface NewsCardProps {
 }
 
 const NewsCard = ({
+  id,
   title,
   summary,
   category,
   readTime = '3分钟',
   publishTime,
-  views,
   imageUrl,
   isBreaking = false,
   tags = [],
@@ -48,12 +48,11 @@ const NewsCard = ({
     });
   };
 
-  // 简单的浏览量格式化函数
-  const generateIncrementedViews = (views: number) => {
-    if (views >= 1000) {
-      return (views / 1000).toFixed(1) + 'k';
+  // 处理新闻点击事件
+  const handleNewsClick = () => {
+    if (externalUrl) {
+      window.open(externalUrl, '_blank');
     }
-    return views.toString();
   };
 
   // 将正文内容分割成段落
@@ -62,7 +61,7 @@ const NewsCard = ({
   return (
     <Card 
       className="group hover:shadow-lg transition-all duration-300 cursor-pointer bg-news-card border-0 m-0 relative"
-      onClick={() => externalUrl && window.open(externalUrl, '_blank')}
+      onClick={handleNewsClick}
     >
       <div className="flex flex-col md:flex-row overflow-hidden">
         <div className="p-3 flex-grow">
@@ -101,12 +100,7 @@ const NewsCard = ({
                 <Clock className="w-3 h-3" />
                 <span>{formatDateByLanguage(publishTime, currentLanguage)}</span>
               </div>
-              <div className="flex items-center space-x-1">
-                <Eye className="w-3 h-3 text-primary" />
-                <span className="text-primary">
-                  {generateIncrementedViews(views || 0)} {staticIndexData.common.viewsText}
-                </span>
-              </div>
+
 
             </div>
             <a 

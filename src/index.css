@@ -115,3 +115,42 @@ All colors MUST be HSL.
     @apply border-border;
   }
 }
+
+@layer utilities {
+  /* 响应式文本截断 */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  /* 移动端优化 */
+  @media (max-width: 640px) {
+    .container {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+  }
+  
+  /* 平板优化 */
+  @media (max-width: 768px) {
+    .news-card-mobile {
+      margin-bottom: 0.75rem;
+    }
+  }
+  
+  /* 高性能动画 */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* 触摸设备优化 */
+  @media (hover: none) and (pointer: coarse) {
+    .touch-optimized {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+  
+}

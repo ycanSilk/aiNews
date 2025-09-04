@@ -7,6 +7,7 @@ import NewsCount from '@/components/timeline/NewsCount';
 import LoadMoreButton from '@/components/timeline/LoadMoreButton';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackToTopButton from '@/components/BackToTopButton';
 
 
 interface NewsItem {
@@ -192,6 +193,7 @@ const Timeline: React.FC<TimelineProps> = ({ config, language }) => {
       />
         </div>
       <Footer />
+      <BackToTopButton threshold={100} />
     </div>
   );
 };

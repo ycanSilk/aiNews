@@ -2,9 +2,10 @@ import NewsCard from "./NewsCard";
 import CategoryTabs from "./CategoryTabs";
 import DateFilter from "./DateFilter";
 import Header from "./Header";
+import BackToTopButton from "./BackToTopButton";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Eye, MessageSquare, Clock, Flame, Loader2 } from "lucide-react";
+import { MessageSquare, Clock, Flame, Loader2 } from "lucide-react";
 import { loadNewsData, loadCategoriesData, getHotNews, filterNewsByCategory, filterNewsByDateRange, searchNewsByKeyword } from "../services/newsService";
 import { NewsItemWithCategory, Category } from "../types/news";
 
@@ -12,8 +13,7 @@ const staticIndexData = {
   common: {
     loadingText: "Loading...",
     errorText: "Error loading data",
-    backToTopText: "Back to Top",
-    viewsText: "Views"
+    backToTopText: "Back to Top"
   },
   newsSection: {
     hotNewsTitle: "Hot News",
@@ -278,16 +278,32 @@ const NewsList = () => {
     });
   };
 
-  // 简单的浏览量格式化函数
-  const generateIncrementedViews = (views: number) => {
-    if (views >= 1000) {
-      return (views / 1000).toFixed(1) + 'k';
-    }
-    return views.toString();
-  };
+
 
   return (
     <div className="min-h-screen">
+      <style>
+        {`
+          @media (width > 1050px) {
+            .news-main-content {
+              width: 66.66% !important;
+            }
+            .news-sidebar {
+              display: block !important;
+              width: 33.33% !important;
+            }
+          }
+          
+          @media (max-width: 1050px) {
+            .news-main-content {
+              width: 100% !important;
+            }
+            .news-sidebar {
+              display: none !important;
+            }
+          }
+        `}
+      </style>
       <section className="bg-news-background relative">
       {/* 分类标签切换组件 */}
             <CategoryTabs 
@@ -313,26 +329,14 @@ const NewsList = () => {
         />
       </div>
       
-      {/* 返回顶部按钮 - 固定在页面右下角，滚动超过300px时显示 */}
-      <button
-        onClick={() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        className={`fixed bottom-10 right-5 p-2 z-50 bg-primary text-white shadow-lg hover:bg-primary/90 transition-all duration-300 flex flex-col items-center justify-center rounded-md xs:rounded-full md:bottom-6 md:right-6 ${
-          showBackToTop ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
-
-        aria-label="返回顶部"
-      >
-        <span className="text-lg">▲</span>
-        <span className="text-xs leading-tight hidden md:block">{staticIndexData.common.backToTopText || '返回顶部'}</span>
-      </button>
+      {/* 返回顶部按钮组件 */}
+      <BackToTopButton threshold={100} />
       
       {/* 新闻列表内容 */}
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* 主新闻列表 - 移动端全宽，桌面端70%宽度 */}
-          <div className="w-full lg:w-9/12">
+      <div className="container mx-auto">
+        <div className="flex flex-col lg:flex-row gap-10">
+          {/* 主新闻列表 - 响应式宽度 */}
+          <div className="news-main-content">
             {Object.entries(visibleNews).map(([date, newsItems]) => {
               const [year, month, day] = date.split('-');
               const monthDay = staticIndexData?.common?.dateFormat
@@ -356,15 +360,15 @@ const NewsList = () => {
                   </div>
                   
                   {/* 该日期下的新闻列表 */}
-                  <div className="space-y-4">
+                  <div className="space-y-4 sm:space-y-5 md:space-y-6">
                     {newsItems.map((news) => (
                       <div key={news.id} className="w-full">
                         <NewsCard
+                          id={news.id}
                           title={news.title}
                           summary={news.content}
                           category={news.categoryName}
                           publishTime={news.publishedAt}
-                          views={news.views}
                           tags={news.tags}
                           externalUrl={news.externalUrl}
                         />
@@ -406,32 +410,30 @@ const NewsList = () => {
             )}
           </div>
 
-          {/* 热门新闻侧边栏 - 移动端隐藏，桌面端25%宽度 */}
-          <div className="hidden lg:block lg:w-3/12 sticky top-20 self-start">
-            <div className="bg-news-card rounded-none py-3 px-5 border border-border">
-              <h3 className="text-xl font-bold text-foreground mb-6 flex items-center">
-                <span className="w-6 h-6 rounded-full  flex items-center justify-center text-red-500 mr-3">
-                    <Flame className="w-7 h-7" />
+          {/* 热门新闻侧边栏 - 响应式宽度，固定定位 */}
+          <div className="news-sidebar" style={{ position: 'sticky', top: '80px', alignSelf: 'flex-start' }}>
+            <div className="bg-news-card rounded-lg sm:rounded-none py-2 px-4 sm:px-3 border border-border">
+              <h3 className="text-lg sm:text-xl font-bold text-foreground mb-4 sm:mb-6 flex items-center">
+                <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-red-500 mr-2 sm:mr-3">
+                    <Flame className="w-4 h-4 sm:w-5 sm:h-5 xl:w-7 xl:h-7" />
                 </span>
                 {staticIndexData.newsSection.hotNewsTitle}
               </h3>
               
-              <div className="space-y-6">
+              <div className="space-y-2">
                 {hotNews.map((news, index) => (
-                  <div key={`hot-news-${news.id}-${index}`} className="flex space-x-3 items-start">
+                  <div key={`hot-news-${news.id}-${index}`} className="flex space-x-2 sm:space-x-3 items-start">
                     {/* 火焰图标和排名数字 */}
-                    <div className="flex flex-col items-center space-y-1">
-                      <span className="text-xs font-bold text-gray-500 bg-red-500 w-5 h-5 flex text-white items-center justify-center">{index + 1}</span>
+                    <div className="flex flex-col items-center">
+                      <span className="text-xs font-bold text-gray-500 bg-red-500 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex text-white items-center justify-center text-[10px] sm:text-xs md:text-sm">{index + 1}</span>
                     </div>
                     {/* 新闻内容 */}
-                    <div className="flex-1">
-                      <h4 className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-xs sm:text-sm md:text-base font-medium hover:text-primary transition-colors cursor-pointer line-clamp-2 md:line-clamp-3">
                         {news.title}
                       </h4>
-                      <div className="flex items-center mt-1 text-xs text-gray-500 space-x-2">
-                        <span>{formatDateByLanguage(news.publishedAt || '', currentLanguage)}</span>
-                        <span>•</span>
-                        <span>{generateIncrementedViews(news.views || 0)} {staticIndexData.common.viewsText}</span>
+                      <div className="flex items-center mt-1 text-[1rem] sm:text-xs md:text-sm text-gray-500 space-x-1 sm:space-x-2 md:space-x-3">
+                        <span className="whitespace-nowrap">{formatDateByLanguage(news.publishedAt || '', currentLanguage)}</span>
                       </div>
                     </div>
                   </div>

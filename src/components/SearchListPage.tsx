@@ -2,6 +2,7 @@ import NewsCard from "./NewsCard";
 
 import Header from "./Header";
 import { useState, useMemo, useEffect } from "react";
+import BackToTopButton from "./BackToTopButton";
 import { useSearchParams } from "react-router-dom";
 import { Eye, MessageSquare, Clock, Flame } from "lucide-react";
 import { loadNewsData, loadCategoriesData, searchNewsByKeyword } from "../services/newsService";
@@ -30,6 +31,8 @@ const SearchListPage = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [searchKeyword, setSearchKeyword] = useState(searchParams.get('search') || '');
+  const [currentPage, setCurrentPage] = useState(1); // 当前页码
+  const itemsPerPage = 10; // 每页显示10条新闻
   const currentLanguage = 'en';
   
   // 加载数据
@@ -58,7 +61,7 @@ const SearchListPage = () => {
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);
     // 重置到第一页以便显示搜索结果
-    setVisibleCount(10);
+    setCurrentPage(1);
     // 更新URL参数
     if (keyword.trim()) {
       searchParams.set('search', keyword.trim());
@@ -76,7 +79,7 @@ const SearchListPage = () => {
     const urlSearchKeyword = searchParams.get('search');
     if (urlSearchKeyword && urlSearchKeyword !== searchKeyword) {
       setSearchKeyword(urlSearchKeyword);
-      setVisibleCount(10);
+      setCurrentPage(1);
     }
   }, [searchParams, searchKeyword]);
 
@@ -93,14 +96,17 @@ const SearchListPage = () => {
     return result;
   }, [newsData, searchKeyword]);
   
-  // 按日期分组所有新闻
+  // 按日期分组可见新闻
   const visibleNews = useMemo(() => {
     if (filteredNews.length === 0) return {};
     
     const result: Record<string, typeof filteredNews> = {};
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, filteredNews.length);
     
-    // 遍历所有新闻，按日期分组
-    for (const news of filteredNews) {
+    // 遍历当前页的新闻，按日期分组
+    for (let i = startIndex; i < endIndex; i++) {
+      const news = filteredNews[i];
       // 安全处理日期格式
       const newsDate = news.publishedAt ? new Date(news.publishedAt).toISOString().split('T')[0] : 'unknown-date';
       
@@ -112,12 +118,39 @@ const SearchListPage = () => {
     }
     
     return result;
-  }, [filteredNews]);
+  }, [filteredNews, currentPage]);
   
 
   
   // 添加显示无结果的提示
   const showNoResultsMessage = filteredNews.length === 0 && searchKeyword;
+
+  // 分页导航函数
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  // 计算总页数
+  const totalPages = Math.ceil(filteredNews.length / itemsPerPage);
+
+  // 生成页码数组
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    
+    return pages;
+  };
   
 
   
@@ -178,24 +211,12 @@ const SearchListPage = () => {
               </div>
             )}
       
-      {/* 返回顶部按钮 - 固定在页面右下角，滚动超过300px时显示 */}
-      <button
-        onClick={() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        className={`fixed bottom-10 right-5 p-2 z-50 bg-primary text-white shadow-lg hover:bg-primary/90 transition-all duration-300 flex flex-col items-center justify-center rounded-md xs:rounded-full md:bottom-6 md:right-6 ${
-          showBackToTop ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
-
-        aria-label="返回顶部"
-      >
-        <span className="text-lg">▲</span>
-        <span className="text-xs leading-tight hidden md:block">{staticIndexData.common.backToTopText || '返回顶部'}</span>
-      </button>
+      {/* 返回顶部按钮组件 */}
+      <BackToTopButton threshold={100} />
       
       {/* 新闻列表内容 */}
       <div className="container mx-auto px-4 py-6">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6 pb-3 ">News List</h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-6 pb-3 ">AI News List</h2>
         <div className="flex flex-col lg:flex-row gap-8">
           {/* 主新闻列表 - 全宽度 */}
           <div className="w-full">
@@ -241,24 +262,62 @@ const SearchListPage = () => {
               );
             })}
             
-            {/* 无结果提示 */}
-            {showNoResultsMessage && (
-              <div className="text-center my-8">
-                <p className="text-sm text-muted-foreground">
-                  No relevant results found
-                </p>
+            {/* 分页控件 */}
+            {totalPages > 1 && (
+              <div className="mt-8 flex justify-center items-center space-x-2">
+                {/* 上一页按钮 */}
+                <button
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Previous
+                </button>
+                
+                {/* 页码按钮 */}
+                {getPageNumbers().map(page => (
+                  <button
+                    key={page}
+                    onClick={() => goToPage(page)}
+                    className={`px-3 py-2 border rounded-md text-sm font-medium ${
+                      currentPage === page
+                        ? 'bg-blue-500 text-white border-blue-500'
+                        : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+                
+                {/* 下一页按钮 */}
+                <button
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Next
+                </button>
+                
+                {/* 页面信息 */}
+                <span className="text-sm text-gray-500 ml-4">
+                  Page {currentPage} of {totalPages}
+                </span>
               </div>
+            )}
+            
+            {showNoResultsMessage && (
+              <p className="text-sm text-muted-foreground text-center my-8">
+                没有找到相关新闻
+              </p>
             )}
             
             {/* 调试信息 - 仅用于开发环境 */}
             {process.env.NODE_ENV === 'development' && (
               <div className="text-xs text-gray-400 mt-2 text-center">
-                {staticIndexData.newsSection.filteredText.replace('{filtered}', filteredNews.length.toString()).replace('{visible}', filteredNews.length.toString())}
+                {staticIndexData.newsSection.filteredText.replace('{filtered}', filteredNews.length.toString()).replace('{visible}', (currentPage * itemsPerPage).toString())}
               </div>
             )}
           </div>
-
-
         </div>
       </div>
     </section>

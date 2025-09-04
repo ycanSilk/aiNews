@@ -9,8 +9,8 @@ const Footer = () => {
           {/* Logo and Description */}
           <div className="space-y-4 md:space-y-6 flex flex-col items-center">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">AI</span>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center">
+                <img src="public/ainewslogo.png" alt="" />
               </div>
               <h3 className="text-lg font-bold">AI News Hub</h3>
             </div>

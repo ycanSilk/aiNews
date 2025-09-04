@@ -18,6 +18,8 @@ interface HeaderProps {
 const Header = ({ onSearch }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNotificationDialogOpen, setIsNotificationDialogOpen] = useState(false);
+  const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
+  const [searchInputValue, setSearchInputValue] = useState('');
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   
@@ -57,7 +59,7 @@ const Header = ({ onSearch }: HeaderProps) => {
           </div>
 
           {/* Navigation */}
-          <nav className="hidden xl:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-4 xl:space-x-8">
             <a href="/" className="hover:text-blue-500 transition-colors hover:border-b-2 hover:border-blue-500">
               Home
             </a>
@@ -76,29 +78,24 @@ const Header = ({ onSearch }: HeaderProps) => {
           </nav>
 
           {/* Search and Actions */}
-          <div className="flex items-center space-x-4 sm:space-x-1 sm:m-0">
+          <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
             {/* 移动端搜索按钮 */}
             <Button 
               variant="ghost" 
               size="icon" 
-              className="sm:hidden text-muted-foreground hover:text-primary"
-              onClick={() => {
-                const searchValue = prompt('Please enter search keywords:');
-                if (searchValue && searchValue.trim()) {
-                  navigate(`/news?search=${encodeURIComponent(searchValue.trim())}`);
-                }
-              }}
+              className="md:hidden text-muted-foreground hover:text-primary"
+              onClick={() => setIsSearchDialogOpen(true)}
             >
-              <Search className="w-5 h-5" />
+              <Search className="w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
             
             {/* 桌面端搜索框 */}
-            <div className="hidden sm:flex items-center relative">
+            <div className="hidden md:flex items-center relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
                 type="search"
                 placeholder="Search AI news..."
-                className="pl-10 w-64 hover:border-blue-500"
+                className="pl-10 w-40 lg:w-56 xl:w-64 hover:border-blue-500 transition-all duration-300"
                 onChange={(e) => onSearch(e.target.value)}
                 onKeyPress={(e) => {
                   if (e.key === 'Enter' && e.currentTarget.value.trim()) {
@@ -111,22 +108,21 @@ const Header = ({ onSearch }: HeaderProps) => {
             <Button 
               variant="ghost" 
               size="icon" 
-              className="text-muted-foreground hover:text-primary hover:bg-blue-100 sm:space-x-1"
+              className="text-muted-foreground hover:text-primary hover:bg-blue-100"
               onClick={() => setIsNotificationDialogOpen(true)}
             >
-              <Bell className="w-5 h-5" />
+              <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
-
 
             
             {/* 移动端汉堡菜单 */}
             <Button 
               variant="ghost" 
               size="icon" 
-              className="xl:hidden sm:space-x-0"
+              className="lg:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {isMenuOpen ? <X className="w-4 h-4 sm:w-5 sm:h-5" /> : <Menu className="w-4 h-4 sm:w-5 sm:h-5" />}
             </Button>
           </div>
         </div>
@@ -136,12 +132,12 @@ const Header = ({ onSearch }: HeaderProps) => {
               <>
                 {/* 点击外部关闭菜单的遮罩层 */}
                 <div 
-                  className="fixed inset-0 bg-black/20 z-40 xl:hidden"
+                  className="fixed inset-0 bg-black/20 z-40 lg:hidden"
                   onClick={() => setIsMenuOpen(false)}
                 />
                 <div 
                   ref={menuRef}
-                  className="xl:hidden bg-news-card border border-border rounded-lg shadow-lg fixed top-20 right-4 z-30 w-auto min-w-[120px]" 
+                  className="lg:hidden bg-news-card border border-border rounded-lg shadow-lg fixed top-16 right-2 sm:right-4 z-30 w-auto min-w-[140px] sm:min-w-[160px]" 
                   onClick={(e) => e.stopPropagation()}
                 >
                   <nav className="flex flex-col p-2">
@@ -176,6 +172,58 @@ const Header = ({ onSearch }: HeaderProps) => {
             <div className="flex justify-center mt-4">
               <Button onClick={() => setIsNotificationDialogOpen(false)}>
                 Confirm
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* 搜索模态框 */}
+        <Dialog open={isSearchDialogOpen} onOpenChange={setIsSearchDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-center">Search</DialogTitle>
+              <DialogDescription className="text-center">
+                Enter keywords to search AI news
+              </DialogDescription>
+            </DialogHeader>
+            <div className="mt-4">
+              <Input
+                type="search"
+                placeholder="Search AI news..."
+                value={searchInputValue}
+                onChange={(e) => setSearchInputValue(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter' && searchInputValue.trim()) {
+                    navigate(`/news?search=${encodeURIComponent(searchInputValue.trim())}`);
+                    setIsSearchDialogOpen(false);
+                    setSearchInputValue('');
+                  }
+                }}
+                className="w-full"
+                autoFocus
+              />
+            </div>
+            <div className="flex justify-center gap-4 mt-6">
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setIsSearchDialogOpen(false);
+                  setSearchInputValue('');
+                }}
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={() => {
+                  if (searchInputValue.trim()) {
+                    navigate(`/news?search=${encodeURIComponent(searchInputValue.trim())}`);
+                    setIsSearchDialogOpen(false);
+                    setSearchInputValue('');
+                  }
+                }}
+                disabled={!searchInputValue.trim()}
+              >
+                Search
               </Button>
             </div>
           </DialogContent>

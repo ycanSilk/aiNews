@@ -2,69 +2,44 @@ import React from 'react';
 
 const AboutMe: React.FC = () => {
   const config = {
-    pageTitle: {
-      title: "About NewAI News Platform",
-      description: "A comprehensive AI-powered news aggregation platform delivering real-time updates on artificial intelligence breakthroughs, research, and industry trends"
+    "pageTitle": {
+      "title": "About AI News",
+      "description": "A professional platform focused on the latest news, in-depth analysis, and original content in the field of artificial intelligence"
     },
-    coreFeatures: {
-      title: "Platform Core Features",
-      features: [
+    "websiteFeatures": {
+      "title": "Website Features",
+      "items": [
         {
-          title: "Advanced Technology Stack",
-          items: [
-            "Built with React 18 + TypeScript for type-safe development",
-            "Modern Vite build tool for lightning-fast development experience",
-            "Tailwind CSS with shadcn/ui components for beautiful, responsive design",
-            "MongoDB database with Mongoose ODM for efficient data management"
-          ]
+          "title": "Daily Updates",
+          "content": "Bringing you the latest global AI news and industry trends daily, ensuring information timeliness"
         },
         {
-          title: "Intelligent News Experience",
-          items: [
-            "Real-time AI news aggregation from multiple authoritative sources",
-            "Advanced search functionality with keyword filtering",
-            "Category-based news organization and timeline visualization",
-            "Multi-language support with seamless content switching"
-          ]
+          "title": "In-Depth Original Content",
+          "content": "Providing high-quality original blog articles that deeply analyze AI technology development and application scenarios"
         },
         {
-          title: "User-Centric Design",
-          items: [
-            "Fully responsive design optimized for all devices",
-            "Fast loading performance with optimized assets and code splitting",
-            "SEO-optimized structure with meta tags and sitemap generation",
-            "Accessibility features and keyboard navigation support"
-          ]
+          "title": "Timeline Feature",
+          "content": "A unique timeline display that allows you to clearly understand the development history and important milestones of AI"
         }
       ]
     },
-    comparisonAdvantages: {
-      title: "Technical Advantages",
-      table: [
+    "services": {
+      "title": "Services Provided",
+      "items": [
         {
-          feature: "Development Framework",
-          aiPlatform: "Vite + React 18 + TypeScript",
-          traditionalPlatform: "Traditional create-react-app"
+          "icon": "📰",
+          "title": "AI News Information",
+          "description": "Covering the latest advancements in AI subfields such as machine learning, deep learning, and natural language processing"
         },
         {
-          feature: "Styling Solution",
-          aiPlatform: "Tailwind CSS + Radix UI Components",
-          traditionalPlatform: "Custom CSS or Bootstrap"
+          "icon": "✍️",
+          "title": "Original Blog Articles",
+          "description": "In-depth technical analysis and industry insight articles written by a professional team"
         },
         {
-          feature: "State Management",
-          aiPlatform: "React Query + React Hook Form",
-          traditionalPlatform: "Redux or Context API"
-        },
-        {
-          feature: "Build Performance",
-          aiPlatform: "Vite instant server start <500ms",
-          traditionalPlatform: "Webpack slow build times"
-        },
-        {
-          feature: "Type Safety",
-          aiPlatform: "Full TypeScript coverage",
-          traditionalPlatform: "JavaScript with limited types"
+          "icon": "📊",
+          "title": "Technology Timeline",
+          "description": "Visual display of the development history and important breakthrough points of artificial intelligence technology"
         }
       ]
     }
@@ -80,65 +55,40 @@ const AboutMe: React.FC = () => {
           </p>
         </div>
 
-        {/* 核心特色 */}
+        {/* 网站特色 */}
         <section className="bg-white rounded-lg shadow-md p-8 mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">{config.coreFeatures.title}</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6">{config.websiteFeatures.title}</h2>
           
           <div className="space-y-6">
-            {config.coreFeatures.features.map((feature, index) => (
+            {config.websiteFeatures.items.map((item, index) => (
               <div key={index} className={`border-l-4 pl-4 ${getBorderColor(index)}`}>
-                <h3 className="text-lg font-medium text-gray-800 mb-2">{feature.title}</h3>
-                <ul className="text-gray-700 space-y-1">
-                  {feature.items.map((item, itemIndex) => (
-                    <li key={itemIndex}>• {item}</li>
-                  ))}
-                </ul>
+                <h3 className="text-lg font-medium text-gray-800 mb-2">{item.title}</h3>
+                <p className="text-gray-700">{item.content}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* 对比优势 */}
+        {/* 提供的服务 */}
         <section className="bg-white rounded-lg shadow-md p-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">{config.comparisonAdvantages.title}</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6">{config.services.title}</h2>
           
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-200">
-              <thead>
-                 <tr className="bg-gray-50">
-                   <th className="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                     {config.comparisonAdvantages.table[0]?.feature || 'Feature'}
-                   </th>
-                   <th className="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                     {config.comparisonAdvantages.table[0]?.aiPlatform || 'AI News Platform'}
-                   </th>
-                   <th className="px-6 py-3 border-b border-gray-200 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                     {config.comparisonAdvantages.table[0]?.traditionalPlatform || 'Traditional Information Platform'}
-                   </th>
-                 </tr>
-               </thead>
-              <tbody className="divide-y divide-gray-200">
-                {config.comparisonAdvantages.table.map((row, index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {row.feature}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600">
-                      {row.aiPlatform}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {row.traditionalPlatform}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {config.services.items.map((item, index) => (
+              <div key={index} className="text-center p-6 bg-gray-50 rounded-lg hover:bg-white hover:shadow-md transition-all">
+                <div className="text-3xl mb-4">{item.icon}</div>
+                <h3 className="text-lg font-medium text-gray-800 mb-2">{item.title}</h3>
+                <p className="text-gray-700 text-sm">{item.description}</p>
+              </div>
+            ))}
+          </div>
         </section>
       </div>
     </div>
   );
 };
+
+
 
 // 辅助函数：根据索引获取边框颜色
 const getBorderColor = (index: number) => {

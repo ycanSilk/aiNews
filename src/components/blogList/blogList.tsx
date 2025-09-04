@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BlogData } from '@/types/blog';
 import blogData from './blog.json';
 import '@/components/timeline/Timeline.css';
+import BackToTopButton from '@/components/BackToTopButton';
 
 interface BlogListProps {
   lang: string;
@@ -117,6 +118,25 @@ const BlogList: React.FC<BlogListProps> = ({ lang }) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentBlogs = filteredBlogs.slice(startIndex, startIndex + itemsPerPage);
 
+  // 生成页码数组（最多显示5个页码）
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    
+    return pages;
+  };
+
   if (isLoading) {
     return (
       <div className="container mt-5">
@@ -222,8 +242,6 @@ const BlogList: React.FC<BlogListProps> = ({ lang }) => {
                     </div>
                     <div className="text-xs text-gray-500 flex items-center flex-wrap">
                       <span>{formatDate(blog.createdAt || '')}</span>
-                      <span className="mx-2">•</span>
-                      <span className="text-blue-600">{blog.views || 0} views</span>
                     </div>
                     
                     {/* Blog Tags */}
@@ -249,24 +267,24 @@ const BlogList: React.FC<BlogListProps> = ({ lang }) => {
           )}
 
           {/* Pagination Controls */}
-          {totalPages > 1 && (
-            <div className="flex flex-wrap justify-center mt-8 gap-2">
+          {totalPages >= 1 && (
+            <div className="flex flex-wrap justify-center items-center mt-8 space-x-2">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="px-4 py-2 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 text-sm md:text-base"
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Previous
               </button>
               
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              {getPageNumbers().map(page => (
                 <button
                   key={page}
                   onClick={() => handlePageChange(page)}
-                  className={`px-3 py-2 border rounded-md text-sm md:text-base ${
+                  className={`px-3 py-2 border rounded-md text-sm font-medium ${
                     currentPage === page
-                      ? 'bg-[#039797] text-white border-[#039797]'
-                      : 'border-gray-300 hover:bg-gray-50'
+                      ? 'bg-blue-500 text-white border-blue-500'
+                      : 'border-gray-300 text-gray-700 hover:bg-gray-50'
                   }`}
                 >
                   {page}
@@ -276,14 +294,20 @@ const BlogList: React.FC<BlogListProps> = ({ lang }) => {
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="px-4 py-2 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 text-sm md:text-base"
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Next
               </button>
+              
+              {/* 页面信息 */}
+              <span className="text-sm text-gray-500 ml-4">
+                Page {currentPage} of {totalPages}
+              </span>
             </div>
           )}
         </div>
       </div>
+      <BackToTopButton threshold={100} />
     </div>
   );
 };
