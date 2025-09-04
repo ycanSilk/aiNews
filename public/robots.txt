@@ -1,8 +1,31 @@
+# NewAI News Robots.txt
+# Domain: newainews.com
+
+User-agent: *
+Allow: /
+Disallow: /private/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /*.xml$
+
+# Sitemap files
+Sitemap: https://newainews.com/sitemap.xml
+Sitemap: https://newainews.com/sitemap-news.xml
+Sitemap: https://newainews.com/sitemap-blog.xml
+Sitemap: https://newainews.com/sitemap-pages.xml
+
+# Crawl delay (requests per second)
+Crawl-delay: 1
+
+# Specific bot instructions
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 0.5
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 0.5
 
 User-agent: Twitterbot
 Allow: /
@@ -10,5 +33,13 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
+User-agent: Applebot
 Allow: /
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+User-agent: Yandex
+Allow: /
+Crawl-delay: 1

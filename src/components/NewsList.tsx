@@ -3,6 +3,7 @@ import CategoryTabs from "./CategoryTabs";
 import DateFilter from "./DateFilter";
 import Header from "./Header";
 import { useState, useMemo, useEffect, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Eye, MessageSquare, Clock, Flame, Loader2 } from "lucide-react";
 import { loadNewsData, loadCategoriesData, getHotNews, filterNewsByCategory, filterNewsByDateRange, searchNewsByKeyword } from "../services/newsService";
 import { NewsItemWithCategory, Category } from "../types/news";
@@ -24,11 +25,12 @@ const staticIndexData = {
 };
 
 const NewsList = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   // 状态管理
   const [newsData, setNewsData] = useState<NewsItemWithCategory[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
-  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchKeyword, setSearchKeyword] = useState(searchParams.get('search') || '');
   const currentLanguage = 'en';
   
   // 加载数据
@@ -66,6 +68,13 @@ const NewsList = () => {
     setSearchKeyword(keyword);
     // 重置到第一页以便显示搜索结果
     setVisibleCount(10);
+    // 更新URL参数
+    if (keyword.trim()) {
+      searchParams.set('search', keyword.trim());
+    } else {
+      searchParams.delete('search');
+    }
+    setSearchParams(searchParams);
   };
   
   // 状态来跟踪懒加载
@@ -74,6 +83,15 @@ const NewsList = () => {
   const [showBackToTop, setShowBackToTop] = useState(false); // 返回顶部按钮显示状态
   const loaderRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // 监听URL参数变化
+  useEffect(() => {
+    const urlSearchKeyword = searchParams.get('search');
+    if (urlSearchKeyword && urlSearchKeyword !== searchKeyword) {
+      setSearchKeyword(urlSearchKeyword);
+      setVisibleCount(10);
+    }
+  }, [searchParams, searchKeyword]);
 
   // 过滤和排序新闻数据
   const filteredNews = useMemo(() => {
@@ -282,7 +300,7 @@ const NewsList = () => {
             {searchKeyword && (
               <div className="container mx-auto px-4 pt-4">
                 <p className="text-sm text-muted-foreground">
-                  搜索 "{searchKeyword}" 找到 {filteredNews.length} 条结果
+                 Search "{searchKeyword}" found {filteredNews.length} results
                 </p>
               </div>
             )}

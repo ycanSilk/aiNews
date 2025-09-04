@@ -1,8 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap } from "lucide-react";
 import heroImage from "@/assets/hero-ai-news.jpg";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const HeroSection = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
     <section className="relative bg-gradient-to-br from-tech-blue via-primary to-tech-blue overflow-hidden" style={{ backgroundImage: `url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -24,6 +33,7 @@ const HeroSection = () => {
               <Button 
                 size="lg" 
                 className="bg-white text-primary hover:bg-white/90 font-semibold"
+                onClick={() => setIsDialogOpen(true)}
               >
                 Subscribe
                 <ArrowRight className="ml-2 w-4 h-4" />
@@ -35,6 +45,22 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center">Coming soon!</DialogTitle>
+            <DialogDescription className="text-center">
+              Subscription feature will be available soon.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-center mt-4">
+            <Button onClick={() => setIsDialogOpen(false)}>
+              Confirm
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

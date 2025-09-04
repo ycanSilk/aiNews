@@ -3,60 +3,68 @@ import React from 'react';
 const AboutMe: React.FC = () => {
   const config = {
     pageTitle: {
-      title: "About AI News Platform",
-      description: "A cutting-edge AI-powered news aggregation and analysis platform"
+      title: "About NewAI News Platform",
+      description: "A comprehensive AI-powered news aggregation platform delivering real-time updates on artificial intelligence breakthroughs, research, and industry trends"
     },
     coreFeatures: {
-      title: "Core Features",
+      title: "Platform Core Features",
       features: [
         {
-          title: "Real-time AI News Aggregation",
+          title: "Advanced Technology Stack",
           items: [
-            "Collects news from multiple authoritative sources",
-            "Real-time updates and breaking news alerts",
-            "AI-powered content filtering and ranking"
+            "Built with React 18 + TypeScript for type-safe development",
+            "Modern Vite build tool for lightning-fast development experience",
+            "Tailwind CSS with shadcn/ui components for beautiful, responsive design",
+            "MongoDB database with Mongoose ODM for efficient data management"
           ]
         },
         {
-          title: "Intelligent Content Analysis",
+          title: "Intelligent News Experience",
           items: [
-            "Natural language processing for content understanding",
-            "Sentiment analysis and trend identification",
-            "Automated summarization and key point extraction"
+            "Real-time AI news aggregation from multiple authoritative sources",
+            "Advanced search functionality with keyword filtering",
+            "Category-based news organization and timeline visualization",
+            "Multi-language support with seamless content switching"
           ]
         },
         {
-          title: "Personalized User Experience",
+          title: "User-Centric Design",
           items: [
-            "Customized news feed based on user preferences",
-            "Smart recommendations and related content suggestions",
-            "Multi-language support and accessibility features"
+            "Fully responsive design optimized for all devices",
+            "Fast loading performance with optimized assets and code splitting",
+            "SEO-optimized structure with meta tags and sitemap generation",
+            "Accessibility features and keyboard navigation support"
           ]
         }
       ]
     },
     comparisonAdvantages: {
-      title: "Comparison Advantages",
+      title: "Technical Advantages",
       table: [
         {
-          feature: "Content Update Speed",
-          aiPlatform: "Real-time updates (minutes)",
-          traditionalPlatform: "Daily/weekly updates"
+          feature: "Development Framework",
+          aiPlatform: "Vite + React 18 + TypeScript",
+          traditionalPlatform: "Traditional create-react-app"
         },
         {
-          feature: "Information Accuracy",
-          aiPlatform: "Multi-source verification",
-          traditionalPlatform: "Single source reliance"
+          feature: "Styling Solution",
+          aiPlatform: "Tailwind CSS + Radix UI Components",
+          traditionalPlatform: "Custom CSS or Bootstrap"
         },
         {
-          feature: "Personalization",
-          aiPlatform: "AI-driven recommendations",
-          traditionalPlatform: "Fixed content structure"
+          feature: "State Management",
+          aiPlatform: "React Query + React Hook Form",
+          traditionalPlatform: "Redux or Context API"
         },
         {
-          feature: "Content Depth",
-          aiPlatform: "In-depth analysis and insights",
-          traditionalPlatform: "Basic news reporting"
+          feature: "Build Performance",
+          aiPlatform: "Vite instant server start <500ms",
+          traditionalPlatform: "Webpack slow build times"
+        },
+        {
+          feature: "Type Safety",
+          aiPlatform: "Full TypeScript coverage",
+          traditionalPlatform: "JavaScript with limited types"
         }
       ]
     }

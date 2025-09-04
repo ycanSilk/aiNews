@@ -1,0 +1,110 @@
+{
+  "domain": "newainews.com",
+  "siteName": "NewAI News - Latest Artificial Intelligence News & Insights",
+  "defaultTitle": "NewAI News | Latest AI Technology News, ChatGPT, DeepSeek, OpenAI GPT-5 Updates",
+  "defaultDescription": "Stay updated with the latest AI news, breakthroughs, and insights. Covering ChatGPT, DeepSeek, OpenAI GPT-5, Claude, Gemini, Llama, Meta AI and more artificial intelligence technologies.",
+  "keywords": [
+    "ai news",
+    "newainews", 
+    "ai",
+    "news",
+    "deepseek",
+    "openai",
+    "gpt",
+    "chatgpt",
+    "claude",
+    "gemini",
+    "llama",
+    "meta ai",
+    "artificial intelligence",
+    "machine learning",
+    "large language models",
+    "ai technology",
+    "ai research",
+    "ai developments",
+    "tech news",
+    "ai innovations"
+  ],
+  "author": "NewAI News Team",
+  "social": {
+    "twitter": "@newainews",
+    "facebook": "newainews",
+    "linkedin": "newainews",
+    "instagram": "newainews"
+  },
+  "structuredData": {
+    "organization": {
+      "@type": "Organization",
+      "name": "NewAI News",
+      "url": "https://newainews.com",
+      "logo": "https://newainews.com/ainewslogo.png",
+      "description": "Latest Artificial Intelligence News and Insights"
+    },
+    "website": {
+      "@type": "WebSite",
+      "name": "NewAI News",
+      "url": "https://newainews.com",
+      "description": "Comprehensive coverage of AI news, technologies, and innovations"
+    }
+  },
+  "pages": {
+    "home": {
+      "title": "NewAI News | Latest AI Technology News & Insights",
+      "description": "Your daily source for artificial intelligence news. Covering ChatGPT, DeepSeek, OpenAI GPT-5, Claude, Gemini and all major AI developments.",
+      "canonical": "https://newainews.com"
+    },
+    "blog": {
+      "title": "AI Blog | In-depth Articles & Analysis - NewAI News",
+      "description": "Read in-depth articles and analysis about artificial intelligence, machine learning, and emerging AI technologies.",
+      "canonical": "https://newainews.com/blog"
+    },
+    "news": {
+      "title": "AI News | Breaking Technology Updates - NewAI News",
+      "description": "Latest breaking news in artificial intelligence. Stay informed about GPT-5, DeepSeek, and all AI technology developments.",
+      "canonical": "https://newainews.com/news"
+    },
+    "about": {
+      "title": "About Us | NewAI News - AI Technology Coverage",
+      "description": "Learn about NewAI News - your trusted source for comprehensive artificial intelligence news and technology insights.",
+      "canonical": "https://newainews.com/about"
+    },
+    "timeline": {
+      "title": "AI Timeline | Historical AI Developments - NewAI News",
+      "description": "Explore the history of artificial intelligence through our interactive timeline of major AI developments and breakthroughs.",
+      "canonical": "https://newainews.com/timeline"
+    }
+  },
+  "openGraph": {
+    "type": "website",
+    "siteName": "NewAI News",
+    "title": "NewAI News | Latest AI Technology News & Insights",
+    "description": "Stay updated with the latest AI news, breakthroughs, and insights. Covering ChatGPT, DeepSeek, OpenAI GPT-5 and more.",
+    "url": "https://newainews.com",
+    "image": "https://newainews.com/ainewslogo.png",
+    "locale": "en_US"
+  },
+  "twitterCard": {
+    "card": "summary_large_image",
+    "site": "@newainews",
+    "title": "NewAI News | Latest AI Technology News",
+    "description": "Latest artificial intelligence news and insights",
+    "image": "https://newainews.com/ainewslogo.png"
+  },
+  "verification": {
+    "google": "your-google-search-console-verification-code",
+    "bing": "your-bing-webmaster-verification-code",
+    "yandex": "your-yandex-verification-code"
+  },
+  "analytics": {
+    "google": "your-google-analytics-id",
+    "facebook": "your-facebook-pixel-id"
+  },
+  "sitemaps": {
+    "main": "https://newainews.com/sitemap.xml",
+    "news": "https://newainews.com/sitemap-news.xml",
+    "blog": "https://newainews.com/sitemap-blog.xml",
+    "pages": "https://newainews.com/sitemap-pages.xml"
+  },
+  "createdAt": "2024-01-15",
+  "updatedAt": "2024-01-15"
+}

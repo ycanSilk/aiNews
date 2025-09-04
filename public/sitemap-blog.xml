@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Blog Articles -->
+  <url>
+    <loc>https://newainews.com/blog/how-to-start-learning-ai</loc>
+    <lastmod>2023-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Additional blog articles can be added here as they are created -->
+  <!-- Example structure for future blog posts:
+  <url>
+    <loc>https://newainews.com/blog/your-blog-post-slug</loc>
+    <lastmod>YYYY-MM-DD</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  -->
+
+</urlset>

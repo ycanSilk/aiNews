@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- Home Page -->
+  <url>
+    <loc>https://newainews.com/</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Blog Page -->
+  <url>
+    <loc>https://newainews.com/blog</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- News Page -->
+  <url>
+    <loc>https://newainews.com/news</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- About Page -->
+  <url>
+    <loc>https://newainews.com/about</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Timeline Page -->
+  <url>
+    <loc>https://newainews.com/timeline</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Sitemap Index Files -->
+  <url>
+    <loc>https://newainews.com/sitemap-news.xml</loc>
+    <lastmod>2024-01-15</lastmod>
+  </url>
+
+  <url>
+    <loc>https://newainews.com/sitemap-blog.xml</loc>
+    <lastmod>2024-01-15</lastmod>
+  </url>
+
+  <url>
+    <loc>https://newainews.com/sitemap-pages.xml</loc>
+    <lastmod>2024-01-15</lastmod>
+  </url>
+
+</urlset>

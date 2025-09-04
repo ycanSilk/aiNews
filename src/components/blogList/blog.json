@@ -1,29 +1,179 @@
-{
-  "_id": "67a1b2c3d4e5f67890123456",
-  "semanticId": "llama-4-multimodal-intelligence",
-  "title": "Llama 4: Multimodal Intelligence",
-  "summary": "The Llama 4 herd: The beginning of a new era of natively multimodal AI innovation",
-  "content": "Ulama 4 Scout, a 17 billion active parameter model with 16 experts, is the best multimodal model in the world in its class and is more powerful than all previous generation Llama models, while fitting in a single NVIDIA H100 GPU. ",
-  "category": "AI",
-  "author": "newAinews",
-  "status": "published",
-  "tags": [
-    "AI",
-    "News"
-  ],
-  "slug": "ai-news-2024",
-  "isFeatured": false,
-  "views": 1,
-  "createdAt": "2025-08-28T10:30:00.000Z",
-  "updatedAt": "2025-09-02T04:23:33.849Z",
-  "isCritical": false,
-  "isHot": false,
-  "isImportant": false,
-  "relatedArticles": [],
-  "seoKeywords": [
-    "人工智能",
-    "AI新闻",
-    "科技动态"
-  ],
-  "blogUrl": "/blogPage/llama-4-multimodal-intelligence.html"
-}
+[
+  {
+    "_id": "67a1b2c3d4e5f67890123456",
+    "semanticId": "llama-4-multimodal-intelligence",
+    "title": "Llama 4: Multimodal Intelligence",
+    "summary": "The Llama 4 herd: The beginning of a new era of natively multimodal AI innovation",
+    "content": "Ulama 4 Scout, a 17 billion active parameter model with 16 experts, is the best multimodal model in the world in its class and is more powerful than all previous generation Llama models, while fitting in a single NVIDIA H100 GPU. ",
+    "category": "AI",
+    "author": "newAinews",
+    "status": "published",
+    "tags": [
+      "AI",
+      "News"
+    ],
+    "slug": "ai-news-2024",
+    "isFeatured": false,
+    "views": 1,
+    "createdAt": "2025-08-28T10:30:00.000Z",
+    "updatedAt": "2025-09-02T04:23:33.849Z",
+    "isCritical": false,
+    "isHot": false,
+    "isImportant": false,
+    "relatedArticles": [],
+    "seoKeywords": [
+      "Llama 4",
+      "Multimodal Intelligence",
+      "AI News"
+    ],
+    "blogUrl": "/blogPage/llama-4-multimodal-intelligence.html"
+  },
+  {
+    "_id": "67a1b2c3d4e5f67890123457",
+    "semanticId": "ai-development-history",
+    "title": "Panoramic History of Artificial Intelligence: From Theoretical Beginnings to Intelligent Revolution",
+    "summary": "From early theoretical foundations to modern deep learning revolution, comprehensively presenting the evolution of AI field",
+    "content": "Artificial Intelligence (AI), as a cutting-edge technological field that emerged in the mid-20th century, has profoundly changed all aspects of human society. This article will systematically review the development history of AI, from early theoretical foundations to modern deep learning revolution, comprehensively presenting the evolutionary trajectory, key technological breakthroughs, and future development trends of this field.",
+    "category": "AI",
+    "author": "newAinews",
+    "status": "published",
+    "tags": [
+      "AI",
+      "History"
+    ],
+    "slug": "ai-development-history",
+    "isFeatured": false,
+    "views": 1,
+    "createdAt": "2025-08-20T00:00:00.000Z",
+    "updatedAt": "2025-09-02T04:23:33.849Z",
+    "isCritical": false,
+    "isHot": false,
+    "isImportant": false,
+    "relatedArticles": [],
+    "seoKeywords": [
+      "AI History",
+      "Artificial Intelligence",
+      "Technology Evolution"
+    ],
+    "blogUrl": "/blogPage/ai-development-history.html"
+  },
+  {
+    "_id": "67a1b2c3d4e5f67890123458",
+    "semanticId": "ai-terminology-explained",
+    "title": "AI Knowledge System Panorama: Terminology Explanation from Basics to Frontiers",
+    "summary": "Terminology Explanation from Basics to Frontiers",
+    "content": "The field of artificial intelligence is rapidly developing, and mastering core terminology is fundamental to understanding AI technology. This article systematically introduces key AI terms to help beginners build a complete knowledge framework.",
+    "category": "AI",
+    "author": "newAinews",
+    "status": "published",
+    "tags": [
+      "AI",
+      "Education"
+    ],
+    "slug": "ai-terminology-explained",
+    "isFeatured": false,
+    "views": 1,
+    "createdAt": "2025-08-18T00:00:00.000Z",
+    "updatedAt": "2025-09-02T04:23:33.849Z",
+    "isCritical": false,
+    "isHot": false,
+    "isImportant": false,
+    "relatedArticles": [],
+    "seoKeywords": [
+      "AI Terminology",
+      "Machine Learning",
+      "Deep Learning"
+    ],
+    "blogUrl": "/blogPage/AI-related terminology explained.html"
+  },
+  {
+    "_id": "67a1b2c3d4e5f67890123459",
+    "semanticId": "deepseek-ai-innovator",
+    "title": "DeepSeek: Innovator in the Open Source AI Field",
+    "summary": "An outstanding representative of Chinese artificial intelligence, promoting global AI technology development through open source, efficient, and low-cost technical approaches",
+    "content": "DeepSeek is a Chinese artificial intelligence company founded in 2023, focusing on developing advanced large language models (LLM) and related technologies. Its founder is Liang Wenfeng (also the founder of China's leading quantitative private equity company, Huanfang Quant), and the company is backed by strong financial and technical resources, committed to promoting global artificial intelligence technology development through open source, efficient, and low-cost AI solutions.",
+    "category": "AI",
+    "author": "newAinews",
+    "status": "published",
+    "tags": [
+      "AI",
+      "DeepSeek",
+      "Open Source"
+    ],
+    "slug": "deepseek-ai-innovator",
+    "isFeatured": false,
+    "views": 1,
+    "createdAt": "2025-08-29T00:00:00.000Z",
+    "updatedAt": "2025-09-02T04:23:33.849Z",
+    "isCritical": false,
+    "isHot": false,
+    "isImportant": false,
+    "relatedArticles": [],
+    "seoKeywords": [
+      "DeepSeek",
+      "Open Source AI",
+      "Chinese AI"
+    ],
+    "blogUrl": "/blogPage/deepseek.html"
+  },
+  {
+    "_id": "67a1b2c3d4e5f67890123460",
+    "semanticId": "deepseek-v3-1-release",
+    "title": "DeepSeek-V3.1 Officially Released: Hybrid Reasoning Architecture Leads the New Era of AI",
+    "summary": "Hybrid Reasoning Architecture Leads the New Era of AI",
+    "content": "Chinese artificial intelligence company DeepSeek has launched the new generation large model DeepSeek-V3.1, marking a key step forward in AI technology towards higher efficiency and stronger intelligence.",
+    "category": "AI",
+    "author": "newAinews",
+    "status": "published",
+    "tags": [
+      "AI",
+      "DeepSeek",
+      "Technology"
+    ],
+    "slug": "deepseek-v3-1-release",
+    "isFeatured": false,
+    "views": 1,
+    "createdAt": "2025-08-21T00:00:00.000Z",
+    "updatedAt": "2025-09-02T04:23:33.849Z",
+    "isCritical": false,
+    "isHot": false,
+    "isImportant": false,
+    "relatedArticles": [],
+    "seoKeywords": [
+      "DeepSeek V3.1",
+      "Hybrid Reasoning",
+      "AI Architecture"
+    ],
+    "blogUrl": "/blogPage/deepseekV3.1.html"
+  },
+  {
+    "_id": "67a1b2c3d4e5f67890123461",
+    "semanticId": "openai-chatgpt-leaders",
+    "title": "OpenAI and ChatGPT: Leaders of the Artificial Intelligence Revolution",
+    "summary": "Exploring how AI research lab OpenAI and its revolutionary product ChatGPT are changing the world",
+    "content": "OpenAI is an artificial intelligence research laboratory founded in 2015 by technology leaders including Elon Musk, Sam Altman, and Greg Brockman, with an initial commitment of $1 billion in funding. The birth of this non-profit organization stemmed from deep reflection and concern about the direction of AI development.",
+    "category": "AI",
+    "author": "newAinews",
+    "status": "published",
+    "tags": [
+      "AI",
+      "OpenAI",
+      "ChatGPT"
+    ],
+    "slug": "openai-chatgpt-leaders",
+    "isFeatured": false,
+    "views": 1,
+    "createdAt": "2025-08-23T00:00:00.000Z",
+    "updatedAt": "2025-09-02T04:23:33.849Z",
+    "isCritical": false,
+    "isHot": false,
+    "isImportant": false,
+    "relatedArticles": [],
+    "seoKeywords": [
+      "OpenAI",
+      "ChatGPT",
+      "AI Revolution"
+    ],
+    "blogUrl": "/blogPage/openai-chatgpt.html"
+  }
+]

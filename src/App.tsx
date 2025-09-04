@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import AboutMe from "./pages/AboutMe"; 
 import Timeline from "./pages/Timeline";
 import BlogPage from "./pages/blogList";
+import NewsListPage from "./pages/newsListPage";
 
 import NotFound from "./pages/NotFound";
 
@@ -21,6 +22,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/news" element={<NewsListPage />} />
           <Route path="/timeline" element={<Timeline />} />
           <Route path="/about" element={<AboutMe />} />
 

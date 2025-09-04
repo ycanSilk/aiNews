@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek-V3.1 Officially Released: Hybrid Reasoning Architecture Leads the New Era of AI</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+        
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .article-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 30px;
+        }
+        
+        .article-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        
+        .article-subtitle {
+            font-size: 1.2rem;
+            color: #6b7280;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        
+        .article-meta {
+            font-size: 0.9rem;
+            color: #9ca3af;
+        }
+        
+        .article-content {
+            font-size: 1.1rem;
+            color: #374151;
+        }
+        
+        .article-content h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #111827;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .article-content h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 35px;
+            margin-bottom: 15px;
+        }
+        
+        .article-content p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        
+        .article-content ul {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+        
+        .article-content li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .article-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.95rem;
+        }
+        
+        .article-content th,
+        .article-content td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .article-content th {
+            background-color: #f9fafb;
+            font-weight: 600;
+        }
+        
+        .article-content tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        
+        .highlight-box {
+            background-color: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        
+        .code-block {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 20px 0;
+            overflow-x: auto;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .external-link {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        
+        .external-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .article-container {
+                padding: 20px 15px;
+            }
+            
+            .article-title {
+                font-size: 1.8rem;
+            }
+            
+            .article-content {
+                font-size: 1rem;
+            }
+            
+            .article-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .article-content h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="article-container">
+        <div class="article-header">
+            <h1 class="article-title">DeepSeek-V3.1 Officially Released</h1>
+            <p class="article-subtitle">Hybrid Reasoning Architecture Leads the New Era of AI</p>
+            <div class="article-meta">August 21, 2025</div>
+        </div>
+        
+        <div class="article-content">
+            <p>Chinese artificial intelligence company DeepSeek has launched the new generation large model DeepSeek-V3.1, marking a key step forward in AI technology towards higher efficiency and stronger intelligence.</p>
+            
+            <p>Through innovative hybrid reasoning architecture, DeepSeek-V3.1 achieves free switching between thinking and non-thinking modes, significantly improving response speed while maintaining excellent performance. The model excels in programming agents, search agents, and complex reasoning tasks, while the API interface is fully upgraded, supporting 128K context length and more flexible function calling capabilities.</p>
+            
+            <ul>
+                <li>Hybrid reasoning architecture: One model simultaneously supports both thinking and non-thinking modes</li>
+                <li>Higher thinking efficiency: Compared to DeepSeek-R1-0528, DeepSeek-V3.1-Think can provide answers in shorter time</li>
+                <li>Stronger agent capabilities: Through post-training optimization, the new model shows significant improvement in tool usage and agent tasks</li>
+            </ul>
+            
+            <p>The official App and web version models have been simultaneously upgraded to DeepSeek-V3.1. Users can freely switch between thinking and non-thinking modes through the "Deep Thinking" button.</p>
+
+            <P>DeepSeek API has also been upgraded, with deepseek-chat corresponding to non-thinking mode and deepseek-reasoner corresponding to thinking mode, both with context extended to 128K. Meanwhile, the API Beta interface supports strict mode Function Calling to ensure output functions meet schema definitions. (See official documentation: https://api-docs.deepseek.com/zh-cn/guides/function_calling)</P>
+            
+            <P>Additionally, official support for Anthropic API format has been added, allowing everyone to easily integrate DeepSeek-V3.1 capabilities into the Claude Code framework. (See official documentation: https://api-docs.deepseek.com/zh-cn/guides/anthropic_api)</P>
+            <h2>1. Hybrid Reasoning Architecture: A New Experience for Intelligent Interaction</h2>
+            
+            <p>The most notable innovation of DeepSeek-V3.1 is its hybrid reasoning architecture (Hybrid Reasoning Architecture). This design allows a single model to simultaneously support "Thinking Mode" (ThinkMode) and "Non-Thinking Mode" (Non-ThinkMode), with users able to freely switch by simply clicking the "Deep Thinking" button in the official App or web version.</p>
+            
+            <p>In thinking mode, the model performs in-depth reasoning on complex problems, ensuring answer accuracy and logic. Non-thinking mode is suitable for daily conversations and simple queries, providing faster responses.</p>
+            
+            <div class="highlight-box">
+                <p>The advantage of this hybrid architecture lies in its balance between response speed and answer quality. According to DeepSeek's official test data, V3.1-Think achieves equal average performance across various tasks compared to R1-0528 while reducing output tokens by 20%-50%, truly realizing the efficiency improvement of "less is more".</p>
+            </div>
+            
+            <h2>2. Performance Breakthrough: Excellent Performance in Multiple Benchmark Tests</h2>
+            
+            <p>DeepSeek-V3.1 demonstrates excellent performance in multiple internationally authoritative benchmark tests, achieving significant improvements particularly in programming, search, and complex reasoning tasks.</p>
+            
+            <p>In programming agent testing, V3.1 scored 66.0% in SWE-bench Verified (real-world software engineering task evaluation), a significant improvement compared to R1-0528's 44.6%.</p>
+            
+            <p>In complex search tests requiring multi-step reasoning (browsecomp) and multidisciplinary expert-level problem tests (HLE), DeepSeek-V3.1's performance has significantly surpassed R1-0528, with HLE test pass rate reaching 29.8%.</p>
+            
+            <p>The model also performs excellently in academic evaluations, scoring 88.4% in AIME 2025, 80.1% in GPQA Diamond, and 74.8% in LiveCodeBench, all outperforming R1-0528's corresponding performance.</p>
+            
+            <h3>Programming Agent Performance Comparison</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Benchmarks</th>
+                        <th>DeepSeek-V3.1</th>
+                        <th>DeepSeek-V3-0324</th>
+                        <th>DeepSeek-R1-0528</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SWE-bench Verified</td>
+                        <td>66.0</td>
+                        <td>45.4</td>
+                        <td>44.6</td>
+                    </tr>
+                    <tr>
+                        <td>SWE-bench Multilingual</td>
+                        <td>54.5</td>
+                        <td>29.3</td>
+                        <td>30.5</td>
+                    </tr>
+                    <tr>
+                        <td>Terminal-Bench</td>
+                        <td>31.3</td>
+                        <td>13.3</td>
+                        <td>5.7</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>In code repair evaluation SWE and complex task testing in command-line terminal environments (Terminal-Bench), DeepSeek-V3.1 shows significant improvement compared to previous DeepSeek series models.</p>
+            
+            <h3>Search Agent Performance Comparison</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Benchmarks</th>
+                        <th>DeepSeek-V3.1</th>
+                        <th>DeepSeek-R1-0528</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Browsecomp</td>
+                        <td>30.0</td>
+                        <td>8.9</td>
+                    </tr>
+                    <tr>
+                        <td>Browsecomp_zh</td>
+                        <td>49.2</td>
+                        <td>35.7</td>
+                    </tr>
+                    <tr>
+                        <td>HLE</td>
+                        <td>29.8</td>
+                        <td>24.8</td>
+                    </tr>
+                    <tr>
+                        <td>xbench-DeepSearch</td>
+                        <td>71.2</td>
+                        <td>55.0</td>
+                    </tr>
+                    <tr>
+                        <td>Frames</td>
+                        <td>83.7</td>
+                        <td>82.0</td>
+                    </tr>
+                    <tr>
+                        <td>SimpleQA</td>
+                        <td>93.4</td>
+                        <td>92.3</td>
+                    </tr>
+                    <tr>
+                        <td>Seal0</td>
+                        <td>42.6</td>
+                        <td>29.7</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p>DeepSeek-V3.1 has achieved significant improvements in multiple search evaluation metrics. In complex search tests requiring multi-step reasoning (browsecomp) and multidisciplinary expert-level problem tests (HLE), DeepSeek-V3.1 performance has significantly surpassed R1-0528.</p>
+            
+            <h2>3. Efficiency Improvement: Chain-of-Thought Compression Technology Reduces Computational Consumption</h2>
+            
+            <p>DeepSeek-V3.1 achieves significant efficiency improvement through chain-of-thought compression training technology (Chain-of-Thought Compression Training). This technological innovation enables the model to reduce output token count by 20% to 50% while maintaining the same task performance level.</p>
+            
+            <p>Reduced token consumption means users can process more content under the same budget, particularly suitable for high-frequency, large-scale application scenarios such as long-text generation and batch copywriting creation.</p>
+            
+            <p>Efficiency improvement is also reflected in response speed. Compared to DeepSeek-R1-0528, DeepSeek-V3.1-Think can provide answers in shorter time, greatly improving user experience.</p>
+            
+            <div class="highlight-box">
+                <h2>Thinking Efficiency Improvement</h2>
+
+                <p>Our test results show that after chain-of-thought compression training, V3.1-Think maintains equal average performance across various tasks compared to R1-0528 while reducing output token count by 20%-50%.</p>
+                
+                <p>With basically equal scores across various evaluation metrics (AIME2025:87.5/88.4, GPQA:81/80.1, liveCodeBench: 73.3/74.8), the token consumption comparison chart between R1-0528 and V3.1-Think is as follows</p>
+                
+                <p><img src="../images/deepseekV3.1-1.png" alt=""></p>
+
+                <p>Meanwhile, V3.1's output length in non-thinking mode has been effectively controlled. Compared to DeepSeek-V3-0324, it can maintain the same model performance while significantly reducing output length.</p>
+            </div>
+            
+            <h2>4. Enhanced Agent Capabilities: Leap in Tool Calling and Multi-Task Processing</h2>
+            
+            <p>DeepSeek-V3.1 achieves a qualitative leap in agent capabilities. Through post-training optimization, the model shows significant improvement in tool usage and agent task performance.</p>
+            
+            <p>In programming-related tasks, V3.1 demonstrates stronger code understanding and generation capabilities. It can not only provide more comprehensive code solutions but also consider more potential possibilities and provide detailed usage instructions.</p>
+            
+            <p>In search agent aspects, V3.1 significantly surpasses older versions in Chinese web search and multimodal composite reasoning scores, performing more excellently in complex information retrieval and integration tasks.</p>
+            
+            <p>The model has also made significant progress in complex task processing testing in terminal environments (Terminal-Bench), scoring 31.3%, demonstrating stronger practical application capabilities.</p>
+            
+            <h2>5. API and Open Source Ecosystem: Comprehensive Upgrade of Developer Experience</h2>
+            
+            <p>The release of DeepSeek-V3.1 also brings comprehensive upgrades to the API interface. deepseek-chat corresponds to non-thinking mode, deepseek-reasoner corresponds to thinking mode, and both have context length extended to 128K.</p>
+            
+            <p>The API Beta interface supports strict mode Function Calling, ensuring output functions meet schema definitions and providing a more stable and reliable development experience.</p>
+            
+            <div class="code-block">
+                // Example API calling code
+                const response = await fetch('https://api.deepseek.com/v3.1/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer YOUR_API_KEY'
+                    },
+                    body: JSON.stringify({
+                        model: "deepseek-reasoner",
+                        messages: [...],
+                        max_tokens: 1024
+                    })
+                });
+            </div>
+            
+            <p>Notably, DeepSeek-V3.1 achieves native compatibility with Anthropic API for the first time, allowing users to integrate DeepSeek just like calling Claude or Anthropic ecosystem models.</p>
+            
+            <p>This means developers can use DeepSeek-V3.1's reasoning and conversation capabilities in all environments supporting AnthropicAPI by configuring API addresses and keys, greatly reducing integration barriers.</p>
+            
+            <h3>Model Open Source</h3>
+            
+            <p>V3.1's Base model underwent additional expansion training based on V3, adding a total of 840B tokens training. Both Base model and post-training model have been open sourced on Huggingface and ModelScope.</p>
+            
+            <h4>Base Model:</h4>
+            <ul>
+                <li>Hugging Face: <a href="https://huggingface.co/deepseek-ai/DeepSeek-V3.1-Base" class="external-link">https://huggingface.co/deepseek-ai/DeepSeek-V3.1-Base</a></li>
+                <li>ModelScope: <a href="https://modelscope.cn/models/deepseek-ai/DeepSeek-V3.1-Base" class="external-link">https://modelscope.cn/models/deepseek-ai/DeepSeek-V3.1-Base</a></li>
+            </ul>
+            
+            <h4>Post-Training Model:</h4>
+            <ul>
+                <li>Hugging Face: <a href="https://huggingface.co/deepseek-ai/DeepSeek-V3.1" class="external-link">https://huggingface.co/deepseek-ai/DeepSeek-V3.1</a></li>
+                <li>ModelScope: <a href="https://modelscope.cn/models/deepseek-ai/DeepSeek-V3.1" class="external-link">https://modelscope.cn/models/deepseek-ai/DeepSeek-V3.1</a></li>
+            </ul>
+            
+            <div class="highlight-box">
+                <p>It should be noted that DeepSeek-V3.1 uses UE8M0 FP8 Scale parameter precision. Additionally, V3.1 has made significant adjustments to tokenizer and chat template, showing clear differences from DeepSeek-V3. Users with deployment requirements are advised to carefully read the new version documentation.</p>
+            </div>
+            
+            <p><a href="https://api-docs.deepseek.com/zh-cn/guides/function_calling" class="external-link">View Official API Documentation</a></p>
+            
+            <h2>6. Price Adjustment: New Pricing Standards Effective from September 6</h2>
+            
+            <p>With the release of the new model, DeepSeek has also announced API price adjustment plans. Starting from early morning September 6, 2025 Beijing Time, DeepSeek will adjust open platform API interface calling prices, implement new pricing tables, and cancel nighttime discounts.</p>
+            
+            <div class="highlight-box">
+                <h4>DeepSeek-V3.1 API Pricing</h4>
+                <p><strong>Input Price (Cache Miss):</strong> 0.5 RMB/million tokens</p>
+                <p><strong>Input Price (Cache Hit):</strong> 4 RMB/million tokens</p>
+                <p><strong>Output Price:</strong> 12 RMB/million tokens</p>
+            </div>
+            
+            <p>Before September 6, all API services will continue to be billed according to the original pricing policy, and users can continue to enjoy current discounts. To better meet user calling demands, DeepSeek has further expanded API service resources.</p>
+            
+            <h2>7. Future Outlook: A Key Step Towards the Agent Era</h2>
+            
+            <p>The release of DeepSeek-V3.1 is seen as a key step for DeepSeek towards the agent era. Through significant improvements in tool calling and agent tasks, V3.1 provides stronger support for future AI application scenarios.</p>
+            
+            <p>Although the current version still has some limitations, such as text-focused interaction and insufficient multimodal interaction, DeepSeek-V3.1's continuous innovation and development in reasoning capabilities lay a solid foundation for future technological breakthroughs.</p>
+            
+            <p>As technology continues to advance, the practicality and efficiency of such models will have profound impacts on the industry, providing support for more enterprises and developers.</p>
+            
+            <div class="highlight-box">
+                <p>The release of DeepSeek-V3.1 is not just a technical upgrade but an important evolution in intelligent interaction experience. Its hybrid reasoning architecture allows users to freely switch thinking modes in different scenarios, truly achieving "on-demand allocation" of AI intelligence.</p>
+                
+                <p>With the implementation of new API pricing policies on September 6, the DeepSeek platform will welcome more developers and enterprise users. This AI transformation characterized by efficiency, economy, and intelligence is redefining the standards of intelligent content production, helping users gain advantage in the AI-driven creation revolution.</p>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
