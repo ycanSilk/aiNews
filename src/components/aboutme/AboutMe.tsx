@@ -49,7 +49,7 @@ const AboutMe: React.FC = () => {
       <div className="max-w-4xl mx-auto">
         {/* 页面标题 */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">{config.pageTitle.title}</h1>
+          <h2 className="text-4xl font-bold text-[#039797] mb-4">{config.pageTitle.title}</h2>
           <p className="text-lg text-gray-600">
             {config.pageTitle.description}
           </p>

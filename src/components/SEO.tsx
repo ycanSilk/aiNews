@@ -15,9 +15,9 @@ interface SEOProps {
 }
 
 const SEO: React.FC<SEOProps> = ({
-  title = 'NewAI News - Latest AI Technology News & Trends',
-  description = 'Get the latest AI news and technology trends from NewAI News. Breaking news on DeepSeek, OpenAI GPT-5, ChatGPT, Claude, Gemini, Llama, Meta AI and more artificial intelligence developments.',
-  keywords = 'ai news, newainews, deepseek, openai gpt-5, chatgpt, claude, gemini, llama, meta ai, artificial intelligence, machine learning, large language models, ai technology news',
+  title = 'New AI News - Latest AI Technology News & Trends',
+  description = 'Get the latest AI news and technology trends from New AI News. Breaking news on DeepSeek, OpenAI GPT-5, Claude, and more artificial intelligence developments.',
+  keywords = 'ai news, newainews, deepseek, chatgpt, gemini llama meta artificial intelligence, ai technology news',
   canonical = 'https://newainews.com',
   ogImage = 'https://newainews.com/og-image.png',
   ogType = 'website',

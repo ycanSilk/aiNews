@@ -26,18 +26,26 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
   readMoreText = "Read more"
 }) => {
 
+  const handleItemClick = () => {
+    if (item.url && item.url !== "#") {
+      window.open(item.url, '_blank');
+    }
+  };
+
   return (
     <div 
       key={index} 
-      className={`timeline-item ${item.important ? "important" : ""}`}
+      className={`timeline-item group ${item.important ? "important" : ""}`}
+      onClick={handleItemClick}
+      style={{ cursor: item.url && item.url !== "#" ? 'pointer' : 'default' }}
     >
       <div className="timeline-circle"></div>
       <div className="timeline-content">
         <div className="date">
-          <i className={calendarIcon}></i>
-          {item.date}
+          <h3 className='mr-2'><i className={calendarIcon}><span className='mr-2'></span></i>
+          {item.date}  </h3>
         </div>
-        <h2>{item.title}</h2>
+        <h2 className='group-hover:text-blue-600'>{item.title}</h2>
         <p>{item.content}</p>
         <div className="tags">
           {item.tags.map((tag, tagIndex) => (

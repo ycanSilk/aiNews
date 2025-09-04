@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BlogData } from '@/types/blog';
-import blogData from './blog.json';
 import '@/components/timeline/Timeline.css';
 import BackToTopButton from '@/components/BackToTopButton';
 
@@ -9,14 +8,37 @@ interface BlogListProps {
 }
 
 const BlogList: React.FC<BlogListProps> = ({ lang }) => {
-  const blogs: BlogData[] = blogData;
-  const loading = false;
-  const error = null;
+  const [blogs, setBlogs] = useState<BlogData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
   const [isLoading, setIsLoading] = useState(false);
+
+  // 从public目录加载博客数据
+  useEffect(() => {
+    const loadBlogData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/databases/blog.json');
+        if (!response.ok) {
+          throw new Error('Failed to load blog data');
+        }
+        const data = await response.json();
+        setBlogs(data);
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Unknown error');
+        console.error('Error loading blog data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBlogData();
+  }, []);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -154,12 +176,12 @@ const BlogList: React.FC<BlogListProps> = ({ lang }) => {
         <div className='bg-white shadow-md border border-gray-200 w-full py-5 px-4 sm:px-6 lg:px-8'>
           {/* Header */}
           <header className="">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 text-shadow text-center" >
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 text-shadow text-center text-[#039797]" >
               Newainews Blog
-            </h1>
-            <p className="text-base sm:text-lg lg:text-xl opacity-90 max-w-3xl mx-auto text-center">
+            </h2>
+            <h3 className="text-base sm:text-lg lg:text-xl opacity-90 max-w-3xl mx-auto text-center">
               Explore the latest AI technologies and industry trends
-            </p>
+            </h3>
           </header>
           
           {/* Search Box */}
@@ -198,7 +220,7 @@ const BlogList: React.FC<BlogListProps> = ({ lang }) => {
         </div>
         
         {/* Results Count */}
-        <div className="w-full my-6 sm:my-8">
+        <div className="w-full my-6 sm:my-8">          
           <p className="text-center text-gray-600 text-sm sm:text-base">
             {filteredBlogs.length} {filteredBlogs.length === 1 ? 'blog' : 'blogs'} found
             {searchTerm && ` for "${searchTerm}"`}
@@ -230,16 +252,13 @@ const BlogList: React.FC<BlogListProps> = ({ lang }) => {
                 <div className="px-4 sm:px-6 lg:px-10 py-4 sm:py-6 flex flex-col md:flex-row items-start gap-4">
                 
                   {/* Blog Info */}
-                  <div className="flex-1">
-                    <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200">
-                  {blog.title || 'No Title'}
-                </h2>
-                    <p className="text-gray-600 text-xs sm:text-sm mb-3 line-clamp-2">
-                      {blog.summary || 'No summary available'}
-                    </p>
-                    <div className="text-gray-700 text-xs sm:text-sm mb-3 line-clamp-3">
-                      {blog.content ? blog.content.replace(/<[^>]*>/g, '') : 'No content available'}
-                    </div>
+                    <div className="flex-1">
+                      <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200">
+                        {blog.title || 'No Title'}
+                      </h2>
+                      <div className="text-gray-700 text-xs sm:text-sm mb-3 line-clamp-3">
+                        {blog.content ? blog.content.replace(/<[^>]*>/g, '') : 'No content available'}
+                      </div>
                     <div className="text-xs text-gray-500 flex items-center flex-wrap">
                       <span>{formatDate(blog.createdAt || '')}</span>
                     </div>
@@ -268,7 +287,9 @@ const BlogList: React.FC<BlogListProps> = ({ lang }) => {
 
           {/* Pagination Controls */}
           {totalPages >= 1 && (
-            <div className="flex flex-wrap justify-center items-center mt-8 space-x-2">
+            <div className="mt-8">
+      
+              <div className="flex flex-wrap justify-center items-center space-x-2">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
@@ -300,11 +321,12 @@ const BlogList: React.FC<BlogListProps> = ({ lang }) => {
               </button>
               
               {/* 页面信息 */}
-              <span className="text-sm text-gray-500 ml-4">
-                Page {currentPage} of {totalPages}
-              </span>
+                <span className="text-sm text-gray-500 ml-4">
+                  Page {currentPage} of {totalPages}
+                </span>
+              </div>
             </div>
-          )}
+            )}
         </div>
       </div>
       <BackToTopButton threshold={100} />

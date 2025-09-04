@@ -205,6 +205,7 @@ const SearchListPage = () => {
             {/* 搜索结果显示 */}
             {searchKeyword && (
               <div className="container mx-auto px-4 pt-4">
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Search Results</h2>
                 <p className="text-sm text-muted-foreground">
                   Search "{searchKeyword}" found {filteredNews.length} results
                 </p>
@@ -264,7 +265,9 @@ const SearchListPage = () => {
             
             {/* 分页控件 */}
             {totalPages > 1 && (
-              <div className="mt-8 flex justify-center items-center space-x-2">
+              <div className="mt-8">
+                <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">Page Navigation</h2>
+                <div className="flex justify-center items-center space-x-2">
                 {/* 上一页按钮 */}
                 <button
                   onClick={() => goToPage(currentPage - 1)}
@@ -303,6 +306,7 @@ const SearchListPage = () => {
                   Page {currentPage} of {totalPages}
                 </span>
               </div>
+            </div>
             )}
             
             {showNoResultsMessage && (

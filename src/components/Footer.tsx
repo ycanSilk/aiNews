@@ -5,17 +5,17 @@ const Footer = () => {
   return (
     <footer className="bg-foreground text-background py-5">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 text-center">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12">
           {/* Logo and Description */}
           <div className="space-y-4 md:space-y-6 flex flex-col items-center">
             <div className="flex items-center space-x-2">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center">
-                <img src="public/ainewslogo.png" alt="" />
+              <div className="w-8 h-8 rounded-lg  items-center justify-center">
+                <img src="public/ainewslogo.png" alt="AI News Logo" />
               </div>
               <h3 className="text-lg font-bold">AI News Hub</h3>
             </div>
             <p className="text-background/70 text-sm">
-              Focusing on the latest developments in artificial intelligence
+              New AI News Focusing on the latest developments in artificial intelligence
             </p>
           </div>
 
@@ -23,7 +23,7 @@ const Footer = () => {
           <div className="flex flex-col items-center">
             <h4 className="font-semibold mb-4">Friendly Links</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="/" className="text-background/70 hover:text-background transition-colors">Home</a></li>            
+              <li><a href="/" className="text-background/70 hover:text-background transition-colors">New AI News</a></li>            
             </ul>
           </div>
 

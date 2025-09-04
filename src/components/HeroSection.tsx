@@ -15,6 +15,8 @@ const HeroSection = () => {
 
   return (
     <section className="relative bg-gradient-to-br from-tech-blue via-primary to-tech-blue overflow-hidden" style={{ backgroundImage: `url(${heroImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      {/* Hidden image for SEO and accessibility */}
+      <img src={heroImage} alt="AI technology news background with futuristic digital interface" className="hidden" />
       <div className="absolute inset-0 bg-black/50"></div>
       <div className="relative container mx-auto px-4 py-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -23,9 +25,9 @@ const HeroSection = () => {
               <Zap className="w-6 h-6 md:w-10 md:h-10" />
               <h2 className="text-2xl md:text-4xl font-medium">Real-time AI News</h2>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold leading-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-6xl font-bold leading-tight text-[#039797]">
               Latest AI Technology Updates
-            </h1>
+            </h2>
             <p className="text-base md:text-lg text-white/90 max-w-md">
               Get the latest AI technology news, breakthroughs and industry insights. Stay informed about every important moment in AI development.
             </p>

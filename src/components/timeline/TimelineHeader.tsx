@@ -15,7 +15,7 @@ const TimelineHeader: React.FC<TimelineHeaderProps> = ({
 
   return (
     <header className="timelin-header">
-      <h1 className='mb-5 text-3xl font-bold'>{title}</h1>
+      <h2 className='mb-5 text-3xl font-bold text-[#039797]'>{title}</h2>
       <p className="subtitle">{subtitle}</p>
       {children}
     </header>

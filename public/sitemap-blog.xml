@@ -2,21 +2,50 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- Blog Articles -->
-  <url>
-    <loc>https://newainews.com/blog/how-to-start-learning-ai</loc>
-    <lastmod>2023-06-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  
 
   <!-- Additional blog articles can be added here as they are created -->
-  <!-- Example structure for future blog posts:
+  
   <url>
-    <loc>https://newainews.com/blog/your-blog-post-slug</loc>
-    <lastmod>YYYY-MM-DD</lastmod>
+    <loc>https://newainews.com/blogPage/ai-development-history.html</loc>
+    <lastmod>2025-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  -->
+
+  <url>
+    <loc>https://newainews.com/blogPage/AI-related%20terminology%20explained.html</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://newainews.com/blogPage/deepseek.html</loc>
+    <lastmod>2025-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://newainews.com/blogPage/deepseekV3.1.html</loc>
+    <lastmod>2025-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+     <loc>https://newainews.com/blogPage/llama-4-multimodal-intelligence.html</loc>
+     <lastmod>2025-08-25</lastmod>
+     <changefreq>monthly</changefreq>
+     <priority>0.7</priority>
+   </url>
+
+  <url>
+    <loc>https://newainews.com/blogPage/openai-chatgpt.html</loc>
+    <lastmod>2025-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 
 </urlset>

@@ -13,7 +13,8 @@ const staticIndexData = {
   common: {
     loadingText: "Loading...",
     errorText: "Error loading data",
-    backToTopText: "Back to Top"
+    backToTopText: "Back to Top",
+    dateFormat: "{month}/{day}"
   },
   newsSection: {
     hotNewsTitle: "Hot News",
@@ -315,6 +316,7 @@ const NewsList = () => {
             {/* 搜索结果显示 */}
             {searchKeyword && (
               <div className="container mx-auto px-4 pt-4">
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Search Results</h2>
                 <p className="text-sm text-muted-foreground">
                  Search "{searchKeyword}" found {filteredNews.length} results
                 </p>
@@ -410,24 +412,24 @@ const NewsList = () => {
             )}
           </div>
 
-          {/* 热门新闻侧边栏 - 响应式宽度，固定定位 */}
+      
           <div className="news-sidebar" style={{ position: 'sticky', top: '80px', alignSelf: 'flex-start' }}>
             <div className="bg-news-card rounded-lg sm:rounded-none py-2 px-4 sm:px-3 border border-border">
-              <h3 className="text-lg sm:text-xl font-bold text-foreground mb-4 sm:mb-6 flex items-center">
+              <h2 className="text-lg sm:text-xl font-bold text-foreground mb-3 border-b-2 border-red-500 flex items-center pb-2">
                 <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-red-500 mr-2 sm:mr-3">
                     <Flame className="w-4 h-4 sm:w-5 sm:h-5 xl:w-7 xl:h-7" />
                 </span>
                 {staticIndexData.newsSection.hotNewsTitle}
-              </h3>
+              </h2>
               
               <div className="space-y-2">
                 {hotNews.map((news, index) => (
                   <div key={`hot-news-${news.id}-${index}`} className="flex space-x-2 sm:space-x-3 items-start">
-                    {/* 火焰图标和排名数字 */}
+               
                     <div className="flex flex-col items-center">
                       <span className="text-xs font-bold text-gray-500 bg-red-500 w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 flex text-white items-center justify-center text-[10px] sm:text-xs md:text-sm">{index + 1}</span>
                     </div>
-                    {/* 新闻内容 */}
+           
                     <div className="flex-1 min-w-0">
                       <h4 className="text-xs sm:text-sm md:text-base font-medium hover:text-primary transition-colors cursor-pointer line-clamp-2 md:line-clamp-3">
                         {news.title}
